@@ -4,57 +4,56 @@ DEF Spindle ( )
 END
 
 GLOBAL DEF SpindleInit ( )
-
-   
    
    CONTINUE
-   gDOSpindleEnable = TRUE
-
+   IF NOT gbSimulation THEN
+      Spindle_enable(#allowed)
+      Air(#MAINAIRON)           
+      Chiller(#ChillerOn)
+   ENDIF
 END
 
-GLOBAL DEF SpindleRun (lrSpindleRPM :IN, FI_DIRECTION:IN)
-   INT lrSpindleRPM
-   DECL TYPMillDirection FI_DIRECTION
+GLOBAL DEF SpindleRun (lrSpindleRPM :IN)
+   REAL lrSpindleRPM
    
-     CONTINUE
-   gDOSpindleEnable = TRUE
-   WAIT FOR gDISpindleEnableOK == TRUE
-   
-    SWITCH FI_DIRECTION
-    CASE #CLOCKWISE
-   gISetSpeed = -lrSpindleRPM
-      ;gbDirectionClockwise=TRUE
-    CASE #COUNTERCLOCKWISE
-      gISetSpeed = lrSpindleRPM
-      ;gbDirectionClockwise=FALSE
-    ENDSWITCH
-    
-   
-   
-
- 
-   
-
+   CONTINUE
+   IF NOT gbSimulation THEN
+      WAIT FOR $SOFTPLCBOOL[cnPCORobControlEnable] AND $SOFTPLCBOOL[cnPCOMainAirOn] AND $SOFTPLCBOOL[cnPCOSpindleCoolingOn]
+      Spindle_Start(lrSpindleRPM,#Standing,0,0,#ClockWise)
+   ENDIF
 END
 
 GLOBAL DEF SpindleStop ( )
    
    CONTINUE
-   gISetSpeed = 0
-   
-   gDOSpindleEnable = FALSE
-   WAIT FOR gDISpindleEnableOK == FALSE
-   
+   IF NOT gbSimulation THEN
+      Spindle_Stop(#Contineous,0,0)
+   ENDIF
 END
 
-;GLOBAL DEF SpindleRelease()
+GLOBAL DEF SpindleRelease()
+   $SOFTPLCBOOL[cnPCOSpinToolHolderReady] = TRUE
+   CONTINUE
+   IF NOT gbSimulation THEN
+      SpindleTool(#Release)
+   ENDIF
+   $SOFTPLCBOOL[cnPCOSpinToolHolderReady] = FALSE
+END
 
-;END
+GLOBAL DEF SpindleClamp()
+   $SOFTPLCBOOL[cnPCOSpinToolHolderReady] = TRUE
+   CONTINUE
+   IF NOT gbSimulation THEN
+      SpindleTool(#Clamp)
+   ENDIF
+   $SOFTPLCBOOL[cnPCOSpinToolHolderReady] = FALSE
+END
 
-;GLOBAL DEF SpindleClamp()
-
-;END
-
-;GLOBAL DEF SpindleClampWithTool()
-
-;END
+GLOBAL DEF SpindleClampWithTool()
+   $SOFTPLCBOOL[cnPCOSpinToolHolderReady] = TRUE
+   CONTINUE
+   IF NOT gbSimulation THEN
+      SpindleTool(#ClampWithTool)
+   ENDIF
+   $SOFTPLCBOOL[cnPCOSpinToolHolderReady] = FALSE
+END

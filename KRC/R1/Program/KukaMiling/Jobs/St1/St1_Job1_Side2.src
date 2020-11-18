@@ -1,0 +1,39 @@
+&ACCESS RVO
+&REL 1
+&PARAM DISKPATH = krc:\r1\program\kukamiling\jobs\st1
+DEF  St1_Job1_Side2 (lnActSt :IN,lnUseMillingTool :IN)
+   INT lnActSt,lnUsedBase,lnUsedTool
+   INT lnUseMillingTool,lnJobNr
+   BOOL nbOK,lbTimeOut
+   
+   CONTINUE
+   IF ($T1 OR $T2)THEN
+      GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
+      INTERRUPT ON 3
+      BAS (#INITMOV,0)
+      lnActSt = 1
+      PTP $POS_ACT
+   ENDIF
+    lnJobNr = gnJobNr1
+   lnUsedBase = lnActSt + 10
+   lnUsedTool = 20 
+   
+   BASE_DATA[lnUsedBase] = BASE_DATA[lnActSt]:gfBaseShift[lnActSt]
+   TOOL_DATA[lnUsedTool] = TOOL_DATA[11] :{X 0,Y 0,Z 0,A 0,B 0,C 0}
+   
+   REPEAT
+   UNTIL ($SOFTPLCINT[cnPCOActSpindleRpm]==0) OR NOT WatchDog(gnTimerWatchDog, 30000)
+   
+   CONTINUE
+   IF NOT ($SOFTPLCINT[cnPCOActSpindleRpm]==0) THEN
+      RETURN
+   ENDIF
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 100)   
+   LIN lfPrePos[1] C_DIS
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 50)   
+   LIN lfPrePos[2] C_DIS
+   
+   MoveToPrepos(lnActSt)
+END

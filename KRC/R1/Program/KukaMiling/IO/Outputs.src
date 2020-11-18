@@ -1,0 +1,12 @@
+&ACCESS RVE
+DEF Outputs ( )
+   
+   CONTINUE
+   OUT_RobotUnknowPos = boRobotUnknowPos
+   
+ ;;  boButtonPanel = biStartProgram
+   
+  ;; CONTINUE
+   ;;OUT_ButtonPanel = boButtonPanel
+   
+END

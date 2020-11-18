@@ -1,0 +1,29 @@
+&ACCESS RVO
+&REL 12
+&PARAM EDITMASK = *
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
+DEF AMM_error()
+
+
+
+; for example
+  ;Stop Robot
+    BRAKE
+  ;Stop Process
+    milling_abort()
+  ;Start Process
+
+  AMM_message(106,#DIALOG,gnMillMsgAnswer )
+  IF (gnMillMsgAnswer == 1) THEN
+     ; do nothing
+  ENDIF
+
+   IF gbMillProcessActive THEN
+     up_start(TRUE)
+   ELSE
+      Interrupt ON cItrMillWarning
+      Interrupt ON cItrMillError
+  ENDIF
+END
+
+

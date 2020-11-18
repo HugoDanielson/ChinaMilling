@@ -1,0 +1,25 @@
+&ACCESS RVE
+DEF Inputs ( )
+
+
+CONTINUE 
+biTool_InHolder_1 = IN_Tool_InHolder_1
+CONTINUE 
+biTool_InHolder_2 = IN_Tool_InHolder_2
+CONTINUE 
+biTool_InHolder_3 = IN_Tool_InHolder_3
+CONTINUE 
+biTool_InHolder_4 = IN_Tool_InHolder_4
+
+
+CONTINUE
+biWorkPieceSide1 = IN_WorkPieceSide1 AND IN_WorkPiecePresent
+CONTINUE
+biWorkPieceSide2 = NOT IN_WorkPieceSide1 AND IN_WorkPiecePresent
+
+ CONTINUE
+ OUT_LightGreen = biStartProgram
+
+
+
+END

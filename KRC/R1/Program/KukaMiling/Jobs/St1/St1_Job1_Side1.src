@@ -1,0 +1,105 @@
+&ACCESS RVO
+&REL 5
+DEF  St1_Job1_Side1 (lnActSt :IN)
+   INT lnActSt,lnUsedBase,lnUsedTool
+   INT lnJobNr
+
+   
+   ;FOLD INIT
+      CONTINUE
+      IF ($T1 OR $T2)THEN
+         GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
+         INTERRUPT ON 3
+         BAS (#INITMOV,0)
+         lnActSt = 1
+         PTP $POS_ACT
+      ENDIF
+      lnJobNr = gnJobNr1
+      lnUsedBase = lnActSt + 10
+      lnUsedTool = 20
+      
+      gfMillingOffset = $NULLFRAME
+      gfMillingOffset.Z = -(grCuttingDepth*(gnMillingCounter-1))
+      
+      BASE_DATA[lnUsedBase] = BASE_DATA[lnActSt]:gfBaseShift[lnActSt]:gfMillingOffset
+      TOOL_DATA[lnUsedTool] = TOOL_DATA[11] :{X 0,Y 0,Z 0,A 0,B 0,C 0}
+   ;ENDFOLD
+   REPEAT
+      CONTINUE
+   UNTIL (DI_SpindleStandsStill) OR NOT WatchDog(gnTimerWatchDog, 60000)
+   
+   CONTINUE
+   IF NOT (DI_SpindleStandsStill) THEN
+      MsgNotify("Station1/St1_Job1_Side1() -> TimeOut: Spindle speed Not StandStill")
+      SpindleStop()
+      gbRecoveryNeeded = TRUE
+      RETURN
+   ENDIF
+   gbJob1StartedSt[1] = TRUE
+   gbJob1DoneSt[1]    = FALSE
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 500)   
+   PTP lfPrePos[1] C_PTP 
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 200)   
+   LIN lfPrePos[2] C_DIS
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 100)   
+   LIN lfWorkPos[1] C_DIS
+   LIN lfWorkPos[2] 
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 2)   
+   LIN lfWorkPos[2]:{X 0.0,Y 4.0,Z 0,A 0.0,B 0.0,C 0.0}
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 200)
+   LIN lfWorkPos[2] C_DIS
+   LIN lfWorkPos[3] 
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 2)   
+   LIN lfWorkPos[3]:{X 0.0,Y 4.0,Z 0,A 0.0,B 0.0,C 0.0}
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 200)
+   LIN lfWorkPos[3] C_DIS
+   LIN lfWorkPos[4]
+   LIN lfWorkPos[5]
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 2)   
+   LIN lfWorkPos[5]:{X 0.0,Y 0.0,Z -4,A 0.0,B 0.0,C 0.0}
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 200)
+   LIN lfWorkPos[5] C_DIS
+   LIN lfWorkPos[6]
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 2)   
+   LIN lfWorkPos[6]:{X 0.0,Y 0.0,Z -4,A 0.0,B 0.0,C 0.0}
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 200)
+   LIN lfWorkPos[6]
+   LIN lfWorkPos[7]
+   LIN lfWorkPos[8]
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 2)   
+   LIN lfWorkPos[8]:{X 4.0,Y 0.0,Z 0,A 0.0,B 0.0,C 0.0}
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 200)
+   LIN lfWorkPos[8] C_DIS
+   LIN lfWorkPos[9]
+   LIN lfWorkPos[9]
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 2)   
+   LIN lfWorkPos[9]:{X 4.0,Y 0.0,Z 0,A 0.0,B 0.0,C 0.0}
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 200)
+   LIN lfWorkPos[9] C_DIS
+   LIN lfWorkPos[10]
+   LIN lfWorkPos[11]
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 2)
+   LIN lfWorkPos[11]:{X 0.0,Y 0.0,Z -4,A 0.0,B 0.0,C 0.0}
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 200)
+   LIN lfWorkPos[11]
+   LIN lfWorkPos[12]
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 2)
+   LIN lfWorkPos[12]:{X 0.0,Y 0.0,Z -4,A 0.0,B 0.0,C 0.0}
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 200)
+   LIN lfWorkPos[12]
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 200)  
+   TRIGGER WHEN DISTANCE=0 DELAY=0 DO endOfJob() PRIO=-1    
+   LIN lfPrePos[2] C_DIS 
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 200)      
+   PTP lfPrePos[1] C_PTP
+   
+   MoveToPrepos(lnActSt)
+END
+
+DEF endOfJob()
+   gbJob1StartedSt[1] = FALSE
+   gbJob1DoneSt[1]    = TRUE
+END

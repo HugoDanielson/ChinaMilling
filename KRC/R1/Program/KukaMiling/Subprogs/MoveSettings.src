@@ -1,0 +1,48 @@
+&ACCESS RV
+&REL 1
+DEF MoveSettings (nBase: IN, nTool: IN, nAcc: IN, nVel : IN )
+INT nBase
+INT nTool
+REAL nAcc
+REAL nVel
+ 
+  FDAT_ACT         = FDEFAULT
+  FDAT_ACT.BASE_NO = nBase
+  FDAT_ACT.TOOL_NO = nTool
+  BAS (#FRAMES )
+  
+  LDAT_ACT = LDEFAULT
+  PDAT_ACT = PDEFAULT
+  
+  CONTINUE
+
+    LDAT_ACT.ACC = nAcc
+    LDAT_ACT.VEL = nVel * (DEF_VEL_CP / (DEF_VEL_CP*1000)) 
+    PDAT_ACT.ACC = nAcc 
+    
+    IF (nVel < 1.0) THEN
+      PDAT_ACT.VEL = 1
+    ELSE
+      PDAT_ACT.VEL = nVel
+    ENDIF
+
+  
+  BAS(#CP_DAT)
+  BAS(#PTP_DAT)
+  
+  ;;// IF frame # passed was 0, set the base frame to null
+  CONTINUE
+  IF nBase == 0 THEN
+    $BASE = $NULLFRAME
+  ENDIF
+  
+  ;;// IF frame # passed was 0, set the base frame to null
+  CONTINUE
+  IF nTool == 0 THEN
+    $TOOL = $NULLFRAME
+  ENDIF
+  
+  ;; Activating Payload Data
+  BAS(#TOOL,nTool)
+  ;lzMemToolNrLast = nTool
+END

@@ -1,0 +1,81 @@
+&ACCESS RVO
+DEF MoveTo (lnActSt : IN,lnTargetSt :IN,lnPosNr :IN )
+   DECL INT lnActSt,lnTargetSt,lnPosNr                  
+   
+   IF NOT (VARSTATE("lnPosNr") == #INITIALIZED) THEN
+      lnPosNr = 1         
+   ENDIF
+   
+   SWITCH lnActSt                                          
+      ;; Movements from gnSt1                           
+      CASE gnSt1      
+         SWITCH lnTargetSt                                                     
+            CASE gnSt2                                  
+               st1_st2(lnPosNr)     
+               RETURN               
+            CASE gnst3                                  
+               st1_st3(lnPosNr)     
+               RETURN  
+            CASE gnst20    
+               st1_st20(lnPosNr)
+               RETURN               
+            DEFAULT                                           
+               ;error message                                   
+               HALT                                            
+         ENDSWITCH                                            
+         ;Movements from gnSt2                            
+      CASE gnSt2     
+         SWITCH lnTargetSt                                 
+            CASE gnSt1                                   
+               St2_st1(lnPosNr) 
+               RETURN               
+            CASE gnst3                                  
+               St2_st3(lnPosNr) 
+               RETURN                            
+            CASE gnSt20                                
+               St2_st20(lnPosNr)  
+               RETURN               
+            DEFAULT                                           
+               ; error message                                
+               HALT                                            
+         ENDSWITCH                                           
+         
+         ; Movements from gnst3                           
+      CASE gnst3               
+         SWITCH lnTargetSt                                 
+            CASE gnSt1                                   
+               St3_st1(lnPosNr) 
+               RETURN               
+            CASE gnSt2                                  
+               St3_st2(lnPosNr)
+               RETURN               
+            CASE gnSt20                                
+               St3_st20(lnPosNr) 
+               RETURN               
+            DEFAULT                                           
+               ;error message St3_                              
+               HALT                                            
+         ENDSWITCH    
+      CASE gnst20    
+         SWITCH lnTargetSt  
+            CASE gnSt1                                
+               St20_st1(lnPosNr)  
+               RETURN         
+            CASE gnSt2                                
+               St20_st2(lnPosNr)  
+               RETURN         
+            CASE gnSt3                                
+               St20_st3(lnPosNr)  
+               RETURN                        
+               
+            DEFAULT                                           
+               ;error message St20_                              
+               HALT                                            
+         ENDSWITCH                                                                   
+      DEFAULT                                                
+         ;error message                                        
+         LOOP                                                  
+            HALT                                                
+         ENDLOOP                                               
+   ENDSWITCH                                               
+END                                                     

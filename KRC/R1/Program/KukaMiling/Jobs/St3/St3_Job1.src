@@ -1,0 +1,73 @@
+&ACCESS RVO
+&REL 42
+&PARAM DISKPATH = KRC:\R1\Program\KukaMiling\Jobs\St3
+DEF  St3_Job1 (lnActSt :IN,lnUseMillingTool :IN)
+   INT lnActSt,lnUsedBase,lnUsedTool
+   INT lnUseMillingTool
+   BOOL nbOK,lbTimeOut
+   
+   CONTINUE
+   IF ($T1 OR $T2)THEN
+      GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
+      INTERRUPT ON 3
+      BAS (#INITMOV,0)
+      lnActSt = 3
+      PTP $POS_ACT
+   ENDIF
+   lnUsedBase = lnActSt +10
+   lnUsedTool = 20
+   
+   BASE_DATA[lnUsedBase] = BASE_DATA[lnActSt]:gfBaseShift[lnActSt]
+   TOOL_DATA[lnUsedTool] = TOOL_DATA[11] :{X 0,Y 0,Z 0,A 0,B 0,C 0}
+   
+   gbJob1StartedSt[3] = TRUE
+   gbJob1DoneSt[3]    = FALSE
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 100)   
+   LIN lfPrePos[1] C_DIS
+   
+   ;; MOVE TO P1 calibration
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 50)   
+   LIN lfWorkPos[1] :{X 0,Y 0,Z 15,A 0,B 0,C 0}
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 50)   
+   LIN lfWorkPos[1] 
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 50)   
+   LIN lfWorkPos[1] :{X 0,Y 0,Z 15,A 0,B 0,C 0}
+   ;; MOVE TO P2 calibration
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 1)   
+   LIN lfWorkPos[2] :{X 0,Y 0,Z 15,A 0,B 0,C 0}
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 10)   
+   LIN lfWorkPos[2] 
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 10)   
+   LIN lfWorkPos[2] :{X 0,Y 0,Z 15,A 0,B 0,C 0}
+   ;; MOVE TO P3 calibration
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 1)   
+   LIN lfWorkPos[3] :{X 0,Y 0,Z 15,A 0,B 0,C 0}
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 10)   
+   LIN lfWorkPos[3] 
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 10)   
+   LIN lfWorkPos[3] :{X 0,Y 0,Z 15,A 0,B 0,C 0}
+   ;; MOVE TO P4 calibration
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 1)   
+   LIN lfWorkPos[4] :{X 0,Y 0,Z 15,A 0,B 0,C 0}
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 10)   
+   LIN lfWorkPos[4] 
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 10)   
+   LIN lfWorkPos[4] :{X 0,Y 0,Z 15,A 0,B 0,C 0}
+   
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 25)   
+   LIN lfPrePos[1] C_DIS
+   
+   ;;END OF TCP CALIBRATION
+   
+   TRIGGER WHEN DISTANCE=1 DELAY=0 DO endOfJob() PRIO=-1   
+   MoveToPrepos(lnActSt)
+END
+
+DEF endOfJob()
+   
+   gbJob1StartedSt[3] = FALSE
+   gbJob1DoneSt[3]    = TRUE
+END
+

@@ -1,0 +1,32 @@
+&ACCESS RV
+&REL 4
+DEF Timer_500()
+   INT lnTimerNr
+   REAL lrWatchTime
+   
+   lnTimerNr = gnTimerBtnDebounce
+   lrWatchTime = 500
+   
+   IF $TIMER_STOP[lnTimerNr] == TRUE AND gbTimerStart THEN
+      gbTimerStart = FALSE
+      $TIMER_STOP[lnTimerNr] = FALSE
+      $TIMER_STOP[gnTimerBtnPressed] = FALSE
+   ENDIF
+   IF $TIMER_STOP[lnTimerNr]==FALSE  THEN     
+      IF $TIMER[lnTimerNr] > lrWatchTime THEN
+         $TIMER_STOP[lnTimerNr] = TRUE
+         $TIMER[lnTimerNr] = 0
+         gbTimeOut = TRUE
+      ELSE 
+         gbTimeOut = FALSE
+      ENDIF
+   ENDIF  
+   
+END
+
+GLOBAL DEF  Timer_100_Reset(lnTimerNr :IN) 
+   INT lnTimerNr
+   $TIMER_STOP[lnTimerNr] = TRUE
+   $TIMER[lnTimerNr] = 0
+   gbTimeOut = FALSE
+END

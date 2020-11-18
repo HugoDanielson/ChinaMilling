@@ -1,0 +1,58 @@
+&ACCESS RVO
+&REL 2
+DEF SaveLastPos(leFrom : IN, leTo : IN,lnPosNumber : IN)
+;===========================================================
+;;              SaveLastPos
+;; Store last position where the robot has been moving to:
+;; e.g. for movement: St1_St3(#A) at PTP St1_St3A4
+;; TRIGGER WHEN DISTANCE=0 DELAY=0 DO SaveLastPos(eFromTmp,eToTmp,czPosNr4) PRIO=-1
+;; - neFrom: start of movement,   e.g. eFromTmp = #St1
+;; - leTo:   target of movement,  e.g. eToTmp = #St3
+;; - lnPosNumber: intermediate point, e.g. A4 -> czPosNr4 = 4
+;;===========================================================
+
+  DECL eStation leFrom
+  DECL eStation leTo
+  INT lnPosNumber
+  BOOL nbOk
+
+  leMemFromLast = leMemFrom
+  ;; Store start of actual movement:
+  IF (VARSTATE("leFrom") == #INITIALIZED) THEN
+    leMemFrom = leFrom
+  ELSE
+    leMemFrom = #NO
+  ENDIF
+
+  leMemToLast = leMemTo
+  ;; Store end of actual movement:
+  IF (VARSTATE("leTo") == #INITIALIZED) THEN
+    leMemTo = leTo
+  ELSE
+    leMemTo = #NO
+  ENDIF
+
+
+  gnMemPosNrLast = gnMemPosNr
+  ;; Store actual position number:
+  IF (VARSTATE("lnPosNumber") == #INITIALIZED) THEN
+    gnMemPosNr = lnPosNumber
+  ELSE
+    gnMemPosNr = -1
+  ENDIF
+
+  nbOk = (leMemFrom <> #NO)
+  nbOk = nbOk AND (leMemTo <> #NO)
+  nbOk = nbOk AND (gnMemPosNr <> gnNoSt)
+  IF nbOk THEN
+    lbMemValid = TRUE
+  ELSE
+    lbMemValid = FALSE
+  ENDIF
+
+  ;; Reset information on entered station:
+  lbMemStationEntered = FALSE
+  lzMemEnteredTarget = gnNoSt
+
+
+END

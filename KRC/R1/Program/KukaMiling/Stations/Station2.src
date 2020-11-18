@@ -1,0 +1,131 @@
+&ACCESS RV
+DEF Station2 (lnTargetSt :IN)
+   INT lnTargetSt,lnUseMillingTool,lnReturnMillingTool
+   INT lnJobNumber,lnToolNr
+   BOOL lbOK
+   
+   IF(gnActSt <> lnTargetSt) THEN
+      MoveTo (gnActSt,lnTargetSt)
+   ENDIF
+   
+   REPEAT 
+   UNTIL gnActSt ==lnTargetSt
+   WAIT SEC 0
+   CONTINUE
+   IF NOT (gnActSt == lnTargetSt) THEN
+      LOOP
+         HALT
+      ENDLOOP
+   ENDIF
+   
+   CONTINUE
+   IF NOT (DI_SpindleStandsStill) THEN
+      MsgNotify("Station1/St1_Job1_Side1() -> TimeOut: Spindle speed Not StandStill")
+      SpindleStop()
+   ENDIF
+   
+   SWITCH getJobNr()
+      CASE gnJobNr1
+         lnToolNr = getToolToPick()
+         IF (lnToolNr == 0) THEN
+            MsgNotify("Station2/GetToolToPick = 0")
+            RETURN
+         ENDIF
+         St2_Job1(lnTargetSt, lnToolNr)
+      CASE gnJobNr2
+         St2_Job2(lnTargetSt, gnLastToolNr)
+      DEFAULT   
+         MsgNotify("Station2/getJobNr() = 0")
+   ENDSWITCH
+   
+   CONTINUE
+   IF gbRecoveryNeeded  THEN 
+      HALT      
+      IF NOT RecoverFromWorkSt(lnTargetSt)  THEN  
+         boRobotUnknowPos =  TRUE
+         LOOP
+            HALT
+         ENDLOOP
+      ENDIF
+   ENDIF
+END
+
+DEFFCT INT getJobNr()
+   BOOL lbOK
+   
+   ;;PICK TOOL
+   CONTINUE
+   lbOK =  DI_SpindleStandsStill       
+   CONTINUE
+   lbOK = lbOK AND NOT DI_ToolPresent  
+   CONTINUE
+   lbOK = lbOK AND NOT DI_ToolClamped  
+   
+   IF (lbOK) THEN     
+      RETURN 1
+   ENDIF
+   
+   ;; RETURN TOOL
+   CONTINUE
+   lbOK = DI_SpindleStandsStill  
+   CONTINUE
+   lbOK = lbOK AND(NOT biTool_InHolder_1 AND gbToolAlowedToUse[1]) AND (gnLastToolNr == 1)
+   CONTINUE
+   lbOK = lbOK OR (NOT biTool_InHolder_2 AND gbToolAlowedToUse[2]) AND (gnLastToolNr == 2)
+   CONTINUE
+   lbOK = lbOK OR (NOT biTool_InHolder_3 AND gbToolAlowedToUse[3]) AND (gnLastToolNr == 3)
+   
+   IF (lbOK) THEN   
+      RETURN 2
+   ENDIF
+   
+   RETURN 0
+ENDFCT
+
+DEFFCT INT getToolToPick()
+   BOOL lbOK
+   
+   CONTINUE
+   lbOK =          biTool_InHolder_1 
+   lbOK = lbOK AND gbToolAlowedToUse[1]
+   lbOK = lbOK AND (getJobRequestNr() == 1)
+   IF lbOK THEN
+      RETURN 1
+   ENDIF
+   
+   CONTINUE
+   lbOK =          biTool_InHolder_2 
+   lbOK = lbOK AND gbToolAlowedToUse[2]
+   lbOK = lbOK AND (getJobRequestNr() == 2)
+   IF lbOK THEN
+      RETURN 2
+   ENDIF
+   
+   CONTINUE
+   lbOK =          biTool_InHolder_3 
+   lbOK = lbOK AND gbToolAlowedToUse[3]
+   lbOK = lbOK AND (getJobRequestNr() == 3)
+   IF lbOK THEN
+      RETURN 3
+   ENDIF
+   
+   RETURN 0
+   
+ENDFCT
+
+DEFFCT INT getJobRequestNr()
+   
+   IF gbMillingRequest THEN 
+      IF biWorkPieceSide1 THEN
+         RETURN 2
+      ENDIF
+      IF biWorkPieceSide2 THEN
+         RETURN 3
+      ENDIF
+   ENDIF
+   IF gbCalibrationRequest OR gbMillingMeasRequest THEN
+      RETURN 1
+   ENDIF
+   
+   RETURN 0 
+ENDFCT

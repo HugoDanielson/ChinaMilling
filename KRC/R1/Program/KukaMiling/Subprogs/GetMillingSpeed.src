@@ -1,0 +1,9 @@
+&ACCESS RV
+&PARAM EDITMASK = *
+DEFFCT REAL GetMillingSpeed(lrMillingRPM :IN,lnCuttingTeeth :IN,lrFeedPerTooth :IN)
+   REAL lrMillingRPM
+   INT lnCuttingTeeth
+   REAL lrFeedPerTooth 
+   
+   RETURN (lrMillingRPM*lnCuttingTeeth*lrFeedPerTooth)/60
+ENDFCT

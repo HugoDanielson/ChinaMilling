@@ -1,0 +1,106 @@
+&ACCESS RVO
+&REL 1167
+&PARAM DISKPATH = KRC:\R1\Program\KUKA\Subprogs
+DEF StartPos ( )
+   DECL BOOL bPositionValid,nbOK
+   DECL INT czMemLimitA[6]
+   DECL FRAME ftempReturn
+   boRobotUnknowPos = FALSE
+   
+   czMemLimitA[1]  =1
+   czMemLimitA[2]  =1
+   czMemLimitA[3]  =1
+   czMemLimitA[4]  =1
+   czMemLimitA[5]  =1
+   czMemLimitA[6]  =1
+   
+   bPositionValid = FALSE
+   ;; Compare robot position: at program stop <-> actual robot position:
+   bPositionValid =                    (ABS(mxAxisAfterProStop.A1 - mxAxisAtProStop.A1) < czMemLimitA[1])
+   bPositionValid = bPositionValid AND (ABS(mxAxisAfterProStop.A2 - mxAxisAtProStop.A2) < czMemLimitA[2])
+   bPositionValid = bPositionValid AND (ABS(mxAxisAfterProStop.A3 - mxAxisAtProStop.A3) < czMemLimitA[3])
+   bPositionValid = bPositionValid AND (ABS(mxAxisAfterProStop.A4 - mxAxisAtProStop.A4) < czMemLimitA[4])
+   bPositionValid = bPositionValid AND (ABS(mxAxisAfterProStop.A5 - mxAxisAtProStop.A5) < czMemLimitA[5])
+   bPositionValid = bPositionValid AND (ABS(mxAxisAfterProStop.A6 - mxAxisAtProStop.A6) < czMemLimitA[6])
+   
+   bPositionValid = bPositionValid OR $IN_HOME
+   
+   IF NOT bPositionValid THEN  
+      boRobotUnknowPos = TRUE
+      
+      leMemFrom = #NO
+      leMemTo =  #NO
+      gnActSt = -1    
+      MsgQuit("ROBOT IN UNKNOWN POSITION", "StartPos")
+      LOOP
+         HALT
+      ENDLOOP
+   ENDIF
+   
+   BAS (#INITMOV,0)
+   PTP $POS_ACT
+   nbOK =   RecoverFromWorkSt(gnActSt)
+   WAIT SEC 0
+   
+   IF (NOT $IN_HOME) THEN 
+      SWITCH leMemTo
+         CASE #St1
+            SWITCH leMemFrom  
+               CASE #St2   
+                  st2_st1(gnMemPosNr)
+               CASE #St3
+                  st3_st1(gnMemPosNr)
+               CASE #St20
+                  st20_st1(gnMemPosNr)
+               DEFAULT
+                  ;Error
+                  LOOP
+                     HALT
+                  ENDLOOP
+            ENDSWITCH  
+         CASE #St2
+            SWITCH leMemFrom  
+               CASE #St1
+                  st1_st2(gnMemPosNr)
+               CASE #St3
+                  st3_st2(gnMemPosNr)
+               CASE #St20
+                  st20_st2(gnMemPosNr)
+               DEFAULT
+                  ;Error
+                  LOOP
+                     HALT
+                  ENDLOOP 
+            ENDSWITCH  
+         CASE #St3
+            SWITCH leMemFrom  
+               CASE #St1
+                  st1_st3(gnMemPosNr)
+               CASE #St2
+                  st2_st3(gnMemPosNr)
+               CASE #St20
+                  st20_st3(gnMemPosNr)
+               DEFAULT
+                  ;Error 
+                  LOOP
+                     HALT
+                  ENDLOOP 
+            ENDSWITCH  
+      ENDSWITCH      
+      WAIT SEC 0
+      
+      SWITCH gnActSt
+         CASE gnSt1 
+            st1_st20()
+         CASE gnSt2
+            st2_st20()
+         CASE gnSt3  
+            st3_st20()  
+         DEFAULT
+            ; Error
+            LOOP
+               HALT
+            ENDLOOP 
+      ENDSWITCH 
+   ENDIF
+END

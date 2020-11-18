@@ -1,0 +1,157 @@
+&ACCESS RVO
+&REL 1
+&PARAM DISKPATH = KRC:\R1\Program\Moves\FROM_stPurge
+DEF st1_ST20 (lnPosNr :IN)
+   DECL INT lnPosNr
+   CONTINUE
+   IF ($T1 OR $T2)THEN
+      BAS(#INITMOV,0)
+      PTP $POS_ACT
+   ENDIF
+   IF NOT (VARSTATE("lnPosNr") == #INITIALIZED) THEN
+      lnPosNr = 1
+   ENDIF
+   
+   xST1_ST20_10 = XST20
+   eFromTmp = #ST1
+   eToTmp = #ST20    
+   
+   SWITCH lnPosNr
+      CASE gnPosNr1
+         GOTO Jump1
+      CASE gnPosNr2
+         GOTO Jump2
+      CASE gnPosNr3
+         GOTO Jump3
+      CASE gnPosNr4
+         GOTO Jump4
+      CASE gnPosNr5
+         GOTO Jump5
+      CASE gnPosNr6
+         GOTO Jump6
+      CASE gnPosNr7
+         GOTO Jump7
+      CASE gnPosNr8
+         GOTO Jump8
+      CASE gnPosNr9
+         GOTO Jump9
+      CASE gnPosNr10
+         GOTO Jump10
+   ENDSWITCH
+   
+   Jump1:
+   lnPosNr =gnPosNr1
+   TRIGGER WHEN DISTANCE=0 DELAY=0 DO SaveLastPos(eFromTmp,eToTmp,gnPosNr1) PRIO=-1
+   ;FOLD PTP xST1_ST20_1 CONT Vel= 100 % DATWork Tool[1] Base[0];%{PE}%R 5.4.35,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:ST1_ST20_1, 3:C_PTP, 5:100, 7:DATWork
+      $BWDSTART = FALSE
+      PDAT_ACT=PDATWork
+      FDAT_ACT=FST1_ST20_1
+      BAS(#PTP_PARAMS,PDATWork.VEL)
+      PTP xST1_ST20_1 C_PTP
+   ;ENDFOLD
+   
+   Jump2:
+   ;lnPosNr =gnPosNr2
+   ;TRIGGER WHEN DISTANCE=0 DELAY=0 DO SaveLastPos(eFromTmp,eToTmp,gnPosNr2) PRIO=-1
+   ;FOLD PTP xST1_ST20_2 CONT Vel= 100 % DATWork Tool[1] Base[0];%{PE}%R 5.4.35,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:ST1_ST20_2, 3:C_PTP, 5:100, 7:DATWork
+      ;$BWDSTART = FALSE
+      ;PDAT_ACT=PDATWork
+      ;FDAT_ACT=FST1_ST20_2
+      ;BAS(#PTP_PARAMS,PDATWork.VEL)
+      ;PTP xST1_ST20_2 C_PTP
+   ;ENDFOLD
+   
+   Jump3:
+   ;lnPosNr =gnPosNr3
+   ;TRIGGER WHEN DISTANCE=0 DELAY=0 DO SaveLastPos(eFromTmp,eToTmp,gnPosNr3) PRIO=-1
+   ;FOLD PTP xST1_ST20_3 CONT Vel= 100 % DATWork Tool[1] Base[0];%{PE}%R 5.4.35,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:ST1_ST20_3, 3:C_PTP, 5:100, 7:DATWork
+      ;$BWDSTART = FALSE
+      ;PDAT_ACT=PDATWork
+      ;FDAT_ACT=FST1_ST20_3
+      ;BAS(#PTP_PARAMS,PDATWork.VEL)
+      ;PTP xST1_ST20_3 C_PTP
+   ;ENDFOLD
+   
+   Jump4:
+   ;lnPosNr =gnPosNr4
+   ;TRIGGER WHEN DISTANCE=0 DELAY=0 DO SaveLastPos(eFromTmp,eToTmp,gnPosNr4) PRIO=-1
+   ;FOLD PTP xST1_ST20_4 CONT Vel= 100 % DATWork Tool[1] Base[0];%{PE}%R 5.4.35,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:ST1_ST20_4, 3:C_PTP, 5:100, 7:DATWork
+      ;$BWDSTART = FALSE
+      ;PDAT_ACT=PDATWork
+      ;FDAT_ACT=FST1_ST20_4
+      ;BAS(#PTP_PARAMS,PDATWork.VEL)
+      ;PTP xST1_ST20_4 C_PTP
+   ;ENDFOLD
+   
+   Jump5:
+   ;; lnPosNr =gnPosNr5
+   ;; TRIGGER WHEN DISTANCE=0 DELAY=0 DO SaveLastPos(eFromTmp,eToTmp,gnPosNr5) PRIO=-1
+   ;; ;FOLD PTP xST1_ST20_5 CONT Vel= 100 % DATWork Tool[1] Base[0];%{PE}%R 5.4.35,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:ST1_ST20_5, 3:C_PTP, 5:100, 7:DATWork
+   ;; $BWDSTART = FALSE
+   ;; PDAT_ACT=PDATWork
+   ;; FDAT_ACT=FST1_ST20_5
+   ;; BAS(#PTP_PARAMS,PDATWork.VEL)
+   ;; PTP xST1_ST20_5 C_PTP
+   ;; ;ENDFOLD
+   ;; 
+   Jump6:
+   ;; lnPosNr =gnPosNr6
+   ;; TRIGGER WHEN DISTANCE=0 DELAY=0 DO SaveLastPos(eFromTmp,eToTmp,gnPosNr6) PRIO=-1
+   ;; ;FOLD PTP xST1_ST20_6 CONT Vel= 100 % DATWork Tool[1] Base[0];%{PE}%R 5.4.35,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:ST1_ST20_6, 3:C_PTP, 5:100, 7:DATWork
+   ;; $BWDSTART = FALSE
+   ;; PDAT_ACT=PDATWork
+   ;; FDAT_ACT=FST1_ST20_6
+   ;; BAS(#PTP_PARAMS,PDATWork.VEL)
+   ;; PTP xST1_ST20_6 C_PTP
+   ;; ;ENDFOLD
+   ;; 
+   Jump7:
+   ;; lnPosNr =gnPosNr7
+   ;; TRIGGER WHEN DISTANCE=0 DELAY=0 DO SaveLastPos(eFromTmp,eToTmp,gnPosNr7) PRIO=-1
+   ;; ;FOLD PTP xST1_ST20_7 CONT Vel= 100 % DATWork Tool[1] Base[0];%{PE}%R 5.4.35,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:ST1_ST20_7, 3:C_PTP, 5:100, 7:DATWork
+   ;; $BWDSTART = FALSE
+   ;; PDAT_ACT=PDATWork
+   ;; FDAT_ACT=FST1_ST20_7
+   ;; BAS(#PTP_PARAMS,PDATWork.VEL)
+   ;; PTP xST1_ST20_7 C_PTP
+   ;; ;ENDFOLD
+   ;; 
+   Jump8:
+   ;; lnPosNr =gnPosNr8
+   ;; TRIGGER WHEN DISTANCE=0 DELAY=0 DO SaveLastPos(eFromTmp,eToTmp,gnPosNr8) PRIO=-1
+   ;; ;FOLD PTP xST1_ST20_8 CONT Vel= 100 % DATWork Tool[1] Base[0];%{PE}%R 5.4.35,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:ST1_ST20_8, 3:C_PTP, 5:100, 7:DATWork
+   ;; $BWDSTART = FALSE
+   ;; PDAT_ACT=PDATWork
+   ;; FDAT_ACT=FST1_ST20_8
+   ;; BAS(#PTP_PARAMS,PDATWork.VEL)
+   ;; PTP xST1_ST20_8 C_PTP
+   ;; ;ENDFOLD
+   ;; 
+   Jump9:
+   ;; lnPosNr =gnPosNr9
+   ;; TRIGGER WHEN DISTANCE=0 DELAY=0 DO SaveLastPos(eFromTmp,eToTmp,gnPosNr9) PRIO=-1
+   ;; ;FOLD PTP xST1_ST20_9 CONT Vel= 100 % DATWork Tool[1] Base[0];%{PE}%R 5.4.35,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:ST1_ST20_9, 3:C_PTP, 5:100, 7:DATWork
+   ;; $BWDSTART = FALSE
+   ;; PDAT_ACT=PDATWork
+   ;; FDAT_ACT=FST1_ST20_9
+   ;; BAS(#PTP_PARAMS,PDATWork.VEL)
+   ;; PTP xST1_ST20_9 C_PTP
+   ;; ;ENDFOLD
+   
+   Jump10:
+   lnPosNr =gnPosNr10
+   TRIGGER WHEN DISTANCE=1 DELAY=0 DO SetStNumber() PRIO=-1
+   TRIGGER WHEN DISTANCE=0 DELAY=0 DO SaveLastPos(eFromTmp,eToTmp,gnPosNr10) PRIO=-1
+   ;FOLD PTP xST1_ST20_10 CONT Vel= 100 % DATWork Tool[1] Base[0];%{PE}%R 5.4.35,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:ST1_ST20_10, 3:C_PTP, 5:100, 7:DATWork
+      $BWDSTART = FALSE
+      PDAT_ACT=PDATWork
+      FDAT_ACT=FST1_ST20_10
+      BAS(#PTP_PARAMS,PDATWork.VEL)
+      PTP xST1_ST20_10 C_PTP
+   ;ENDFOLD
+   
+END
+
+DEF SetStNumber()
+   gnActSt = 20
+END

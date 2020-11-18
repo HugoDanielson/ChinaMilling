@@ -1,0 +1,60 @@
+&ACCESS RV
+DEF Spindle ( )
+   
+END
+
+GLOBAL DEF SpindleInit ( )
+
+   
+   
+   CONTINUE
+   gDOSpindleEnable = TRUE
+
+END
+
+GLOBAL DEF SpindleRun (lrSpindleRPM :IN, FI_DIRECTION:IN)
+   INT lrSpindleRPM
+   DECL TYPMillDirection FI_DIRECTION
+   
+     CONTINUE
+   gDOSpindleEnable = TRUE
+   WAIT FOR gDISpindleEnableOK == TRUE
+   
+    SWITCH FI_DIRECTION
+    CASE #CLOCKWISE
+   gISetSpeed = -lrSpindleRPM
+      ;gbDirectionClockwise=TRUE
+    CASE #COUNTERCLOCKWISE
+      gISetSpeed = lrSpindleRPM
+      ;gbDirectionClockwise=FALSE
+    ENDSWITCH
+    
+   
+   
+
+ 
+   
+
+END
+
+GLOBAL DEF SpindleStop ( )
+   
+   CONTINUE
+   gISetSpeed = 0
+   
+   gDOSpindleEnable = FALSE
+   WAIT FOR gDISpindleEnableOK == FALSE
+   
+END
+
+;GLOBAL DEF SpindleRelease()
+
+;END
+
+;GLOBAL DEF SpindleClamp()
+
+;END
+
+;GLOBAL DEF SpindleClampWithTool()
+
+;END

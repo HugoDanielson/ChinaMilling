@@ -1,0 +1,45 @@
+&ACCESS RVO
+&REL 1167
+&PARAM DISKPATH = KRC:\R1\Program\KUKA\Subprogs
+DEF ResetVars ( )
+   INT lnCounter
+   
+   ;IF NOT DI_ToolPresent  AND NOT DI_ToolClamped THEN
+      ;gnLastToolNr = 0
+   ;ENDIF
+   
+   grUSedRPM = 0
+   grUSedMillingSpeed = 0
+   
+   gbCycleStarted = FALSE
+   gbCycleDone = FALSE
+   
+   gbMillingRequest        = FALSE
+   gbProbeCalibrated       = FALSE
+   gbCalibrationRequest    = FALSE
+   gbMillingMeasRequest    = FALSE
+   gbToolChangeRequest     = FALSE
+   
+   FOR lnCounter = 1 TO 3 STEP 1
+      gbToolAlowedToUse[lnCounter]=FALSE
+   ENDFOR
+   FOR lnCounter = 1 TO 3 STEP 1
+      gbJob1StartedSt[lnCounter] = FALSE
+   ENDFOR
+   FOR lnCounter = 1 TO 3 STEP 1
+      gbJob1DoneSt[lnCounter] = FALSE
+   ENDFOR
+   FOR lnCounter = 1 TO 3 STEP 1
+      gbJob2StartedSt[lnCounter] = FALSE
+   ENDFOR
+   FOR lnCounter = 1 TO 3 STEP 1
+      gbJob2DoneSt[lnCounter] = FALSE
+   ENDFOR
+   FOR lnCounter = 1 TO 3 STEP 1
+      gbJob3StartedSt[lnCounter] = FALSE
+   ENDFOR
+   FOR lnCounter = 1 TO 3 STEP 1
+      gbJob3DoneSt[lnCounter] = FALSE
+   ENDFOR
+   
+END

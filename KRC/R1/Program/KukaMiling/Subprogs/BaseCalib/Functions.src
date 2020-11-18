@@ -1,0 +1,255 @@
+&ACCESS RV
+&REL 2
+DEF Functions ( ) 
+   
+END
+
+GLOBAL DEFFCT FRAME getOrigin (lf3Points[]:OUT)
+   FRAME lf3Points[],lfBase
+   INT   i
+   REAL  lrP12[3], lrP13[3], lrPY[3], lrPZ[3], lrT[3,3], lrM
+   
+   lfBASE = $NULLFRAME
+   
+
+
+  ;; Vector 1: X-axis from P1 -> P2
+  lrP12[1] = lf3Points[2].X - lf3Points[1].X
+  lrP12[2] = lf3Points[2].Y - lf3Points[1].Y
+  lrP12[3] = lf3Points[2].Z - lf3Points[1].Z
+  getNormVec (lrP12[], 3)
+
+
+  ;; Vector 2: XY-plane from P1 -> P3
+  lrP13[1] = lf3Points[3].X - lf3Points[1].X
+  lrP13[2] = lf3Points[3].Y - lf3Points[1].Y
+  lrP13[3] = lf3Points[3].Z - lf3Points[1].Z
+  getNormVec (lrP13[], 3)
+
+  ;; Calculate vector perpendicular to vector 1 and 2: Z-axis
+  getCrossProduct (lrP12[], lrP13[], lrPZ[])
+  getNormVec (lrPZ[], 3)
+
+  ;; Calculate vector perpendicular to X-axis and Z-axis: Y-axis
+  getCrossProduct (lrPZ[], lrP12[], lrPY[])
+
+  ;; Move origin of new base to intersection point of both edges:
+  lrM =(-(lf3Points[3].X - lf3Points[1].X) * lrP12[2] + (lf3Points[3].Y - lf3Points[1].Y)* lrP12[1]) / (lrPY[1] * lrP12[2] - lrPY[2] * lrP12[1])
+  lfBASE.X = lrPY[1] * lrM + lf3Points[3].X
+  lfBASE.Y = lrPY[2] * lrM + lf3Points[3].Y
+  lfBASE.Z = lrPY[3] * lrM + lf3Points[3].Z
+
+  ;; Prepare transformation matrix for angle A, B, C:
+  FOR i = 1 TO 3
+      lrT[i,1] = lrP12[i]
+      lrT[i,2] = lrPY[i]
+      lrT[i,3] = lrPZ[i]
+  ENDFOR
+
+  ;; Calculate RPY-angles of matrix nrT[]: A, B, C
+  MatrixToRpy (lrT[,], lfBASE.A, lfBASE.B, lfBASE.C)
+   
+   RETURN lfBase
+ENDFCT
+
+;;==========================================================
+;;              CalcBASE
+;;==========================================================
+GLOBAL DEFFCT FRAME CalcBASE (lf3Points[]:OUT)    
+FRAME lf3Points[], lfNewBase
+INT   nzI
+REAL  lrPX[3], lrPXY[3], lrPY[3], lrPZ[3], lrT[3,3]
+
+  lrPX[1] = lf3Points[2].X - lf3Points[1].X
+  lrPX[2] = lf3Points[2].Y - lf3Points[1].Y
+  lrPX[3] = lf3Points[2].Z - lf3Points[1].Z
+  getNormVec (lrPX[], 3)
+
+  lrPXY[1] = lf3Points[3].X - lf3Points[1].X
+  lrPXY[2] = lf3Points[3].Y - lf3Points[1].Y
+  lrPXY[3] = lf3Points[3].Z - lf3Points[1].Z
+  getNormVec (lrPXY[], 3)
+
+  getCrossProduct (lrPX[], lrPXY[], lrPZ[])
+  getNormVec (lrPZ[], 3)
+  getCrossProduct (lrPZ[], lrPX[], lrPY[])
+
+  FOR nzI = 1 TO 3
+      lrT[nzI,1] = lrPX[nzI]
+      lrT[nzI,2] = lrPY[nzI]
+      lrT[nzI,3] = lrPZ[nzI]
+  ENDFOR
+
+  MatrixToRpy (lrT[,], lfNewBase.A, lfNewBase.B, lfNewBase.C)
+
+  lfNewBase.X = lf3Points[1].X
+  lfNewBase.Y = lf3Points[1].Y
+  lfNewBase.Z = lf3Points[1].Z
+
+  RETURN (lfNewBase)
+
+ENDFCT
+
+
+;;***********************************************************
+;;* NormVec (lrVector[]:OUT,lnArrayLenght :IN )
+;;* lrVector[3] ->   lrVector[1] = X
+;;*                  lrVector[2] = Y
+;;*                  lrVector[3] = Z
+;;* lnArrayLenght = 3
+;;***********************************************************
+DEF  getNormVec (lrVector[]:OUT,lnArrayLenght :IN )
+   INT i, lnArrayLenght
+   REAL lrVector[], lrLength
+   
+   lrLength = getVecLength(lrVector[], lnArrayLenght)
+   
+   FOR i = 1 TO lnArrayLenght
+      IF (lrVector[i] == 0) THEN
+         ;0.0000001 -> becaus otherwice division by 0
+         lrVector[i] = 0.0000001
+      ENDIF
+      
+      lrVector[i] = lrVector[i] / lrLength
+   ENDFOR
+   
+END 
+
+;;***********************************************************
+;;* NormVec (lrVector[]:OUT,lnArrayLenght :IN )
+;;* lrVector[3] ->   lrVector[1] = X
+;;* lnArrayLenght = 3
+;;***********************************************************
+DEFFCT  REAL getVecLength (lrVector[]:OUT, lnArrayLenght :IN)
+   REAL lrVector[]
+   INT lnArrayLenght  
+   
+   RETURN  (SQRT(getDotProduct(lrVector[],lrVector[],lnArrayLenght)))
+   
+ENDFCT
+
+;;***********************************************************
+;;* getDotProduct(lrVectorV[]:OUT, lrVectorW[]:OUT, lnArrayLenght :IN)
+;;* lrVectorV[3] ->  Firs vector
+;;* lrVectorW[3] ->  Second vector          
+;;* lnArrayLenght = 3
+;;* Equation:
+;;* V.W = Vx*Wx + Vy*Wy + Vz*Wz
+;;* Cx = Vy*Wz - Vz*Wy
+;;* Cy = Vz*Wx - Vx*Wz
+;;* Cz = Vx*Wy - Vy*Wx
+;;***********************************************************
+DEFFCT  REAL getDotProduct(lrVectorV[]:OUT, lrVectorW[]:OUT, lnArrayLenght :IN)
+   INT i, lnArrayLenght
+   REAL lrVectorV[], lrVectorW[], lrDotProduct
+   
+   lrDotProduct = 0
+   FOR i = 1 TO lnArrayLenght
+      lrDotProduct = lrDotProduct + lrVectorV[i] * lrVectorW[i]
+   ENDFOR
+   IF (lrDotProduct == 0) THEN
+      ;0.0000001 -> if 0 vectors are perpendicular
+      lrDotProduct = 0.00001
+   ENDIF
+   RETURN  lrDotProduct
+   
+ENDFCT
+
+;;***********************************************************
+;;* getDotProduct(lrVectorV[]:OUT, lrVectorW[]:OUT, lnArrayLenght :IN)
+;;* lrVectorV[3] ->  Firs vector
+;;* lrVectorW[3] ->  Second vector          
+;;* lnArrayLenght = 3
+;;* Equation:
+;;* Both vectors start at origin(0,0,0) then :
+;;* Cx = Vy*Wz - Vz*Wy
+;;* Cy = Vz*Wx - Vx*Wz
+;;* Cz = Vx*Wy - Vy*Wx
+;;***********************************************************
+DEF getCrossProduct (lrVectorU[]:OUT, lrVectorV[]:OUT,lrVectorW[]:OUT)
+   REAL   lrVectorU[], lrVectorV[], lrVectorW[]
+   
+   lrVectorW[1] = (lrVectorU[2] * lrVectorV[3]) - (lrVectorU[3] * lrVectorV[2])
+   lrVectorW[2] = (lrVectorU[3] * lrVectorV[1]) - (lrVectorU[1] * lrVectorV[3])
+   lrVectorW[3] = (lrVectorU[1] * lrVectorV[2]) - (lrVectorU[2] * lrVectorV[1])
+   
+END
+
+DEF MatrixToRpy (lrT[,]:OUT, lrA:OUT, lrB:OUT, lrC:OUT)
+REAL lrT[,], lrA, lrB, lrC
+REAL lrSinA, lrCosA, lrSinB, lrAbsCosB, lrSinC, lrCosC
+
+  lrA    = Arctan2 (lrT[2,1], lrT[1,1])
+  lrSinA = SIN(lrA)
+  lrCosA = COS(lrA)
+
+  lrSinB    = -lrT[3,1]
+  lrAbsCosB = lrCosA * lrT[1,1] + lrSinA * lrT[2,1]
+  lrB = Arctan2 (lrSinB, lrAbsCosB)
+
+  lrSinC =  lrSinA * lrT[1,3] - lrCosA * lrT[2,3]
+  lrCosC = -lrSinA * lrT[1,2] + lrCosA * lrT[2,2]
+  lrC    = Arctan2 (lrSinC, lrCosC)
+
+END
+
+DEFFCT  REAL Arctan2 (lrY : IN, lrX : IN)
+REAL lrX, lrY
+REAL lrAtanEps
+
+  lrAtanEps = 0.00011
+
+  IF  ((ABS(lrX) < lrAtanEps) AND (ABS(lrY) < lrAtanEps))  THEN
+    RETURN (0)
+  ELSE
+    RETURN ( ATAN2(lrY, lrX) )
+  ENDIF
+
+ENDFCT
+
+DEFFCT REAL DistFrame(lfF1 :IN,lfF2 :IN)
+FRAME lfF1,lfF2
+REAL lrDistVec[3],lrDist
+INT i
+
+   lrDistVec[1] = lfF2.X - lfF1.X
+   lrDistVec[2] = lfF2.Y - lfF1.Y
+   lrDistVec[3] = lfF2.Z - lfF1.Z
+  
+  lrDist       = 0   
+   FOR i = 1 TO 3
+     lrDist = lrDist + Pow(lrDistVec[1],2)
+   ENDFOR
+   
+   RETURN (SQRT(lrDist))
+
+ENDFCT
+
+DEFFCT  REAL Pow (lrValue : IN,lnPower : IN)
+   INT lnCounter,lnPower
+   REAL lrValue, lrResult
+   
+   lrResult= lrValue
+   
+   FOR lnCounter = 1 TO  lnPower - 1
+      lrResult= lrResult* lrValue
+   ENDFOR
+   
+   RETURN  ( lrResult)
+   
+ENDFCT
+
+GLOBAL DEFFCT E6POS ChgBase(le6Pos : IN,lfActBase : IN, lfNewBase : IN)
+E6POS le6Pos
+FRAME lfActBase,lfNewBase
+RETURN (lfActBase:(Inv_Pos(lfNewBase):le6Pos))
+ENDFCT 
+
+GLOBAL DEFFCT FRAME ChgTool(le6Pos : IN, lfActTool :IN, lfNewTool : IN)
+E6POS le6POS
+FRAME lfActTool,lfNewTool
+
+RETURN ((le6Pos : INV_POS(lfActTool)) : lfNewTool)
+
+ENDFCT 
+

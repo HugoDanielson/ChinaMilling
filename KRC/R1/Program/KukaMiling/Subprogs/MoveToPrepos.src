@@ -1,0 +1,45 @@
+&ACCESS RV
+DEF MoveToPrepos (lnActSt :IN )
+   INT lnActSt
+   
+   CONTINUE
+   SWITCH lnActSt
+      CASE gnSt1
+         $BWDSTART = FALSE
+         PDAT_ACT=PDATWork
+         FDAT_ACT=FST1
+         BAS(#PTP_PARAMS,PDATWork.VEL)
+         PTP xST1 C_PTP
+         RETURN
+      CASE gnSt2
+         $BWDSTART = FALSE
+         PDAT_ACT=PDATWork
+         FDAT_ACT=FST2
+         BAS(#PTP_PARAMS,PDATWork.VEL)
+         PTP xST2 C_PTP
+         RETURN
+      CASE gnSt3
+         $BWDSTART = FALSE
+         PDAT_ACT=PDATWork
+         FDAT_ACT=FST3
+         BAS(#PTP_PARAMS,PDATWork.VEL)
+         PTP xST3 C_PTP
+         RETURN
+         
+      CASE gnSt4
+         $BWDSTART = FALSE
+         PDAT_ACT=PDATWork
+         FDAT_ACT=FST4
+         BAS(#PTP_PARAMS,PDATWork.VEL)
+         PTP xST4 C_PTP
+         RETURN
+      CASE gnSt20
+         $BWDSTART = FALSE
+         PDAT_ACT=PDATWork
+         FDAT_ACT=FST20
+         BAS(#PTP_PARAMS,PDATWork.VEL)
+         PTP xST20 C_PTP
+         RETURN
+      DEFAULT        
+   ENDSWITCH
+END

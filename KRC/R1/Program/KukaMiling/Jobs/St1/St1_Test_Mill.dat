@@ -1,0 +1,29 @@
+&ACCESS RVO
+&REL 5
+DEFDAT  St1_Test_Mill
+
+
+DECL FRAME lfPrePos[3]
+lfPrePos[1]={X -150.000,Y 0.0,Z 150.000,A 0.0,B 0.0,C 0.0}
+lfPrePos[2]={X 0.0,Y 0.0,Z 25.0,A 0.0,B 0.0,C 0.0}
+lfPrePos[3]={X 0.0,Y 0.0,Z 0.0,A 0.0,B 0.0,C 0.0}
+
+
+DECL FRAME lfWorkPos[12]
+   lfWorkPos[1]={X 0,Y 0,Z 5.000,A 0.0,B 0.0,C 0.0}
+   lfWorkPos[2]={X 0,Y 25.0,Z 0.0000,A 0.0,B 0.0,C 0.0}
+   
+   lfWorkPos[3]={X 1800,Y 56.0,Z 0.0000,A 0.0,B 0.0,C 0.0}
+   lfWorkPos[4]={X 1695,Y 25.0,Z 0.0000,A 0.0,B 0.0,C 0.0}
+   lfWorkPos[5]={X 1670,Y 1400.0,Z 0.0000,A 0.0,B 0.0,C 0.0}
+   lfWorkPos[6]={X 1700,Y 1329.0,Z 0.0000,A 0.0,B 0.0,C 0.0}
+   lfWorkPos[7]={X -100,Y 1305.0,Z 0.0000,A 0.0,B 0.0,C 0.0}
+   lfWorkPos[8]={X 5.3,Y 1353,Z 0.0000,A 0.0,B 0.0,C 0.0}
+   lfWorkPos[9]={X 30,Y -160.0,Z 0.0000,A 0.0,B 0.0,C 0.0}
+   
+   lfWorkPos[10]={X 0,Y 0.0,Z 0.0000,A 0.0,B 0.0,C 0.0}
+   lfWorkPos[11]={X 0,Y 0.0,Z 0.0000,A 0.0,B 0.0,C 0.0}
+   lfWorkPos[12]={X 0,Y 0.0,Z 0.0000,A 0.0,B 0.0,C 0.0}
+
+
+ENDDAT

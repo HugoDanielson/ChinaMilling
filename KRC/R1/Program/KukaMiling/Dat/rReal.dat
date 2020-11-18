@@ -1,0 +1,8 @@
+&ACCESS RV
+&PARAM DISKPATH = Program/KukaMiling/Dat
+DEFDAT  rReal PUBLIC
+
+
+DECL GLOBAL INT grToolHolderDist=90
+
+ENDDAT

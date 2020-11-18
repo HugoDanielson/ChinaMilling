@@ -1,0 +1,13 @@
+&ACCESS RV
+&REL 2
+DEFDAT  fframe PUBLIC
+
+
+DECL GLOBAL FRAME gfBaseShift[3]
+gfBaseShift[1]={X -5.00000,Y -5.00000,Z 0.00000,A 0.0,B 0.0,C 0.0}
+gfBaseShift[2]={X -16.0000,Y -16.0,Z -.6 ,A 0.0,B 0.0,C 0.0}
+gfBaseShift[3]={X 100.000,Y 50.0000,Z 40.0000,A 0.0,B 0.0,C 0.0}
+
+
+
+ENDDAT

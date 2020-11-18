@@ -1,0 +1,83 @@
+&ACCESS RVO
+&REL 226
+&PARAM EDITMASK = *
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
+&PARAM DISKPATH = KRC:\R1\TP\Milling
+DEF Spindle_MAIN()
+;FOLD INI
+  ;FOLD BASISTECH INI
+    GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
+    INTERRUPT ON 3 
+    BAS (#INITMOV,0 )
+  ;ENDFOLD (BASISTECH INI)
+  ;FOLD USER INI
+    ;Make your modifications here
+
+  ;ENDFOLD (USER INI)
+;ENDFOLD (INI)
+
+PTP $AXIS_ACT
+
+;FOLD PTP home Vel=100 % PDAT8;%{PE}%R 8.2.19,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:home, 3:, 5:100, 7:PDAT8
+$BWDSTART=FALSE
+PDAT_ACT=PPDAT8
+FDAT_ACT=Fhome
+BAS(#PTP_PARAMS,100)
+$H_POS=XHOME
+PTP Xhome 
+;ENDFOLD
+;FOLD MillingTech_Spindle_Function.SPINDLE_ENABLE SpindleOverride: blocked;%{PE}%MKUKATPUSER
+Spindle_Enable(#blocked)
+;ENDFOLD
+;FOLD MillingTech_Air.SWITCH_MAINAIR_ON ;%{PE}%MKUKATPUSER
+Air(#MainAirOn)
+;ENDFOLD
+;FOLD MillingTech_Chiller.SWITCH_ON ;%{PE}%MKUKATPUSER
+Chiller(#ChillerOn)
+;ENDFOLD
+
+
+;FOLD MillingTech_Spindle_Function.ON Speed= 1000 rpm, Trigger: none, Offset: 0mm, Delay: 0 ms, Direction: clockwise;%{PE}%MKUKATPUSER
+Spindle_Start(1000,#Standing,0,0,#CLOCKWISE)
+;ENDFOLD
+
+
+
+loop
+;FOLD PTP home Vel=100 % PDAT4;%{PE}%R 8.2.19,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:home, 3:, 5:100, 7:PDAT4
+$BWDSTART=FALSE
+PDAT_ACT=PPDAT4
+FDAT_ACT=Fhome
+BAS(#PTP_PARAMS,100)
+$H_POS=XHOME
+PTP Xhome 
+;ENDFOLD
+;FOLD PTP p1 Vel=30 % PDAT5 Tool[1] Base[0];%{PE}%R 8.2.19,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:p1, 3:, 5:30, 7:PDAT5
+$BWDSTART=FALSE
+PDAT_ACT=PPDAT5
+FDAT_ACT=Fp1
+BAS(#PTP_PARAMS,30)
+PTP Xp1 
+;ENDFOLD
+
+
+;FOLD PTP home Vel=30 % PDAT6;%{PE}%R 8.2.19,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:home, 3:, 5:30, 7:PDAT6
+$BWDSTART=FALSE
+PDAT_ACT=PPDAT6
+FDAT_ACT=Fhome
+BAS(#PTP_PARAMS,30)
+$H_POS=XHOME
+PTP Xhome 
+;ENDFOLD
+endloop
+halt
+;FOLD MillingTech_Spindle_Function.OFF Trigger: none, Offset: 0mm, Delay: 0 ms;%{PE}%MKUKATPUSER
+Spindle_Stop(#Standing,0,0)
+;ENDFOLD
+halt
+
+;FOLD MillingTech_Spindle_Function.SPINDLE_DISABLE ;%{PE}%MKUKATPUSER
+Spindle_Disable()
+;ENDFOLD
+End
+

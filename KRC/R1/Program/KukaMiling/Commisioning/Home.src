@@ -1,0 +1,34 @@
+&ACCESS RVO
+&PARAM EDITMASK = *
+&PARAM TEMPLATE = C:\KRC\roboter\template\srcvorlage
+DEF Home()
+   ;FOLD  . INI (IF $T1 OR $T2):
+      CONTINUE
+      IF ($T1 OR $T2)THEN
+         ;GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
+         ;INTERRUPT ON 3
+         BAS (#INITMOV,0)
+         PTP $POS_ACT
+      ENDIF
+   ;ENDFOLD INI (IF $T1 OR $T2)
+   
+   ;; (Base, Tool, Acc, Vel)
+   Movesettings (0,1,1,1)
+   $H_POS=XHOME
+   ;FOLD PTP HOME  Vel= 100 % DEFAULT;%{PE}%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:HOME, 3:, 5:100, 7:DEFAULT
+      $BWDSTART = FALSE
+      PDAT_ACT=PDEFAULT
+      FDAT_ACT=fHome
+      BAS (#PTP_PARAMS,100 )
+      PTP  XHOME
+   ;ENDFOLD
+   
+   ;IF $IN_HOME THEN
+      ;WAIT SEC 0
+      ;XST20 = $POS_ACT
+      ;gnActSt = 20
+      ;SaveLastPos(#St20,#St20,gnMemPosNrLast)
+      ;ResetVars()
+   ;ENDIF
+   ;
+END

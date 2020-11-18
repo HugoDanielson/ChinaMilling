@@ -1,0 +1,68 @@
+&ACCESS RV
+DEF PokeOutputs(Idx:IN,Len:IN,Value:IN )
+;***************************************************
+;* Customer     :                                  *
+;* Roboter      :                                  *
+;* Version      : Vxxxxxx                          *
+;* Roboter Nr.  : xxxxxx                           *
+;* Controller Nr: xxxxxx                           *
+;* Autor        : Andrew Wang                      *
+;* Company      :                                  *
+;* Department   :                                  *
+;* Telephone    : 86 156-8082-2827                 *
+;* Version      : 1.0                              *
+;* Created      : 12.12.2018                       *
+;* Modified     :                                  *
+;* Project      :                                  *
+;* Program Name : PokeOutputs                      *
+;* Write max 31 bit outputs Status;                *
+;************************************************** 
+DECL INT Idx
+DECL INT Len
+DECL INT Value
+DECL INT nzI
+DECL INT nzTemp
+CONTINUE
+IF VARSTATE("Value")<>#INITIALIZED THEN
+    MsgQuit("Output Value not initialized!")
+    HALT 
+  ELSE 
+    IF Value< 0 THEN
+       MsgQuit("Please enter a positive integer!")
+       HALT 
+     ENDIF
+    IF Value> 2147483647 THEN
+       MsgQuit("Output set value Over 2147483647!")
+       HALT 
+     ENDIF
+ENDIF
+CONTINUE
+IF VARSTATE("Len")<>#INITIALIZED THEN
+    MsgQuit("Output  Length not initialized!")
+    HALT 
+  ELSE
+    IF (Len<1) OR (Len>31) THEN
+       MsgQuit("Please Enter output length:1-31")
+    ENDIF
+ENDIF
+CONTINUE
+IF VARSTATE("Idx")<>#INITIALIZED THEN
+    MsgQuit("Output channel index not initialized!")
+    HALT 
+  ELSE
+    IF (Idx<=0) or (Idx>($SET_IO_SIZE*1024)) THEN
+       MsgQuit("Output channel index out of range !")
+       HALT 
+    ENDIF
+    IF ((Idx+Len-1)> ($SET_IO_SIZE *1024)) THEN
+      MsgQuit("Output Length Out of range!")
+      HALT
+     ENDIF 
+ENDIF
+nzTemp=Value
+FOR nzI=1 TO Len 
+  CONTINUE
+  $OUT[Idx+nzI-1]=(nzTemp-2*(nzTemp/2))==1
+  nzTemp=nzTemp/2
+ENDFOR
+END

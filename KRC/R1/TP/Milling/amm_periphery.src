@@ -1,0 +1,275 @@
+&ACCESS RVO
+&REL 57
+&PARAM EDITMASK = *
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
+&PARAM DISKPATH = KRC:\R1\TP\Milling
+DEF AMM_Periphery( )
+;FOLD INI
+  ;FOLD BASISTECH INI
+    GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
+    INTERRUPT ON 3 
+    BAS (#INITMOV,0 )
+  ;ENDFOLD (BASISTECH INI)
+  ;FOLD USER INI
+    ;Make your modifications here
+
+  ;ENDFOLD (USER INI)
+;ENDFOLD (INI)
+PTP $AXIS_ACT
+Calc_ToolChangerPos()
+
+END
+
+GLOBAL DEF Chiller(FI_ChillerState :IN)
+DECL TYPChillerState FI_ChillerState
+
+SWITCH FI_ChillerState
+   CASE #ChillerOn
+      IF (DI_gbSpindleCoolingOn==TRUE) THEN
+         DI_gbSpindleCoolingOn=FALSE
+         Wait sec 0.5
+         DI_gbSpindleCoolingOn=TRUE
+      Else
+         DI_gbSpindleCoolingOn=TRUE
+      ENDIF
+   CASE #ChillerOff
+      DI_gbSpindleCoolingOn=FALSE
+ENDSWITCH
+
+END
+
+GLOBAL DEF Tool_Changer (FI_nNextTool :IN)
+DECL INT FI_nNextTool
+DECL INT mnNextTool
+
+mnNextTool=FI_nNextTool
+IF (gbToolChangerPresent == TRUE) THEN
+
+   ;Teach here the movement to the toolchanger and remove "HALT"
+;FOLD PTP HOME Vel=100 % DEFAULT;%{PE}%R 8.3.48,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:HOME, 3:, 5:100, 7:DEFAULT
+$BWDSTART=FALSE
+PDAT_ACT=PDEFAULT
+FDAT_ACT=FHOME
+BAS(#PTP_PARAMS,100)
+$H_POS=XHOME
+PTP XHOME 
+;ENDFOLD
+;FOLD PTP v_TC CONT Vel=100 % PDAT2 Tool[14]:Spindel_leer Base[15]:WZ-Wechsel;%{PE}%R 8.3.48,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:v_TC, 3:C_DIS, 5:100, 7:PDAT2
+$BWDSTART=FALSE
+PDAT_ACT=PPDAT2
+FDAT_ACT=Fv_TC
+BAS(#PTP_PARAMS,100)
+PTP Xv_TC C_DIS
+;ENDFOLD
+
+   IF gbTCCoverPresent THEN
+    ;FOLD MillingTech_Tool_Changer.OPEN_COVER CheckCover: WaitFor;%{PE}%MKUKATPUSER
+     Tool_Changer_Cover(#OpenCover ,#WaitFor)
+    ;ENDFOLD
+   ENDIF
+   Wait For DI_SpindleStandsStill
+  
+   HALT
+   ;Set here your measured BASE and TOOL and remove "HALT"
+   $TOOL=TOOL_DATA[14]
+   $BASE=BASE_DATA[15]
+
+   IF not DI_ToolPresent THEN
+      ;Do nothing
+   ELSE
+      ;Lay down tool
+      Wait For ($IN[(gnInputOffsetTool + gnSpindleActTool)])
+      PTP A1_ToolChanger[gnSpindleActTool]
+      LIN PP_ToolChanger[gnSpindleActTool]
+      ;FOLD MillingTech_SpindleTool.RELEASE ;%{PE}%MKUKATPUSER
+SpindleTool(#Release)
+;ENDFOLD
+      LIN_REL {Z 200}
+   ENDIF
+
+   ;Pick up next tool
+	IF mnNexttool <> 0 THEN
+      Wait For not ($IN[(gnInputOffsetTool + mnNextTool)])
+
+      PTP D1_ToolChanger[mnNextTool]
+     ;FOLD MillingTech_SpindleTool.RELEASE ;%{PE}%MKUKATPUSER
+SpindleTool(#Release)
+;ENDFOLD
+      LIN PP_ToolChanger[mnNextTool]
+     ;FOLD MillingTech_SpindleTool.CLAMP_WITH_TOOL ;%{PE}%MKUKATPUSER
+SpindleTool(#ClampWithTool)
+;ENDFOLD
+      LIN A1_ToolChanger[mnNextTool]
+      LIN_REL {Z 300}
+   ENDIF
+
+   IF mnNexttool == 0 THEN
+;FOLD MillingTech_SpindleTool.CLAMP ;%{PE}%MKUKATPUSER
+
+SpindleTool(#Clamp)
+
+;ENDFOLD
+   ENDIF
+   gnSpindleActTool = mnNextTool
+
+   HALT
+   ;Teach here the movement out of the toolchanger and remove "HALT"
+;FOLD PTP v_tc CONT Vel=80 % PDAT4 Tool[14]:Spindel_leer Base[15]:WZ-Wechsel;%{PE}%R 8.3.48,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:v_tc, 3:C_DIS, 5:80, 7:PDAT4
+$BWDSTART=FALSE
+PDAT_ACT=PPDAT4
+FDAT_ACT=Fv_tc
+BAS(#PTP_PARAMS,80)
+PTP Xv_tc C_DIS
+;ENDFOLD
+;FOLD PTP HOME Vel=100 % DEFAULT;%{PE}%R 8.3.48,%MKUKATPBASIS,%CMOVE,%VPTP,%P 1:PTP, 2:HOME, 3:, 5:100, 7:DEFAULT
+$BWDSTART=FALSE
+PDAT_ACT=PDEFAULT
+FDAT_ACT=FHOME
+BAS(#PTP_PARAMS,100)
+$H_POS=XHOME
+PTP XHOME 
+;ENDFOLD
+
+;FOLD MillingTech_Tool_Changer.CLOSE_COVER CheckCover: DontWaitFor;%{PE}%MKUKATPUSER
+
+Tool_Changer_Cover(#CloseCover ,#DontWaitFor)
+
+;ENDFOLD
+ENDIF
+
+END
+
+GLOBAL DEF Tool_Changer_Cover (FI_CoverState :IN, FI_CoverTyp :IN)
+DECL TYPCoverState FI_CoverState
+DECL TYPCoverTyp FI_CoverTyp
+
+IF gbTCCoverPresent THEN
+   WHILE (DI_gbToolChangerReady==FALSE)
+      AMM_message(111,#QUIT,gnMillMsgAnswer )
+   ENDWHILE
+   
+   SWITCH FI_CoverState
+      CASE #OpenCover
+         DI_gbCloseToolChanger=FALSE
+         PULSE(DO_PulseTCOpenCover, TRUE,1.0) ; Submit -> ProConOS
+         
+         SWITCH FI_CoverTyp
+            CASE #WAITFOR
+               WAIT FOR (DI_TCCoverIsOpen)
+            CASE #DONTWAITFOR
+               WAIT SEC 0
+         ENDSWITCH
+      CASE #CloseCover
+         DI_gbOpenToolChanger=FALSE
+         PULSE(DO_PulseTCCloseCover, TRUE,1.0) ; Submit -> ProConOS
+         
+         SWITCH FI_CoverTyp
+            CASE #WAITFOR
+               WAIT FOR not (DI_TCCoverIsOpen)
+            CASE #DONTWAITFOR
+               WAIT SEC 0
+         ENDSWITCH
+   ENDSWITCH
+ENDIF
+
+END
+
+GLOBAL DEF SpindleTool (FI_ToolReaction :IN)
+DECL TYPSpindleToolReaction FI_ToolReaction
+
+WHILE (DI_gbSpinToolHolderReady==FALSE)
+   AMM_message(112,#QUIT,gnMillMsgAnswer )
+ENDWHILE
+
+WAIT FOR DI_SpindleStandsStill
+SWITCH FI_ToolReaction
+   CASE #Release
+      DI_gbSpindleClamp=FALSE
+      DI_gbSpindleRelease=TRUE
+      Wait For DI_ToolReleased
+      Wait sec 1
+   CASE #Clamp
+      DI_gbSpindleRelease=FALSE
+      DI_gbSpindleClamp=TRUE
+      Wait For not DI_ToolReleased
+      DI_gbSpindleClamp=FALSE
+   CASE #ClampWithTool
+      DI_gbSpindleRelease=FALSE
+      DI_gbSpindleClamp=TRUE
+      Wait For (DI_ToolPresent and DI_ToolClamped)
+      DI_gbSpindleClamp=FALSE
+   DEFAULT
+      DI_gbSpindleRelease=FALSE
+      DI_gbSpindleClamp=TRUE
+ENDSWITCH
+
+END
+
+GLOBAL DEF Air (FI_AirReaction :IN)
+DECL TYPAir FI_AirReaction
+
+SWITCH FI_AirREaction
+   CASE #MAINAIRON
+      DI_gbMainAirOn=TRUE
+   CASE #MAINAIROFF
+      DI_gbMainAirOn=FALSE   
+   CASE #BLOWAIRON
+      DI_gbBlastAirOn=TRUE
+   CASE #BLOWAIROFF
+      DI_gbBlastAirOn=FALSE    
+ENDSWITCH
+
+END
+
+GLOBAL DEF Calc_ToolChangerPos()
+DECL INT j, mnPrePosY, mnPrePosZ, mnNumberTCSpaces
+DECL REAL mnDistancePocket
+mnNumberTCSpaces = 10
+mnPrePosY = 60
+mnPrePosZ = 100
+
+HALT
+GOTO CALC
+;TouchUp the first and the last position of TC-Magazin
+;Use also your measured BASE and TOOL
+;FOLD LIN TC_Pos1 Vel=2 m/s CPDAT1 Tool[14]:Spindel_leer Base[15]:WZ-Wechsel;%{PE}%R 8.3.48,%MKUKATPBASIS,%CMOVE,%VLIN,%P 1:LIN, 2:TC_Pos1, 3:, 5:2, 7:CPDAT1
+$BWDSTART=FALSE
+LDAT_ACT=LCPDAT1
+FDAT_ACT=FTC_Pos1
+BAS(#CP_PARAMS,2)
+LIN XTC_Pos1 
+;ENDFOLD
+;FOLD LIN TC_Pos10 Vel=2 m/s CPDAT2 Tool[14]:Spindel_leer Base[15]:WZ-Wechsel;%{PE}%R 8.3.48,%MKUKATPBASIS,%CMOVE,%VLIN,%P 1:LIN, 2:TC_Pos10, 3:, 5:2, 7:CPDAT2
+$BWDSTART=FALSE
+LDAT_ACT=LCPDAT2
+FDAT_ACT=FTC_Pos10
+BAS(#CP_PARAMS,2)
+LIN XTC_Pos10 
+;ENDFOLD
+
+CALC:
+;Copy the orientation from XTC_POS1 to A1..A10, D1..D10 and PP1..PP10
+FOR j = 1 TO 10
+   A1_ToolChanger[j] = XTC_Pos1
+   D1_ToolChanger[j] = XTC_Pos1
+   PP_ToolChanger[j] = XTC_Pos1
+ENDFOR
+
+WAIT FOR (XTC_Pos10.X > XTC_Pos1.X)
+mnDistancePocket=((XTC_Pos10.X-XTC_Pos1.X)/(mnNumberTCSpaces-1))
+
+FOR j = 1 TO 9
+   A1_ToolChanger[j+1].X = A1_ToolChanger[j].X + mnDistancePocket
+   D1_ToolChanger[j+1].X = D1_ToolChanger[j].X + mnDistancePocket
+   PP_ToolChanger[j+1].X = PP_ToolChanger[j].X + mnDistancePocket
+ENDFOR
+
+FOR j = 1 TO 10
+   D1_ToolChanger[j].Z = D1_ToolChanger[j].Z + mnPrePosZ
+ENDFOR
+
+FOR j = 1 TO 10
+   A1_ToolChanger[j].Y = A1_ToolChanger[j].Y - mnPrePosY
+ENDFOR
+
+END

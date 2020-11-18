@@ -1,0 +1,85 @@
+&ACCESS RVO
+&COMMENT HANDLER on external automatic
+DEF  Buttons ( )
+   ;BOOL lbOK  
+   ;CONTINUE
+   ;biStopRobot = IN_StopRobot
+   ;CONTINUE
+   ;biStartProgram = IN_StartProgram
+   ;CONTINUE
+   ;biStopInHome = IN_StopInHome
+   ;
+   ;lbOK =              IN_StartProgram
+   ;lbOK = lbOK OR      IN_StopRobot
+   ;lbOK = lbOK OR      IN_StopInHome
+   ;lbOK = lbOK AND     $TIMER_STOP[gnTimerBtnDebounce] == TRUE
+   ;lbOK = lbOK AND     $TIMER_STOP[gnTimerBtnPressed] == TRUE
+   ;lbOK = lbOK AND NOT gbTimeOut   
+   ;IF lbOK THEN
+      ;gbTimerStart = TRUE 
+      ;RETURN
+   ;ENDIF
+   ;
+   ; BUTTON PROGRAM START
+   ;lbOK =              gbTimeOut
+   ;lbOK = lbOK AND     IN_StartProgram
+   ;lbOK = lbOK AND NOT biStartProgram
+   ;lbOK = lbOK AND     ((($TIMER[gnTimerBtnPressed] > 400) AND ($TIMER[gnTimerBtnPressed] < 500)) AND $TIMER_STOP[gnTimerBtnPressed] == FALSE)
+   ;IF lbOK THEN
+      ;gbTimeOut       = FALSE
+      ;biStartProgram  = TRUE  
+      ;OUT_ButtonPanel = TRUE
+      ;OUT_LightGreen = TRUE
+      ;$TIMER_STOP[5] = TRUE
+      ;RETURN
+   ;ENDIF
+   ;
+   ;lbOK =          gbTimeOut
+   ;lbOK = lbOK AND IN_StartProgram
+   ;lbOK = lbOK AND biStartProgram
+   ;lbOK = lbOK AND ((($TIMER[gnTimerBtnPressed] > 400) AND ($TIMER[gnTimerBtnPressed] < 500)) AND $TIMER_STOP[gnTimerBtnPressed] == FALSE) 
+   ;IF lbOK THEN
+      ;gbTimeOut       = FALSE
+      ;biStartProgram  = FALSE
+      ;OUT_ButtonPanel = FALSE
+       ;OUT_LightGreen = FALSE
+      ;$TIMER_STOP[5] = TRUE
+      ;RETURN
+   ;ENDIF
+   ;
+   ; BUTTON ROBOT STOP
+   ;lbOK =              gbTimeOut
+   ;lbOK = lbOK AND     IN_StopRobot
+   ;lbOK = lbOK AND NOT biStopRobot
+   ;lbOK = lbOK AND     ((($TIMER[gnTimerBtnPressed] > 400) AND ($TIMER[gnTimerBtnPressed] < 500)) AND $TIMER_STOP[gnTimerBtnPressed] == FALSE) 
+   ;IF lbOK THEN
+      ;gbTimeOut   = FALSE
+      ;biStopRobot = TRUE
+       ;OUT_LightYelow = TRUE
+     ; $TIMER_STOP[5] = TRUE
+      ;RETURN
+   ;ENDIF
+   ;
+   ;lbOK =           gbTimeOut
+   ;lbOK = lbOK AND  IN_StopRobot
+   ;lbOK = lbOK AND  biStopRobot
+   ;lbOK = lbOK AND ((($TIMER[gnTimerBtnPressed] > 400) AND ($TIMER[gnTimerBtnPressed] < 500)) AND $TIMER_STOP[gnTimerBtnPressed] == FALSE)
+   ;IF lbOK THEN
+      ;gbTimeOut   = FALSE
+      ;biStopRobot = FALSE
+      ;OUT_LightYelow = FALSE
+     ; $TIMER_STOP[5] = TRUE
+      ;RETURN
+   ;ENDIF
+   ;
+   ;lbOK =              $TIMER_STOP[gnTimerBtnPressed] == FALSE
+   ;lbOK = lbOK AND NOT IN_StartProgram
+   ;lbOK = lbOK AND NOT IN_StopInHome
+   ;lbOK = lbOK AND NOT IN_StartProgram
+   ;IF lbOK THEN
+      ;$TIMER_STOP[gnTimerBtnPressed] = TRUE
+      ;$TIMER[gnTimerBtnPressed] = 0
+      ;RETURN
+   ;ENDIF
+   ;
+END

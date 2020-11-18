@@ -1,0 +1,46 @@
+&ACCESS RV
+&REL 4
+DEF TactTimer()
+   ;INT lnTimerNr
+   ;REAL lrWatchTime
+   ;
+   ;lnTimerNr = gnTimerTackt
+   ;lrWatchTime = 500
+   ;
+   ;IF ($TIMER_STOP[gnTimerTackt] == TRUE) AND ($TIMER_STOP[gnTimerTick] == TRUE) AND ($MODE_OP==#AUT) THEN
+      ;$TIMER_STOP[gnTimerTackt] = FALSE
+   ;ENDIF
+   ;
+   ;IF $TIMER_STOP[gnTimerTackt]==FALSE  THEN     
+      ;IF $TIMER[gnTimerTackt] > lrWatchTime THEN
+         ;$TIMER_STOP[gnTimerTackt] = TRUE
+         ;$TIMER[gnTimerTackt] = 0
+         ;$TIMER_STOP[gnTimerTick] = FALSE
+         ;OUT_LightBlue = TRUE
+      ;ENDIF
+   ;ENDIF  
+   ;
+   ;IF $TIMER_STOP[gnTimerTick]==FALSE  THEN     
+      ;IF $TIMER[gnTimerTick] > lrWatchTime THEN
+         ;$TIMER_STOP[gnTimerTick] = TRUE
+         ;$TIMER[gnTimerTick] = 0
+         ;$TIMER_STOP[gnTimerTackt] = FALSE
+         ;IF NOT ($PRO_STATE1==#P_ACTIVE)THEN
+            ;CONTINUE
+            ;OUT_LightBlue = FALSE
+         ;ELSE
+            ;OUT_LightBlue = TRUE
+         ;ENDIF
+      ;ENDIF
+   ;ENDIF  
+   ;
+   ;IF NOT ($MODE_OP==#AUT) THEN
+      ;$TIMER_STOP[gnTimerTackt] = TRUE
+      ;$TIMER_STOP[gnTimerTick] = TRUE
+      ;$TIMER[gnTimerTick]  = 0
+      ;$TIMER[gnTimerTackt] = 0
+      ;CONTINUE
+      ;OUT_LightBlue = FALSE
+   ;ENDIF
+   
+END

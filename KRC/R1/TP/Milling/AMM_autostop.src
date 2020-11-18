@@ -1,0 +1,13 @@
+&ACCESS RVO
+&REL 10
+&PARAM EDITMASK = *
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
+DEF AMM_autostop()
+;Interrupt Off cItrMillAutoStop
+
+  halt
+  ;Start Process
+    up_start(TRUE)
+END
+
+

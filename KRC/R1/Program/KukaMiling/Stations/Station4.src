@@ -1,0 +1,34 @@
+&ACCESS RV
+DEF Station4 (lnTargetSt :IN)
+   INT lnTargetSt
+   
+   IF(gnActSt <> lnTargetSt) THEN
+      MoveTo (gnActSt,lnTargetSt)
+   ENDIF
+   
+   REPEAT 
+   UNTIL gnActSt ==lnTargetSt
+
+   CONTINUE
+   IF NOT (gnActSt == lnTargetSt) THEN
+      LOOP
+         HALT
+      ENDLOOP
+   ENDIF
+    WAIT SEC 0
+   ;; TO DO
+   St4_Job1(lnTargetSt, gnLastToolNr)
+   ;gbProbeCalibrated = TRUE
+   
+   
+   CONTINUE
+   IF gbRecoveryNeeded  THEN  
+      HALT
+      IF NOT RecoverFromWorkSt(lnTargetSt)  THEN  
+         boRobotUnknowPos =  TRUE
+         LOOP
+            HALT
+         ENDLOOP
+      ENDIF
+   ENDIF
+END

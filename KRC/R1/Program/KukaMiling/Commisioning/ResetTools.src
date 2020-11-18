@@ -1,0 +1,8 @@
+&ACCESS RV
+&PARAM EDITMASK = *
+DEF  ResetTools( )
+   INT lnCounter
+   FOR lnCounter = 1 TO 32 STEP 1
+      TOOL_DATA[lnCounter] = $NULLFRAME
+   ENDFOR
+END

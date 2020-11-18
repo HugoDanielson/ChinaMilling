@@ -1,0 +1,136 @@
+&ACCESS RVO
+&REL 5
+&PARAM DISKPATH = KRC:\R1\Program\KukaMiling\Jobs\St1
+DEF  St1_Job2_Side1 (lnActSt :IN)
+   INT lnActSt,lnUsedBase,lnUsedTool
+   INT lnJobNr
+   INT G0_Speed
+
+   FRAME lfOffset
+  ;FOLD INIT 
+   CONTINUE
+   IF ($T1 OR $T2)THEN
+      GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
+      INTERRUPT ON 3
+      BAS (#INITMOV,0)
+      lnActSt = 1
+      PTP $POS_ACT
+   ENDIF
+   lnJobNr = gnJobNr2
+   lnUsedBase = lnActSt + 10
+   lnUsedTool = 20 
+   lfOffset = $NULLFRAME
+   G0_Speed = 500
+   
+   gfMillingOffset = $NULLFRAME
+   gfMillingOffset.Z = -(grCuttingDepth*gnMillingCounter)
+   
+   BASE_DATA[lnUsedBase] = BASE_DATA[lnActSt]:gfBaseShift[lnActSt]:gfMillingOffset
+   TOOL_DATA[lnUsedTool] = TOOL_DATA[12] :{X 0,Y 0,Z 0,A 0,B 0,C 0}
+   
+   $TIMER_STOP[9]=TRUE
+   $TIMER[9] = 0
+   gIFinishedPcs = gnMillingCounter
+   ;ENDFOLD
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 500)   
+   PTP lfPrePos[1] C_PTP
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 500)   
+   LIN lfPrePos[2] C_DIS
+   
+   ;;$SOFTPLCINT[cnPCOActSpindleRpm]==cnPCOSpindleRpm
+  
+   
+   ;FOLD WAIT FOR SINDLE RPM
+      ;REPEAT
+         ;CONTINUE
+      ;UNTIL (DI_KEBFreqReached) OR NOT WatchDog(gnTimerWatchDog, 60000)
+       WAIT FOR DI_KEBFreqReached OR WatchDog(gnTimerWatchDog, 60000)
+      CONTINUE
+      IF (NOT DI_KEBFreqReached)  THEN
+         MsgNotify("Station1/St1_Job1_Side1() -> TimeOut: Spindle speed Not Reached")
+         SpindleStop()
+         gbRecoveryNeeded = TRUE
+         RETURN
+      ENDIF
+   ;ENDFOLD    
+   
+   gbJob2StartedSt[1] = TRUE
+   gbJob2DoneSt[1]    = FALSE
+   ;; Calculate Milling Speed
+   grUsedMillingSpeed = GetMillingSpeed(grUsedRPM, grTool_ToothCount[gnLastToolNr], grTool_FeedPerTooth[gnLastToolNr])
+   
+   ;; Milling P1
+   lfWorkPos[1].Y = grProductWidth / 2
+   MoveSettings(lnUsedBase, lnUsedTool, 100, G0_Speed) 
+   TRIGGER WHEN DISTANCE=0 DELAY=0 DO Air(#BLOWAIRON) PRIO=-1     
+   lfOffset = $NULLFRAME
+   lfOffset.X = -grTool_Diameter[gnLastToolNr]
+   lfOffset.Z = 5
+   LIN lfWorkPos[1] :lfOffset 
+   lfOffset = $NULLFRAME
+   lfOffset.X = -grTool_Diameter[gnLastToolNr]
+   lfOffset.Z = 0
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   TRIGGER WHEN DISTANCE=0 DELAY=0 DO $TIMER_STOP[9]=FALSE 
+   LIN lfWorkPos[1] :lfOffset C_VEL
+   
+   ;; Milling P2
+   lfWorkPos[2].Y = grProductWidth / 2
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   LIN lfWorkPos[2]  C_VEL
+   lfOffset = $NULLFRAME
+   lfOffset.X = -grTool_Diameter[gnLastToolNr]
+   lfOffset.Z = 5
+   MoveSettings(lnUsedBase, lnUsedTool, 100, G0_Speed) 
+   LIN lfWorkPos[2] :lfOffset C_VEL
+   ;; Milling P3
+   lfWorkPos[3].X = grProductWidth / 2
+   lfOffset = $NULLFRAME
+   lfOffset.Y = -grTool_Diameter[gnLastToolNr]
+   lfOffset.Z = 5
+   MoveSettings(lnUsedBase, lnUsedTool, 100, G0_Speed) 
+   LIN lfWorkPos[3] :lfOffset
+   lfOffset = $NULLFRAME
+   lfOffset.Y = -grTool_Diameter[gnLastToolNr]
+   lfOffset.Z = 0
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed) 
+   LIN lfWorkPos[3] :lfOffset C_VEL 
+   ;; Milling P4
+   lfWorkPos[4].X = grProductWidth / 2
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   TRIGGER WHEN DISTANCE=1 DELAY=0 DO $TIMER_STOP[9]=TRUE 
+   LIN lfWorkPos[4]  C_VEL
+   lfOffset = $NULLFRAME
+   lfOffset.Y = -grTool_Diameter[gnLastToolNr]
+   lfOffset.Z = 15
+   MoveSettings(lnUsedBase, lnUsedTool, 100, G0_Speed) 
+   LIN lfWorkPos[4] :lfOffset C_VEL
+   
+  
+  ;; END OF MILLING
+  ;; SWITCH OFF AIRBLOW
+  ;; SWITCH OFF STOP SPINDLE
+   MoveSettings(lnUsedBase, lnUsedTool, 100, G0_Speed)    
+   TRIGGER WHEN DISTANCE=0 DELAY=0 DO  AIR(#BLOWAIROFF) PRIO=-1
+   TRIGGER WHEN DISTANCE=0 DELAY=0 DO SpindleStop() PRIO=-1  
+   TRIGGER WHEN DISTANCE=0 DELAY=0 DO endOfJob() PRIO=-1       
+   LIN lfPrePos[3] C_DIS 
+   MoveSettings(lnUsedBase, lnUsedTool, 100, G0_Speed)    
+   PTP lfPrePos[4] C_PTP
+   
+   ;;****************************************************
+   ;; REMOVE AFTER ONLY FOR SHOW
+   gnMillingCounter = gnMillingCounter+1
+   ;;****************************************************
+   
+   MoveToPrepos(lnActSt)
+END
+
+DEF endOfJob()
+   
+   gRMillTime = $TIMER[9]/1000
+   $TIMER[9] = 0
+   gbJob2StartedSt[1] = FALSE
+   gbJob2DoneSt[1]    = TRUE
+END

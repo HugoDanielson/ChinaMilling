@@ -1,0 +1,40 @@
+&ACCESS RVO1
+&REL 4
+DEF R2M_ChkSpindleSpeed ( )
+
+IF gDOSpindleEnable==true THEN   
+            oSpindleOperMode=2
+            if oFreqconverterCtlw==126 then
+               
+               $TIMER_STOP[20] = FALSE
+               if $timer[20]>500 then
+                  oFreqconverterCtlw =127
+               endif
+            endif
+   ENDIF
+         if (gDOSpindleEnable==false) OR (gDISpindleEnableOK == FALSE) then
+            oFreqconverterCtlw=126
+            $timer[20]=0 
+            $TIMER_STOP[20] =TRUE
+            gISetSpeed=0
+            gIActSpeed=0
+         endif
+         
+;            oConverterSetSpeed=gISetSpeed/10
+         if gISetSpeed<0 then
+            oConverterSetSpeed=gISetSpeed/10+65535
+         else
+            oConverterSetSpeed=gISetSpeed/10
+       ENDIF
+;              
+          giSpindlespeedchecksum = gDISpindleActSpeed - 65535  
+              
+          if giSpindlespeedchecksum < 0 then
+        gIActSpeed=  giSpindlespeedchecksum *10
+        else 
+        gIActSpeed = gDISpindleActSpeed*10
+
+        Endif  
+
+
+END

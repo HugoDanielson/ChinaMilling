@@ -1,0 +1,409 @@
+&ACCESS RVO
+&REL 240
+&PARAM EDITMASK = *
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
+DEF AMM_Main( )
+
+
+END
+;FOLD --> Spindle enable
+GLOBAL DEF spindle_enable(FI_OverrideTyp :IN)
+  DECL TypSpindleOverride FI_OverrideTyp
+  Global Interrupt DECL cItrMillWarning when $CYCFLAG[cCycMillWarning] do AMM_Warning()
+  Global Interrupt DECL cItrMillError when $CYCFLAG[cCycMillError] do AMM_Error()
+  Wait sec 0
+  Interrupt Off cItrMillWarning
+  Interrupt Off cItrMillError
+
+  $CYCFLAG[cCycMillWarning]=(DI_gbMillSystemWarning)
+  $CYCFLAG[cCycMillError]=DI_gbMillSystemError
+  $CYCFLAG[cCycMillSystemReady]=DI_gbMillSystemReady
+
+;---------- Check Roboter Control Mode --------------
+IF not (DI_gbRobControlEnable)==TRUE THEN
+
+   AMM_message(102,#DIALOG,gnMillMsgAnswer )
+
+  IF (gnMillMsgAnswer == 1) THEN
+     ; do nothing
+  ELSE
+    IF (gnMillMsgAnswer == 2) THEN
+      DI_gbRobControlRequest=TRUE
+      Wait for (DI_gbRobControlEnable)==TRUE
+      DI_gbRobControlRequest=FALSE
+      DI_gbRobControlActive=TRUE
+    ENDIF
+  ENDIF
+ELSE
+  DI_gbRobControlActive=TRUE
+ENDIF
+
+IF (DI_gbRobControlActive)==TRUE THEN
+  gbSimulationModeActive=FALSE
+ELSE
+  gbSimulationModeActive=TRUE
+ENDIF
+
+;----- Check Override ----------
+IF not  gbSimulationModeActive THEN
+  SWITCH FI_OverrideTyp
+    CASE #blocked
+      DI_gbSpindleOVBlocked=TRUE
+      gbOverrideBlocked=TRUE
+    CASE #allowed
+      DI_gbSpindleOVBlocked=FALSE
+      gbOverrideBlocked=FALSE
+    DEFAULT
+      gbOverrideBlocked=FALSE
+  ENDSWITCH
+ENDIF
+
+user_amm_enable()
+  Interrupt On cItrMillWarning
+  Interrupt On cItrMillError
+END
+;ENDFOLD --> Spindle enable
+;FOLD --> Sindle Disable
+GLOBAL DEF spindle_disable()
+  Interrupt Off cItrMillWarning
+  Interrupt Off cItrMillError
+  $CYCFLAG[cCycMillWarning]=FALSE
+  $CYCFLAG[cCycMillError]=FALSE
+  $CYCFLAG[cCycMillSystemReady]=FALSE
+
+ gbSimulationModeActive=FALSE
+ DI_gbRobControlActive=FALSE
+
+user_amm_disable()
+END
+;ENDFOLD --> Spindle disableDI_gbRobControlActive
+
+;FOLD --> Spindle Start
+
+GLOBAL DEF SPINDLE_START (FI_nSetPoint :IN, FI_TriggerMode :IN, a :IN, t1 :IN, FI_Direction :IN)
+INT FI_nSetPoint, mnMemFrequency
+DECL TYPUtecTrigger FI_TriggerMode
+DECL TYPMillDirection FI_Direction
+REAL a, mrTemp
+INT t1
+
+IF gbSimulationModeActive THEN
+  ;do nothing
+ELSE
+    While (($CYCFLAG[cCycMillWarning] or $CYCFLAG[cCycMillError])) or not ($CYCFLAG[cCycMillSystemReady])
+      AMM_message(100,#DIALOG,gnMillMsgAnswer )
+halt
+    Endwhile
+
+  mnMemFrequency = FI_nSetPoint
+
+ IF (mnMemFrequency>=oMaxSpindleRpm) THEN ; If Value is too high
+    gnMillMemFrequency=oMaxSpindleRpm
+  ELSE
+    IF (mnMemFrequency<=oMinSpindleRpm)THEN ; If Value is too low
+      gnMillMemFrequency=oMinSpindleRpm
+    ELSE  ; Value ok
+      gnMillMemFrequency=mnMemFrequency
+    ENDIF
+ ENDIF  
+
+
+  SWITCH FI_DIRECTION
+    CASE #CLOCKWISE
+      DI_gbDirectionClockwise=TRUE
+      ;gbDirectionClockwise=TRUE
+    CASE #COUNTERCLOCKWISE
+      DI_gbDirectionClockwise=FALSE
+      ;gbDirectionClockwise=FALSE
+  ENDSWITCH
+
+  SWITCH FI_TriggerMode
+    CASE #OnTheFly
+      trigger when path=a delay=t1 do UP_START(TRUE) PRIO=-1
+
+    CASE #AfterNextPoint 
+      trigger when distance=0 delay=t1 do UP_START(TRUE) PRIO=-1
+
+    CASE #Standing
+      WAIT SEC 0
+      mrTemp=t1
+      mrTemp=ABS(mrTemp/1000) 
+      IF (t1>=0) THEN
+        WAIT SEC mrTemp
+      ENDIF
+      UP_START(FALSE)
+      IF (t1<0) THEN
+        WAIT SEC mrTemp
+      ENDIF
+
+      milling_ready()
+
+    CASE #Contineous
+      CONTINUE
+      UP_START(TRUE)
+
+  ENDSWITCH
+
+ENDIF
+
+user_amm_start()
+END
+;ENDFOLD --> Spindle Start
+;FOLD --> Spindle Stop
+GLOBAL DEF spindle_stop(FI_TriggerMode :IN, a :IN, t1 :IN)
+DECL TYPUtecTrigger FI_TriggerMode
+REAL a,mrTemp
+INT t1
+
+IF gbSimulationModeActive THEN
+  ;do nothing
+ELSE
+  SWITCH FI_TriggerMode
+    CASE #OnTheFly
+      trigger when path=a delay=t1 do UP_STOP() PRIO=-1
+
+    CASE #AfterNextPoint 
+      trigger when distance=0 delay=t1 do UP_STOP() PRIO=-1
+
+    CASE #Standing
+      WAIT SEC 0 
+      mrTemp=t1
+      mrTemp=ABS(mrTemp/1000) 
+      IF (t1>=0) THEN
+        WAIT SEC mrTemp
+      ENDIF
+      UP_STOP(FALSE)
+      IF (t1<0) THEN
+        WAIT SEC mrTemp
+      ENDIF
+
+    CASE #Contineous
+      CONTINUE
+      UP_STOP(TRUE)
+  ENDSWITCH
+ENDIF ; gbSimualationMode
+
+user_amm_stop()
+END
+;ENDFOLD --> Spindle Stop
+
+;FOLD --> MILLING Up Start Spindle
+GLOBAL DEF UP_START(OTF :IN)
+BOOL OTF ; On-the-fly
+
+
+;-------------------------------------------------
+  AMM_ready()
+    ; - System Ready, switch on Milling System - 
+    Interrupt On cItrMillWarning
+    Interrupt On cItrMillError
+    gbMillProcessActive=TRUE
+	
+    IF gbOverrideBlocked THEN 
+      oSpindleRpm=gnMillMemFrequency
+    ELSE
+      oSpindleRpm=gnMillMemFrequency
+    ENDIF
+
+    DI_gbSpindleOn=TRUE
+
+  IF (not OTF) or gbMillingAborted THEN 
+      gbMillingAborted=FALSE 
+      WAIT SEC 0.01
+      $TIMER[cTimMill]=-crTimeFrequency  
+      $TIMER_FLAG[cTimMill]=FALSE
+      $TIMER_STOP[cTimMill]=FALSE
+	  WAIT SEC 0.1
+      WAIT FOR DI_KEBFreqReached OR $TIMER_FLAG[cTimMill] 
+      $TIMER_STOP[cTimMill]=TRUE    
+      IF ($TIMER_FLAG[cTimMill]==TRUE) THEN 
+         AMM_message(103, #QUIT, gnMillMsgAnswer)    
+      ENDIF
+  ELSE
+    ; do nothing
+  ENDIF
+END
+;ENDFOLD
+;FOLD --> MILLING : UP Stop Spindle
+DEF UP_STOP(OTF :IN)
+BOOL OTF
+Interrupt Off cItrMillWarning
+Interrupt Off cItrMillError
+
+    DI_gbSpindleOn=FALSE
+    oSpindleRpm=0
+
+  IF (not OTF) THEN 
+    WAIT SEC 0.1
+      $TIMER[cTimMill]=-crTimeFrequency
+      $TIMER_FLAG[cTimMill]=FALSE
+      $TIMER_STOP[cTimMill]=FALSE    
+      WAIT FOR ((oActSpindleRpm)==0) OR $TIMER_FLAG[cTimMill]
+      $TIMER_STOP[cTimMill]=TRUE    
+      IF ($TIMER_FLAG[cTimMill]==TRUE) THEN 
+         AMM_message(103, #QUIT, gnMillMsgAnswer)    
+      ENDIF
+  ENDIF      
+
+    gbMillProcessActive=FALSE
+END
+;ENDFOLD 
+
+;FOLD --> MILLING : Check Spindle Ready?
+GLOBAL DEF milling_ready()
+; Spindle speed reached?
+
+IF not gbSimulationModeActive THEN
+
+  IF not gbMillProcessActive THEN
+  
+    AMM_message(105, #QUIT, gnMillMsgAnswer) 
+
+  ENDIF
+    $TIMER[cTimTemp]=-cTimMill   
+    $TIMER_FLAG[cTimTemp]=FALSE
+    $TIMER_STOP[cTimTemp]=FALSE
+    WAIT FOR not ($CYCFLAG[cCycMillWarning] and not $CYCFLAG[cCycMillError] and $CYCFLAG[cCycMillSystemReady] and ((oActSpindleRpm)==(oSpindleRpm)) or $TIMER_FLAG[cTimTemp])
+    $TIMER_STOP[cTimTemp]=TRUE
+
+    IF ($TIMER_FLAG[cTimTemp]) THEN 
+      REPEAT
+        gnMillMsgAnswer=0
+        AMM_message(100, #DIALOG, gnMillMsgAnswer)
+        IF (gnMillMsgAnswer==1) THEN ; RESTART
+          IF DI_gbRobControlActive==TRUE THEN
+            UP_START(FALSE)
+          ENDIF
+        
+        ELSE
+          IF (gnMillMsgAnswer==7) THEN  ; INFO
+            IF (DI_gbMillSystemReady)==FALSE THEN
+              AMM_message(110,#QUIT,gnMillMsgAnswer )
+            ENDIF
+            IF not ((oActSpindleRpm)==gnMillMemFrequency) THEN
+              AMM_message(103,#QUIT,gnMillMsgAnswer )
+            ENDIF
+          ENDIF
+        ENDIF
+      UNTIL (($CYCFLAG[cCycMillWarning] and $CYCFLAG[cCycmillError] and ((oActSpindleRpm)==gnMillMemFrequency)))
+    ENDIF
+ ELSE ; Simulation not active
+  ; do nothing
+ ENDIF
+
+END
+;ENDFOLDDI_gbRobControlActive
+;FOLD --> MILLING : Abort (irregular stop)
+GLOBAL DEF milling_abort()
+  ; - Info: No wait allowed - 
+  Interrupt Off cItrMillWarning
+  Interrupt Off cItrMillError
+  ; - Spindle Faststop - 
+  Wait sec 0.5
+  oSpindleRpm=0
+  DI_gbSpindleOn=FALSE
+  gbMillingAborted=TRUE 
+END
+;ENDFOLD
+
+;FOLD --> MILLING : Spindle WarmUp
+GLOBAL DEF Spindle_WarmUp()
+
+INT mnMemFrequency, gnMillMemFrequency
+
+;-----------------------------------------------------
+; Three Steps are necessarry to Warm Up The Spindel  -
+;  1. Step --> 50 % of the max frequency for 120 sec -
+;  2. Step --> 75 % of the max frequency for 120 sec -
+;  3. Step --> 100% of the max frequency for 60 sec  -
+;-----------------------------------------------------
+;gbSpindleWarmUpActive = TRUE
+;FOLD MillingTech_Spindle_Function.SPINDLE_ENABLE ;%{PE}%MKUKATPUSER
+Spindle_Enable()
+;ENDFOLD
+
+;---- 1.Step 50 % ----
+;FOLD MillingTech_Spindle_Function.CHECK_READY ;%{PE}%MKUKATPUSER
+Milling_Ready()
+;ENDFOLD
+
+ mnMemFrequency = (gnMillFrequencyMax*50/100)
+
+ IF (mnMemFrequency>=gnMillFrequencyMax) THEN 
+    gnMillMemFrequency=gnMillFrequencyMax
+  ELSE
+    IF (mnMemFrequency<=gnMillFrequencyMin) THEN 
+      gnMillMemFrequency=gnMillFrequencyMin
+    ELSE  
+      gnMillMemFrequency=mnMemFrequency
+    ENDIF
+  ENDIF  
+
+Wait sec 0.5
+      UP_START(FALSE)
+
+      $TIMER[cTimSpindleWarmUp]=crTimeWarmUpState1 ; Step 1   
+      $TIMER_FLAG[cTimSpindleWarmUp]=FALSE
+      $TIMER_STOP[cTimSpindleWarmUp]=FALSE    
+      WAIT FOR $TIMER_FLAG[cTimSpindleWarmUp]
+      $TIMER_STOP[cTimSpindleWarmUp]=TRUE    
+
+
+;---- Step 2 75 % ----
+;FOLD MillingTech_Spindle_Function.CHECK_READY ;%{PE}%MKUKATPUSER
+Milling_Ready()
+;ENDFOLD
+
+ mnMemFrequency = (gnMillFrequencyMax*75/100)
+
+ IF (mnMemFrequency>=gnMillFrequencyMax) THEN 
+    gnMillMemFrequency=gnMillFrequencyMax
+  ELSE
+    IF (mnMemFrequency<=gnMillFrequencyMin) THEN  
+      gnMillMemFrequency=gnMillFrequencyMin
+    ELSE 
+      gnMillMemFrequency=mnMemFrequency
+    ENDIF
+  ENDIF  
+
+Wait sec 0.5
+      UP_START(FALSE)
+
+      $TIMER[cTimSpindleWarmUp]=crTimeWarmUpState2 ; Step 2   
+      $TIMER_FLAG[cTimSpindleWarmUp]=FALSE
+      $TIMER_STOP[cTimSpindleWarmUp]=FALSE    
+      WAIT FOR $TIMER_FLAG[cTimSpindleWarmUp]
+      $TIMER_STOP[cTimSpindleWarmUp]=TRUE    
+
+;---- Step 3 100 % ----
+;FOLD MillingTech_Spindle_Function.CHECK_READY ;%{PE}%MKUKATPUSER
+Milling_Ready()
+;ENDFOLD
+
+ mnMemFrequency = gnMillFrequencyMax
+
+ IF (mnMemFrequency>=gnMillFrequencyMax) THEN
+    gnMillMemFrequency=gnMillFrequencyMax
+  ELSE
+    IF (mnMemFrequency<=gnMillFrequencyMin) THEN
+      gnMillMemFrequency=gnMillFrequencyMin
+    ELSE
+      gnMillMemFrequency=mnMemFrequency
+    ENDIF
+ ENDIF  
+
+Wait sec 0.5
+      UP_START(FALSE)
+
+      $TIMER[cTimSpindleWarmUp]=crTimeWarmUpState3 ; Step 3   
+      $TIMER_FLAG[cTimSpindleWarmUp]=FALSE
+      $TIMER_STOP[cTimSpindleWarmUp]=FALSE    
+      WAIT FOR $TIMER_FLAG[cTimSpindleWarmUp]
+      $TIMER_STOP[cTimSpindleWarmUp]=TRUE    
+
+
+
+;gbSpindleWarmUpActive = FALSE
+END
+;ENDFOLD
+

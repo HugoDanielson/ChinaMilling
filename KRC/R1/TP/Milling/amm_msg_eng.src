@@ -1,0 +1,114 @@
+&ACCESS RVO
+&COMMENT German Messages
+&PARAM EDITMASK = *
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\ExpertVorgabe
+DEF amm_msg_eng(FI_nNumber :IN, FO_tKrlMsg :OUT,FO_tKrlDlgSK[] :OUT)
+;FOLD ====== INFO ======
+;===================================================
+;=== KUKA Systems GmbH, Augsburg (D)             ===
+;=== Function: LaTec Message - Text              ===
+;=== Autor:    Joachim Stieber, Dipl.-Ing.       ===
+;=== Co-Autor: Andreas Strobl, Dipl.-Ing.        ===
+;=== Date:     22.10.2007                        ===
+;=== Changes:  -                                 ===
+;===================================================
+;ENDFOLD
+DECL INT FI_nNumber
+DECL KrlMsg_T FO_tKrlMsg
+DECL KrlMsgDlgSK_T FO_tKrlDlgSK[]
+DECL STATE_T STATE
+DECL CHAR TXT[20]
+DECL INT OFFSET
+; - Default -
+FO_tKrlDlgSK[1] = {Sk_Type #Value, Sk_txt[] "QUIT" }
+FO_tKrlDlgSK[2] = {Sk_Type #Value, Sk_txt[] " "}
+FO_tKrlDlgSK[3] = {Sk_Type #Value, Sk_txt[] " "}
+FO_tKrlDlgSK[4] = {Sk_Type #Value, Sk_txt[] " "}
+FO_tKrlDlgSK[5] = {Sk_Type #Value, Sk_txt[] " "}
+FO_tKrlDlgSK[6] = {Sk_Type #Value, Sk_txt[] " "}
+FO_tKrlDlgSK[7] = {Sk_Type #Value, Sk_txt[] " "}
+; - Max Length = 77 signs -
+SWITCH FI_nNumber
+
+  CASE 3
+    FO_tKrlMsg = {Modul[] "MillTec", Nr 3, Msg_txt[] "Submit not running" }
+    FO_tKrlDLgSK[1] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[2] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[3] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[4] = {Sk_Type #Value, Sk_txt[] "Restart "}
+    FO_tKrlDLgSK[5] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[6] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[7] = {Sk_Type #Value, Sk_txt[] " "}
+
+
+  CASE 100
+    FO_tKrlMsg = {Modul[] "MillTec", Nr 100, Msg_txt[] "Milling System not ready" }
+
+  CASE 101
+    FO_tKrlMsg = {Modul[] "MillTec", Nr 101, Msg_txt[] "Ooverride not on 100%" }
+    FO_tKrlDLgSK[1] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[2] = {Sk_Type #Value, Sk_txt[] "Ignore "}
+    FO_tKrlDLgSK[3] = {Sk_Type #Value, Sk_txt[] "Set 100% "}
+    FO_tKrlDLgSK[4] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[5] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[6] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[7] = {Sk_Type #Value, Sk_txt[] " "}
+
+
+  CASE 102
+    FO_tKrlMsg = {Modul[] "MillTec", Nr 102, Msg_txt[] "Simulationmode acive! " }
+    FO_tKrlDLgSK[1] = {Sk_Type #Value, Sk_txt[] " Continue "}
+    FO_tKrlDLgSK[2] = {Sk_Type #Value, Sk_txt[] " RobContr "}
+    FO_tKrlDLgSK[3] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[4] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[5] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[6] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[7] = {Sk_Type #Value, Sk_txt[] " "}
+
+
+  CASE 103
+    FO_tKrlMsg = {Modul[] "MillTec", Nr 103, Msg_txt[] "Spindle speed not reached!" }
+
+  CASE 104
+    FO_tKrlMsg = {Modul[] "MillTec", Nr 104, Msg_txt[] "Not allowed in T1" }
+
+  CASE 105
+    FO_tKrlMsg = {Modul[] "MillTec", Nr 105, Msg_txt[] "Process not active!" }
+  CASE 106
+    FO_tKrlMsg = {Modul[] "MillTec", Nr 106, Msg_txt[] "Milling process aborted" }
+    FO_tKrlDLgSK[1] = {Sk_Type #Value, Sk_txt[] "Restart"}
+    FO_tKrlDLgSK[2] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[3] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[4] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[5] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[6] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[7] = {Sk_Type #Value, Sk_txt[] " "}
+
+  CASE 110
+    FO_tKrlMsg = {Modul[] "MillTec", Nr 110, Msg_txt[] "Periphery fault" }
+
+  CASE 111
+    FO_tKrlMsg = {Modul[] "MillTec", Nr 111, Msg_txt[] "ToolChanger not ready" }
+
+  CASE 112
+    FO_tKrlMsg = {Modul[] "MillTec", Nr 112, Msg_txt[] "Tool clamp not ready" }
+
+  CASE 403
+    FO_tKrlMsg = {Modul[] "MillTec", Nr 403, Msg_txt[] "Save actual position to focus?" }
+    FO_tKrlDLgSK[1] = {Sk_Type #Value, Sk_txt[] "Yes "}
+    FO_tKrlDLgSK[2] = {Sk_Type #Value, Sk_txt[] "No "}
+    FO_tKrlDLgSK[3] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[4] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[5] = {Sk_Type #Value, Sk_txt[] "End Spot "}
+    FO_tKrlDLgSK[6] = {Sk_Type #Value, Sk_txt[] " "}
+    FO_tKrlDLgSK[7] = {Sk_Type #Value, Sk_txt[] " "}
+
+
+  CASE 1011
+    FO_tKrlMsg = {Modul[] "MillTec", Nr 1011, Msg_txt[] "USER ERROR: Wrong number?" }
+
+  DEFAULT 
+    FO_tKrlMsg={Modul[] "MillTec", Nr 1, Msg_txt[] "===> Unknown Error Message " }
+
+ENDSWITCH
+END

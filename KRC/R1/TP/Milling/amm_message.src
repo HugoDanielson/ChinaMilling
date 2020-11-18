@@ -1,0 +1,135 @@
+&ACCESS RVO
+&REL 1
+&COMMENT message handler UTEC
+&USER UTEC
+&PARAM EDITMASK = *
+DEF AMM_message(FI_nNumber :IN,FI_tMesssageTyp :IN,FO_nAnswer :OUT )
+;FOLD ---> U T e c  - M e s s a g e <---
+; ------------------------------------------------
+; ------------------------------------------------
+DECL INT FI_nNumber
+DECL TYPMillMessage FI_tMesssageTyp
+DECL INT FO_nAnswer
+DECL KrlMsg_T mtMessage
+DECL KrlMsgPar_T mtParameter[3]
+DECL KrlMsgOpt_T mtOption
+DECL KrlMsgDlgSK_T mtDialogSK[7]
+DECL INT mnResult
+DECL BOOL mbClearOk, mbRemoteQuit
+
+;;; EXT utec_message_ger(INT  :IN, KrlMsg_T: IN, KrlMsgDlgSK_T[] :OUT)
+; - Init -
+mtMessage = {Modul[] "UTec", Nr 1, Msg_txt[] "Unbekannte Meldungsnummer"}
+mtDialogSK[1] = {Sk_Type #Value, Sk_txt[] "Quit"}
+mtDialogSK[2] = {Sk_Type #Value, Sk_txt[] " "}
+mtDialogSK[3] = {Sk_Type #Value, Sk_txt[] " "}
+mtDialogSK[4] = {Sk_Type #Value, Sk_txt[] " "}
+mtDialogSK[5] = {Sk_Type #Value, Sk_txt[] " "}
+mtDialogSK[6] = {Sk_Type #Value, Sk_txt[] " "}
+mtDialogSK[7] = {Sk_Type #Value, Sk_txt[] " "}
+gbMillMsgQuitbyPLC=FALSE ; Default 
+; --- Get message text (and Dialog format IF necessary))
+SWITCH Mill_LANGUAGE
+  CASE #GERMAN
+     AMM_msg_ger(FI_nNumber,mtMessage,mtDialogSK[])
+  CASE #ENGLISH
+     AMM_msg_eng(FI_nNumber,mtMessage,mtDialogSK[])
+;;;  CASE #FRENCH
+;;;  CASE #SPANISH
+;;;  CASE #TURKEY
+  DEFAULT
+    HALT
+    WAIT FOR FALSE ; Wrong configured
+ENDSWITCH
+
+; --- Select Message Type ----
+SWITCH FI_tMesssageTyp
+  CASE #DIALOG
+    ; === Error Messages ====
+    gbMillErrorMsgPresent=TRUE       ; Marker PLC
+    mtOption = {VL_Stop TRUE, Clear_P_Reset TRUE, Clear_P_SAW TRUE, Log_To_DB FALSE}    
+    ; - Send Message - 
+    mnResult = Set_KrlDlg(mtMessage, mtParameter[], mtDialogSK[], mtOption)
+    IF (mnResult>0) THEN
+      WHILE (Exists_KrlDlg(mnResult,FO_nAnswer)) ; Wait for quit
+        WAIT SEC 0.1
+      ENDWHILE
+    ELSE
+      halt
+      WAIT FOR FALSE ; Buffer Overflow
+    ENDIF
+    gbMillErrorMsgPresent=FALSE  ; Reset Marker PLC
+
+  CASE #QUIT
+    ; === Quit Messages ===
+    WAIT SEC 0             
+    gbMillErrorMsgPresent=TRUE       ; Marker PLC
+    mtOption = {VL_Stop TRUE, Clear_P_Reset TRUE, Clear_P_SAW TRUE, Log_To_DB FALSE}
+    mnResult = Set_KrlMsg(#Quit, mtMessage, mtParameter[], mtOption)
+    IF (mnResult>0) THEN
+      repeat
+        IF (gbMillOptionMsgQuit and gbMillMsgQuitbyPLC) THEN
+          ; - Quit from external PLC - 
+          IF (mbRemoteQuit) THEN
+            WAIT FOR not DI_MillQuitMessageByPLC
+            mbRemoteQuit=FALSE
+          ENDIF
+          IF (DI_MillQuitMessageByPLC and not mbRemoteQuit) THEN  
+            mbClearOk=Clear_KrlMsg(mnResult)
+          ENDIF
+        ENDIF
+        WAIT SEC 0.1 ; Wait for quit (GUI)
+      until (Exists_KrlMsg(mnResult)==FALSE)
+    ELSE
+      halt
+      WAIT FOR FALSE ; Messages Overflow
+    ENDIF
+    FO_nAnswer=1 
+    gbMillErrorMsgPresent=FALSE    ; Reset Marker PLC
+
+  CASE #STATE
+    ; === State - Messages ===
+    mtOption = {VL_Stop TRUE, Clear_P_Reset TRUE, Log_To_DB TRUE}
+    mnResult = Set_KrlMsg(# State, mtMessage, mtParameter[], mtOption)
+   IF (mnResult>0) THEN
+
+   ELSE
+     halt
+     WAIT FOR FALSE ; Messages Overflow
+   ENDIF
+
+  CASE #STATE_CLEAR
+	; Do not use
+    mtOption = {VL_Stop TRUE, Clear_P_Reset TRUE, Log_To_DB TRUE}
+    mnResult = Set_KrlMsg(# State, mtMessage, mtParameter[], mtOption)
+   IF (mnResult>0) THEN
+     WAIT FOR $CYCFLAG[cCycMsg]
+     mbClearOk = Clear_KrlMsg(mnResult)
+   ELSE
+     halt
+     WAIT FOR FALSE ; Message Overflow
+   ENDIF
+
+  CASE #NOTIFY
+    ; === Info - Messages ===
+    mtOption = {VL_Stop FALSE, Clear_P_Reset TRUE, Clear_P_SAW TRUE, Log_To_DB FALSE}
+    mnResult = Set_KrlMsg(#Notify, mtMessage, mtParameter[], mtOption)
+    
+  CASE #WAITING    
+    ; === Wait Messages ===
+    ; ### do not use ####
+    mtOption = {VL_Stop TRUE, Clear_P_Reset TRUE, Clear_P_SAW TRUE, Log_To_DB FALSE}
+    mnResult = Set_KrlMsg(#Waiting, mtMessage, mtParameter[], mtOption)
+    IF (mnResult>0) THEN
+      repeat
+        IF (Exists_KrlMsg (mnResult) == FALSE) THEN
+          FO_nAnswer=-1
+        ENDIF
+        WAIT SEC 0.01
+      until ($CYCFLAG[cCycMsg])
+    ENDIF 
+    mbClearOk = Clear_KrlMsg (mnResult)
+ 
+ENDSWITCH
+;ENDFOLD
+END

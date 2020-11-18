@@ -1,0 +1,69 @@
+&ACCESS RV
+&REL 1
+&COMMENT Function System
+&PARAM EDITMASK = *
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
+DEF AMM_ready()
+DECL STATE_T STAT
+DECL MODUS_T MODE
+;FOLD ====== KUKA SCHWEISSANLAGEN LASERSTEUERUNG ====== 
+;===================================================
+;=== KUKA Systems GmbH, Augsburg (D)             ===
+;=== Projekt:  LaserTech (UTEC)                 ===
+;=== Version:  2.0                               ===
+;=== Function: Robotergesteuerter Laserprozess   ===
+;=== Autor:    Joachim Stieber, Dipl.-Ing.       ===
+;=== Date:     22.10.2004                        ===
+;=== Changes:  -                                 ===
+;===================================================
+
+;===================================================
+;= Inbetriebnahme:                                 =
+;= Datum:                                          =
+;===================================================
+;ENDFOLD
+;FOLD ---> Check: Submit Interpreter running ? 
+WHILE ($PRO_STATE0 <> #P_ACTIVE)  
+  ; - Error: Submit Interpreter is not running -
+    AMM_message(3,#DIALOG,gnMillMsgAnswer)
+    IF (gnMillMsgAnswer==4) THEN
+      CWRITE($CMD,STAT,MODE,"run/R1/SPS()")
+      WAIT SEC 0.2
+    ENDIF
+    WAIT SEC 0.2
+ENDWHILE
+;ENDFOLD
+
+; --- Check Status (IF not in gbSimulationActive Mode) ---
+IF (not gbSimulationModeActive) THEN
+  ;FOLD ---> Check: Program Override 100% ? 
+CHECK_OVERRIDE:
+  IF ($OV_PRO<>100) THEN 
+    AMM_message(101,#DIALOG,gnMillMsgAnswer)
+    IF (gnMillMsgAnswer==3) THEN
+      $OV_PRO=100
+    ENDIF
+    IF (gnMillMsgAnswer <> 3) THEN
+      wait sec 0.2
+    ENDIF
+;   ENDIF    
+  ENDIF
+  ;ENDFOLD
+
+ENDIF ; (not gbSimulationModeActive)
+
+
+; =================================
+; = Prepare Peripheric (Optional) =
+; =================================
+
+; ---  ---
+;IF OPTION_KEB_MILLING THEN
+  ;;; kebmilling_check_alive()
+  
+  
+  
+  
+;ENDIF
+
+END

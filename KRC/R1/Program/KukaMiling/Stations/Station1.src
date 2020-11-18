@@ -1,15 +1,15 @@
-&ACCESS RVE
+&ACCESS RV
 &REL 2
 DEF Station1 (lnTargetSt :IN)
    INT lnTargetSt,lnJobNumber
    
    ;CONTINUE
    ;IF (gnLastToolNr == 2) OR (gnLastToolNr == 3) AND DI_SpindleStandsStill THEN
-   ;; CALCULATE REQUIERED RPM BASE ON USED USED MILLING TOOL
-   ;grUsedRPM = GetMillingRPM(grTool_VC[gnLastToolNr], grTool_Diameter[gnLastToolNr])
-   ;; SPINDLE INIT MOVED TO INIT BEFORE STARTUP
-   ;;TRIGGER WHEN DISTANCE=0 DELAY=0 DO SpindleInit()         PRIO=-1
-   ;TRIGGER WHEN DISTANCE=0 DELAY=0 DO SpindleRun(grUsedRPM) PRIO=-1
+      ;; CALCULATE REQUIERED RPM BASE ON USED USED MILLING TOOL
+      ;grUsedRPM = GetMillingRPM(grTool_VC[gnLastToolNr], grTool_Diameter[gnLastToolNr])
+      ;; SPINDLE INIT MOVED TO INIT BEFORE STARTUP
+      ;;TRIGGER WHEN DISTANCE=0 DELAY=0 DO SpindleInit()         PRIO=-1
+      ;TRIGGER WHEN DISTANCE=0 DELAY=0 DO SpindleRun(grUsedRPM) PRIO=-1
    ;ENDIF
    CONTINUE
    IF(gnActSt <> lnTargetSt) THEN
@@ -29,59 +29,97 @@ DEF Station1 (lnTargetSt :IN)
    
    SWITCH getJobNr()
       CASE gnJobNr1
-         
-      ;CASE gnJobNr2  
-         ;St1_Job2_Side1(lnTargetSt)
-         ;
-      ;CASE gnJobNr3
-         ;St1_Job3_Side1(lnTargetSt)
-         
-      ;CASE gnJobNr4
-         ;St1_Job4_Side1(lnTargetSt)
-         
+         SWITCH getMillingSide()
+            CASE gnSide1 
+               ;; MILLING PROGRAM SIDE 1 - Calibrate Base               
+               St1_Job1_Side1(lnTargetSt)
+            CASE gnSide2
+               ;; MILLING PROGRAM SIDE 2 - Calibrate Base
+               St1_Job1_Side2(lnTargetSt)   
+            DEFAULT
+               MsgNotify("Station1/getMillingSide() = 0")
+               RETURN
+         ENDSWITCH 
+      CASE gnJobNr2
+         SWITCH getMillingSide()
+            CASE gnSide1
+               ;; MILLING PROGRAM SIDE 1 - Milling
+               St1_Job2_Side1(lnTargetSt)
+            CASE gnSide2
+               ;; MILLING PROGRAM SIDE 2 - Milling
+               St1_Job2_Side2(lnTargetSt)
+            DEFAULT
+               MsgNotify("Station1/getMillingSide() = 0")
+               RETURN
+         ENDSWITCH 
+      CASE gnJobNr3
+         SWITCH getMillingSide()
+            CASE gnSide1
+               ;; MILLING PROGRAM SIDE 1 - Measure
+               St1_Job3_Side1(lnTargetSt)
+            CASE gnSide2
+               ;; MILLING PROGRAM SIDE 2 - Measure
+               St1_Job3_Side2(lnTargetSt)
+            DEFAULT
+               MsgNotify("Station1/getMillingSide() = 0")
+               RETURN
+         ENDSWITCH 
+      DEFAULT  
+         MsgNotify("Station1/getJobNr() = 0")
+         RETURN         
    ENDSWITCH
    
+   CONTINUE
+   IF gbRecoveryNeeded  THEN  
+      HALT
+      IF NOT RecoverFromWorkSt(lnTargetSt)  THEN  
+         boRobotUnknowPos =  TRUE
+         LOOP
+            HALT
+         ENDLOOP
+      ENDIF
+   ENDIF
 END
 
-;DEFFCT INT getJobNr()
-   ;BOOL lbOK,lbWorkPiecePresented,lbToolClamped
-   ;
-   ;CONTINUE 
-   ;lbWorkPiecePresented = DI_WorkPiecePresented
-   ;CONTINUE
-   ;lbToolClamped        = (DI_ToolPresent AND DI_ToolClamped) OR gbSimulation
-   ;
-   ;lbOK =          lbToolClamped          
-   ;lbOK = lbOK AND lbWorkPiecePresented
-   ;lbOK = lbOK AND gbProbeCalibrated
-   ;lbOK = lbOK AND gbCalibrationRequest 
-   ;lbOK = lbOK AND NOT gbJob1DoneSt[1] 
-   ;
-   ;IF (lbOK) THEN
+DEFFCT INT getJobNr()
+   BOOL lbOK,lbWorkPiecePresented,lbToolClamped
+   
+   CONTINUE 
+   lbWorkPiecePresented = DI_WorkPiecePresented
+   CONTINUE
+   lbToolClamped        = (DI_ToolPresent AND DI_ToolClamped) OR gbSimulation
+   
+   lbOK =          lbToolClamped          
+   lbOK = lbOK AND lbWorkPiecePresented
+   lbOK = lbOK AND gbProbeCalibrated
+   lbOK = lbOK AND gbCalibrationRequest 
+   lbOK = lbOK AND NOT gbJob1DoneSt[1] 
+   
+   IF (lbOK) THEN
       ;; Tool 1 Calibration
-      ;RETURN gnJobNr1
-   ;ENDIF  
-   ;
-   ;lbOK =          lbToolClamped          
-   ;lbOK = lbOK AND lbWorkPiecePresented 
-   ;lbOK = lbOK AND gbMillingRequest
-   ;lbOK = lbOK AND NOT gbJob2DoneSt[1]
-   ;IF (lbOK) THEN
+      RETURN gnJobNr1
+   ENDIF  
+   
+   lbOK =          lbToolClamped          
+   lbOK = lbOK AND lbWorkPiecePresented 
+   lbOK = lbOK AND gbMillingRequest
+   lbOK = lbOK AND NOT gbJob2DoneSt[1]
+   IF (lbOK) THEN
       ;; Tool 1 Calibration
-      ;RETURN gnJobNr2
-   ;ENDIF  
-   ;
-   ;lbOK =          lbToolClamped          
-   ;lbOK = lbOK AND lbWorkPiecePresented 
-   ;lbOK = lbOK AND gbProbeCalibrated
-   ;lbOK = lbOK AND gbMillingMeasRequest
-   ;lbOK = lbOK AND NOT gbJob3DoneSt[1]
-   ;IF (lbOK) THEN
+      RETURN gnJobNr2
+   ENDIF  
+   
+   lbOK =          lbToolClamped          
+   lbOK = lbOK AND lbWorkPiecePresented 
+   lbOK = lbOK AND gbProbeCalibrated
+   lbOK = lbOK AND gbMillingMeasRequest
+   lbOK = lbOK AND NOT gbJob3DoneSt[1]
+   IF (lbOK) THEN
       ;; Tool 1 Measurement
-      ;RETURN gnJobNr3
-   ;ENDIF  
-   ;
-   ;RETURN gnJobNr0
+      RETURN gnJobNr3
+   ENDIF  
+   
+   RETURN gnJobNr0
 ENDFCT
 
 DEFFCT INT getMillingSide()

@@ -4,10 +4,10 @@ DEF Main ( )
    ;;===============================================================
    ;;              MAIN MILLING PROGRAM
    ;;
-   ;; ST1  -> Corner 1
-   ;; ST2  -> Corner 2
-   ;; ST3  -> Corner 3
-   ;; ST4  -> Corner 4
+   ;; ST1  -> 
+   ;; ST2  -> BatteryFrame
+   ;; ST3  -> 
+   ;; ST4  -> 
    ;; ST20 -> Home Station
    ;; 
    ;;
@@ -37,6 +37,8 @@ DEF Main ( )
    
    InitVariables()
    
+  
+   
    LOOP
       SWITCH getStation()
          CASE gnSt1
@@ -65,42 +67,42 @@ DEFFCT INT getStation()
    ;FOLD getStation
       CONTINUE
       
-      RETURN gnSt1
+      RETURN gnSt2
       ;IF lbOK THEN
-         ;RETURN gnSt1
+      ;RETURN gnSt1
       ;ENDIF
       ;
-
+      
       ;IF lbOK THEN
-         ;RETURN gnSt2
+      ;RETURN gnSt2
       ;ENDIF  
       ;
       
       ;IF lbOK THEN 
-         ;biButtonReturnTool = FALSE
-         ;RETURN gnSt2
+      ;biButtonReturnTool = FALSE
+      ;RETURN gnSt2
       ;ENDIF
       ;
-
+      
       ;IF lbOK THEN 
-         ;RETURN gnSt2
+      ;RETURN gnSt2
       ;ENDIF
-  
+      
       ;IF lbOK THEN
-         ;RETURN gnSt3
+      ;RETURN gnSt3
       ;ENDIF
       ;
-    
+      
       ;IF lbOK THEN
-         ;RETURN gnSt4
+      ;RETURN gnSt4
       ;ENDIF
       ;
       ;lbOK =   TRUE
-     
+      
       ;IF lbOK THEN
-         ;RETURN gnSt20
+      ;RETURN gnSt20
       ;ELSE
-         ;RETURN gnNoSt
+      ;RETURN gnNoSt
       ;ENDIF
    ;ENDFOLD
 ENDFCT

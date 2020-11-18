@@ -5,8 +5,8 @@ DEF Home()
    ;FOLD  . INI (IF $T1 OR $T2):
       CONTINUE
       IF ($T1 OR $T2)THEN
-         ;GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
-         ;INTERRUPT ON 3
+         GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
+         INTERRUPT ON 3
          BAS (#INITMOV,0)
          PTP $POS_ACT
       ENDIF
@@ -23,12 +23,12 @@ DEF Home()
       PTP  XHOME
    ;ENDFOLD
    
-   ;IF $IN_HOME THEN
-      ;WAIT SEC 0
-      ;XST20 = $POS_ACT
-      ;gnActSt = 20
-      ;SaveLastPos(#St20,#St20,gnMemPosNrLast)
-      ;ResetVars()
-   ;ENDIF
-   ;
+   IF $IN_HOME THEN
+      WAIT SEC 0
+      XST20 = $POS_ACT
+      gnActSt = 20
+      SaveLastPos(#St20,#St20,gnMemPosNrLast)
+      ResetVars()
+   ENDIF
+   
 END

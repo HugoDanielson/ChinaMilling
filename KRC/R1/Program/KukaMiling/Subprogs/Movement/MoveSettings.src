@@ -44,5 +44,5 @@ REAL nVel
   
   ;; Activating Payload Data
   BAS(#TOOL,nTool)
-  ;lzMemToolNrLast = nTool
+  lzMemToolNrLast = nTool
 END

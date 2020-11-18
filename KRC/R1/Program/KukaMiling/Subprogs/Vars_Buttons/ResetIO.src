@@ -8,9 +8,9 @@ DEF ResetIO ( )
    biStartProgram    = FALSE
    biStopRobot       = FALSE
    
-   ;OUT_LightRed      = FALSE
-   ;OUT_LightGreen    = FALSE
-   ;OUT_LightBlue     = FALSE
-   ;OUT_LightYelow    = FALSE
+   OUT_LightRed      = FALSE
+   OUT_LightGreen    = FALSE
+   OUT_LightBlue     = FALSE
+   OUT_LightYelow    = FALSE
    
 END

@@ -4,16 +4,17 @@
 DEF ResetVars ( )
    INT lnCounter
    
-   ;IF NOT DI_ToolPresent  AND NOT DI_ToolClamped THEN
-      ;gnLastToolNr = 0
-   ;ENDIF
+   IF NOT DI_ToolPresent  AND NOT DI_ToolClamped THEN
+      gnLastToolNr = 0
+   ENDIF
    
    grUSedRPM = 0
    grUSedMillingSpeed = 0
    
    gbCycleStarted = FALSE
-   gbCycleDone = FALSE
+gbCycleDone = FALSE
    
+   gbMillingMeasRequest    = FALSE
    gbMillingRequest        = FALSE
    gbProbeCalibrated       = FALSE
    gbCalibrationRequest    = FALSE

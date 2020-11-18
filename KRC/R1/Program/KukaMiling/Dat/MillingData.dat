@@ -1,44 +1,43 @@
 &ACCESS RV
-DEFDAT  MILLINGDATA PUBLIC
+DEFDAT  MillingData PUBLIC
 
 
 ;;MILLING TOOL DATA
 DECL GLOBAL REAL grTool_Diameter[4]
 grTool_Diameter[1]=0.0
 grTool_Diameter[2]=32.0000
-grTool_Diameter[3]=32.0000
+grTool_Diameter[3]=17.0000
 grTool_Diameter[4]=32.0000
 
 DECL GLOBAL REAL grTool_FeedPerTooth[4]
 grTool_FeedPerTooth[1]=0.0
 grTool_FeedPerTooth[2]=0.100000
-grTool_FeedPerTooth[3]=0.0800000
+grTool_FeedPerTooth[3]=0.0
 grTool_FeedPerTooth[4]=0.0
-
 
 DECL GLOBAL INT grTool_ToothCount[4]
 grTool_ToothCount[1]=0
 grTool_ToothCount[2]=3
-grTool_ToothCount[3]=3
+grTool_ToothCount[3]=0
 grTool_ToothCount[4]=0
 
 DECL GLOBAL INT grTool_VC[4]
 grTool_VC[1]=0
 grTool_VC[2]=1000
-grTool_VC[3]=600
+grTool_VC[3]=0
 grTool_VC[4]=0
 
 DECL GLOBAL REAL grUSedRPM=9952.22852
 DECL GLOBAL REAL grUSedMillingSpeed=49.7611465
-DECL GLOBAL REAL grCuttingDepth=0.200000
+DECL GLOBAL REAL grCuttingDepth=0.500000
 
 DECL GLOBAL REAL grProductWidth=25.6000
 DECL GLOBAL REAL gRMillTime=12.0000
 
 
-DECL GLOBAL INT gnMillingCounter=1
-DECL GLOBAL INT gIFinishedPcs=0
-DECL GLOBAL FRAME gfMillingOffset={X 0.0,Y 0.0,Z 0.0,A 0.0,B 0.0,C 0.0}
+DECL GLOBAL INT gnMillingCounter=18
+DECL GLOBAL INT gIFinishedPcs=17
+DECL GLOBAL FRAME gfMillingOffset={X 0.0,Y 0.0,Z -8.50000,A 0.0,B 0.0,C 0.0}
 
 
 

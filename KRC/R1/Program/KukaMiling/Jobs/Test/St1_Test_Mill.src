@@ -28,7 +28,7 @@ DEF  St1_Test_Mill (lnActSt :IN)
       
       BASE_DATA[lnUsedBase] = BASE_DATA[16]:gfBaseShift[lnActSt];:gfMillingOffset
       TOOL_DATA[lnUsedTool] = TOOL_DATA[4] :{X 0,Y 0,Z 0,A 0,B 0,C 0}
-      grUsedRPM = GetMillingRPM(grTool_VC[3], grTool_Diameter[gnLastToolNr])
+      grUsedRPM = GetMillingRPM(grTool_VC[gnLastToolNr], grTool_Diameter[gnLastToolNr])
       grUsedMillingSpeed = GetMillingSpeed(grUsedRPM, grTool_ToothCount[gnLastToolNr], grTool_FeedPerTooth[gnLastToolNr])
    ;ENDFOLD
    ;MoveSettings (nBase: IN, nTool: IN, nAcc: IN, nVel : IN )
@@ -62,12 +62,20 @@ DEF  St1_Test_Mill (lnActSt :IN)
    
    LIN lfWorkPos[9] 
    
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 20)
+   
+   WAIT SEC 0
+   
+   SpindleStop( )
+   LIN lfWorkPos[10]
+   
    WAIT SEC 0
    
   MoveSettings(lnUsedBase, lnUsedTool, 100, 2000)
   
    PTP XHOME
-  SpindleStop( )
+  
   
 
 

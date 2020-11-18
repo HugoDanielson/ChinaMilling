@@ -1,4 +1,4 @@
-&ACCESS RV1
+&ACCESS RV4
 DEFDAT  MILLINGDATA PUBLIC
 
 
@@ -6,25 +6,25 @@ DEFDAT  MILLINGDATA PUBLIC
 DECL GLOBAL REAL grTool_Diameter[4]
 grTool_Diameter[1]=0.0
 grTool_Diameter[2]=32.0000
-grTool_Diameter[3]=17.0000
+grTool_Diameter[3]=32.00
 grTool_Diameter[4]=32.0000
 
 DECL GLOBAL REAL grTool_FeedPerTooth[4]
 grTool_FeedPerTooth[1]=0.0
 grTool_FeedPerTooth[2]=0.100000
-grTool_FeedPerTooth[3]=0.0
+grTool_FeedPerTooth[3]=0.08
 grTool_FeedPerTooth[4]=0.0
 
 DECL GLOBAL INT grTool_ToothCount[4]
 grTool_ToothCount[1]=0
 grTool_ToothCount[2]=3
-grTool_ToothCount[3]=0
+grTool_ToothCount[3]=3
 grTool_ToothCount[4]=0
 
 DECL GLOBAL INT grTool_VC[4]
 grTool_VC[1]=0
 grTool_VC[2]=1000
-grTool_VC[3]=0
+grTool_VC[3]=600
 grTool_VC[4]=0
 
 DECL GLOBAL REAL grUSedRPM=0.0

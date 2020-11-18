@@ -1,7 +1,7 @@
-&ACCESS RVO1
+&ACCESS RVO4
 &REL 1167
 &PARAM DISKPATH = KRC:\R1\Program\KUKA\Subprogs
-DEFDAT  startpos PUBLIC
+DEFDAT  STARTPOS PUBLIC
 
 
 
@@ -18,8 +18,8 @@ DECL GLOBAL INT lzMemUsedPathLast=2 ;; Path (previous step)
 DECL GLOBAL INT gnMemPosNr=10 ;; Position number
 DECL GLOBAL INT gnMemPosNrLast=1 ;; Position number (previous step)
 
-DECL GLOBAL eStation eFromTmp=#St2 ;; Only for temporary use in movement file!
-DECL GLOBAL eStation eToTmp=#St20 ;; Only for temporary use in movement file!
+DECL GLOBAL eStation eFromTmp=#St1 ;; Only for temporary use in movement file!
+DECL GLOBAL eStation eToTmp=#St1 ;; Only for temporary use in movement file!
 DECL GLOBAL INT zActUsedPathTmp=1 ;; Only for temporary use in movement file!
 
 DECL GLOBAL BOOL lbMemStationEntered=FALSE ;; Status if robot has entered a station

@@ -17,7 +17,9 @@ GLOBAL DEF SpindleRun (lrSpindleRPM :IN, FI_DIRECTION:IN)
    DECL TYPMillDirection FI_DIRECTION
    
      CONTINUE
-   gDOSpindleEnable = FALSE
+
+   
+ 
    gDOSpindleEnable = TRUE
    WAIT FOR gDISpindleEnableOK == TRUE
    

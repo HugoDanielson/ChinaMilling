@@ -1,4 +1,4 @@
-&ACCESS RVO
+&ACCESS RVO1
 &REL 1
 &PARAM DISKPATH = KRC:\R1\Program\Moves\FROM_stPurge
 DEF st2_st20 (lnPosNr :IN)

@@ -1,4 +1,4 @@
-&ACCESS RVO
+&ACCESS RVO1
 &COMMENT German Messages
 &PARAM EDITMASK = *
 &PARAM TEMPLATE = C:\KRC\Roboter\Template\ExpertVorgabe

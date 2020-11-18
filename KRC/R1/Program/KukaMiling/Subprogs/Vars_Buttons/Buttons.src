@@ -1,4 +1,4 @@
-&ACCESS RVO1
+&ACCESS RVEO
 &COMMENT HANDLER on external automatic
 DEF  Buttons ( )
    BOOL lbOK  

@@ -2,39 +2,97 @@
 &REL 4
 DEF R2M_ChkSpindleSpeed ( )
 
-IF gDOSpindleEnable==true THEN   
+;check if KRL Rob control, if programme quit the spindle should stop 
+   IF($PRO_STATE1==#P_RESET) or ($PRO_STATE1==#P_FREE) THEN
+      ;    gISetSpeed=0
+  ;    gDOSpindleEnable = FALSE
+      gbRobControlActive = FALSE
+      ;  gDOToolRelease = FALSE
+      ;   gDOToolClamp = TRUE
+      
+      ;check view control       
+      if gbRobControlActive == FALSE THEN 
+         
+         IF gDOSpindleEnable==true THEN   
             oSpindleOperMode=2
-            if oFreqconverterCtlw==126 then
-               
+            if oFreqconverterCtlw==126 then               
                $TIMER_STOP[20] = FALSE
                if $timer[20]>500 then
                   oFreqconverterCtlw =127
                endif
             endif
-   ENDIF
+         ENDIF
          if (gDOSpindleEnable==false) OR (gDISpindleEnableOK == FALSE) then
             oFreqconverterCtlw=126
             $timer[20]=0 
             $TIMER_STOP[20] =TRUE
             gISetSpeed=0
-            gIActSpeed=0
+            ;     gIActSpeed =0
+            ;    giSpindlespeedchecksum =0
          endif
          
-;            oConverterSetSpeed=gISetSpeed/10
          if gISetSpeed<0 then
             oConverterSetSpeed=gISetSpeed/10+65535
          else
             oConverterSetSpeed=gISetSpeed/10
-       ENDIF
-;              
-          giSpindlespeedchecksum = gDISpindleActSpeed - 65535  
-              
-          if giSpindlespeedchecksum < 0 then
-        gIActSpeed=  giSpindlespeedchecksum *10
-        else 
-        gIActSpeed = gDISpindleActSpeed*10
-
-        Endif  
-
+         ENDIF
+         
+         if not (gDISpindleActSpeed == 0) THEN
+            giSpindlespeedchecksum = gDISpindleActSpeed - 65535  
+         else
+            giSpindlespeedchecksum =0
+         endif
+         
+         if giSpindlespeedchecksum < 0 then
+            gIActSpeed=  giSpindlespeedchecksum *10
+         else 
+            gIActSpeed = gDISpindleActSpeed*10
+            
+         Endif  
+         
+      ENDIF      
+         ENDIF  
+         
+ IF $PRO_STATE1==#P_ACTIVE  THEN          
+          gbRobControlActive = TRUE
+          
+           IF gDOSpindleEnable==true THEN   
+            oSpindleOperMode=2
+            if oFreqconverterCtlw==126 then               
+               $TIMER_STOP[20] = FALSE
+               if $timer[20]>500 then
+                  oFreqconverterCtlw =127
+               endif
+            endif
+         ENDIF
+         if (gDOSpindleEnable==false) OR (gDISpindleEnableOK == FALSE) then
+            oFreqconverterCtlw=126
+            $timer[20]=0 
+            $TIMER_STOP[20] =TRUE
+            gISetSpeed=0
+            ;     gIActSpeed =0
+            ;    giSpindlespeedchecksum =0
+         endif
+         
+         if gISetSpeed<0 then
+            oConverterSetSpeed=gISetSpeed/10+65535
+         else
+            oConverterSetSpeed=gISetSpeed/10
+         ENDIF
+         
+         if not (gDISpindleActSpeed == 0) THEN
+            giSpindlespeedchecksum = gDISpindleActSpeed - 65535  
+         else
+            giSpindlespeedchecksum =0
+         endif
+         
+         if giSpindlespeedchecksum < 0 then
+            gIActSpeed=  giSpindlespeedchecksum *10
+         else 
+            gIActSpeed = gDISpindleActSpeed*10
+            
+         Endif 
+         
+ ENDIF        
 
 END

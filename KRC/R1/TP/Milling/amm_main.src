@@ -1,4 +1,4 @@
-&ACCESS RVO1
+&ACCESS RVO
 &REL 240
 &PARAM EDITMASK = *
 &PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
@@ -7,7 +7,8 @@ DEF AMM_Main( )
 
 END
 ;FOLD --> Spindle enable
-GLOBAL DEF spindle_enable(FI_OverrideTyp :IN)
+;GLOBAL DEF spindle_enable(FI_OverrideTyp :IN)
+GLOBAL DEF spindle_enable()
   DECL TypSpindleOverride FI_OverrideTyp
   Global Interrupt DECL cItrMillWarning when $CYCFLAG[cCycMillWarning] do AMM_Warning()
   Global Interrupt DECL cItrMillError when $CYCFLAG[cCycMillError] do AMM_Error()
@@ -15,48 +16,52 @@ GLOBAL DEF spindle_enable(FI_OverrideTyp :IN)
   Interrupt Off cItrMillWarning
   Interrupt Off cItrMillError
 
-  $CYCFLAG[cCycMillWarning]=(DI_gbMillSystemWarning)
-  $CYCFLAG[cCycMillError]=DI_gbMillSystemError
-  $CYCFLAG[cCycMillSystemReady]=DI_gbMillSystemReady
+  $CYCFLAG[cCycMillWarning]=gbMillSystemWarning
+  $CYCFLAG[cCycMillError]= (NOT gDISpindleEnableOK) AND (gISetSpeed <>0) 
+  $CYCFLAG[cCycMillSystemReady]=gDISpindleEnableOK
 
 ;---------- Check Roboter Control Mode --------------
-IF not (DI_gbRobControlEnable)==TRUE THEN
+;IF not (DI_gbRobControlEnable)==TRUE THEN
 
-   AMM_message(102,#DIALOG,gnMillMsgAnswer )
+   ;AMM_message(102,#DIALOG,gnMillMsgAnswer )
 
-  IF (gnMillMsgAnswer == 1) THEN
+  ;IF (gnMillMsgAnswer == 1) THEN
      ; do nothing
-  ELSE
-    IF (gnMillMsgAnswer == 2) THEN
-      DI_gbRobControlRequest=TRUE
-      Wait for (DI_gbRobControlEnable)==TRUE
-      DI_gbRobControlRequest=FALSE
-      DI_gbRobControlActive=TRUE
-    ENDIF
-  ENDIF
-ELSE
-  DI_gbRobControlActive=TRUE
-ENDIF
+  ;ELSE
+    ;IF (gnMillMsgAnswer == 2) THEN
+      ;DI_gbRobControlRequest=TRUE
+      ;Wait for (DI_gbRobControlEnable)==TRUE
+      ;DI_gbRobControlRequest=FALSE
+      ;DI_gbRobControlActive=TRUE
+    ;ENDIF
+  ;ENDIF
+;ELSE
+  ;DI_gbRobControlActive=TRUE
+;ENDIF
+gbRobControlActive=TRUE
 
-IF (DI_gbRobControlActive)==TRUE THEN
+IF (gbRobControlActive)==TRUE THEN
   gbSimulationModeActive=FALSE
+  gDOSpindleEnable = TRUE
+  Wait for (gDISpindleEnableOK)==TRUE
 ELSE
   gbSimulationModeActive=TRUE
+  gDOSpindleEnable=FALSE 
 ENDIF
 
 ;----- Check Override ----------
-IF not  gbSimulationModeActive THEN
-  SWITCH FI_OverrideTyp
-    CASE #blocked
-      DI_gbSpindleOVBlocked=TRUE
-      gbOverrideBlocked=TRUE
-    CASE #allowed
-      DI_gbSpindleOVBlocked=FALSE
-      gbOverrideBlocked=FALSE
-    DEFAULT
-      gbOverrideBlocked=FALSE
-  ENDSWITCH
-ENDIF
+;IF not  gbSimulationModeActive THEN
+  ;SWITCH FI_OverrideTyp
+    ;CASE #blocked
+      ;DI_gbSpindleOVBlocked=TRUE
+      ;gbOverrideBlocked=TRUE
+    ;CASE #allowed
+      ;DI_gbSpindleOVBlocked=FALSE
+      ;gbOverrideBlocked=FALSE
+    ;DEFAULT
+      ;gbOverrideBlocked=FALSE
+  ;ENDSWITCH
+;ENDIF
 
 user_amm_enable()
   Interrupt On cItrMillWarning
@@ -72,11 +77,11 @@ GLOBAL DEF spindle_disable()
   $CYCFLAG[cCycMillSystemReady]=FALSE
 
  gbSimulationModeActive=FALSE
- DI_gbRobControlActive=FALSE
+ gbRobControlActive=FALSE
 
 user_amm_disable()
 END
-;ENDFOLD --> Spindle disableDI_gbRobControlActive
+;ENDFOLD --> Spindle disable
 
 ;FOLD --> Spindle Start
 
@@ -95,7 +100,7 @@ ELSE
 halt
     Endwhile
 
-  mnMemFrequency = FI_nSetPoint
+  mnMemFrequency = FI_nSetPoint  ;read RPM from inlineform setting
 
  IF (mnMemFrequency>=oMaxSpindleRpm) THEN ; If Value is too high
     gnMillMemFrequency=oMaxSpindleRpm
@@ -110,11 +115,11 @@ halt
 
   SWITCH FI_DIRECTION
     CASE #CLOCKWISE
-      DI_gbDirectionClockwise=TRUE
-      ;gbDirectionClockwise=TRUE
+      gbDirectionClockwise=TRUE
+      gnMillMemFrequency = -gnMillMemFrequency
     CASE #COUNTERCLOCKWISE
-      DI_gbDirectionClockwise=FALSE
-      ;gbDirectionClockwise=FALSE
+      gbDirectionClockwise=FALSE
+      
   ENDSWITCH
 
   SWITCH FI_TriggerMode
@@ -138,7 +143,7 @@ halt
 
       milling_ready()
 
-    CASE #Contineous
+    CASE #Continuous
       CONTINUE
       UP_START(TRUE)
 
@@ -160,10 +165,10 @@ IF gbSimulationModeActive THEN
 ELSE
   SWITCH FI_TriggerMode
     CASE #OnTheFly
-      trigger when path=a delay=t1 do UP_STOP() PRIO=-1
+      trigger when path=a delay=t1 do UP_STOP(TRUE) PRIO=-1
 
     CASE #AfterNextPoint 
-      trigger when distance=0 delay=t1 do UP_STOP() PRIO=-1
+      trigger when distance=0 delay=t1 do UP_STOP(TRUE) PRIO=-1
 
     CASE #Standing
       WAIT SEC 0 
@@ -177,7 +182,7 @@ ELSE
         WAIT SEC mrTemp
       ENDIF
 
-    CASE #Contineous
+    CASE #Continuous
       CONTINUE
       UP_STOP(TRUE)
   ENDSWITCH
@@ -191,22 +196,21 @@ END
 GLOBAL DEF UP_START(OTF :IN)
 BOOL OTF ; On-the-fly
 
-
 ;-------------------------------------------------
   AMM_ready()
     ; - System Ready, switch on Milling System - 
     Interrupt On cItrMillWarning
     Interrupt On cItrMillError
     gbMillProcessActive=TRUE
-	
-    IF gbOverrideBlocked THEN 
-      oSpindleRpm=gnMillMemFrequency
-    ELSE
-      oSpindleRpm=gnMillMemFrequency
-    ENDIF
-
-    DI_gbSpindleOn=TRUE
-
+	 gDOSpindleEnable=TRUE   ;;start spindle
+	 gISetSpeed=gnMillMemFrequency
+	 
+    ;IF gbOverrideBlocked THEN ;???
+      ;gISetSpeed=gnMillMemFrequency
+    ;ELSE
+      ;gISetSpeed=gnMillMemFrequency
+    ;ENDIF
+    
   IF (not OTF) or gbMillingAborted THEN 
       gbMillingAborted=FALSE 
       WAIT SEC 0.01
@@ -214,7 +218,7 @@ BOOL OTF ; On-the-fly
       $TIMER_FLAG[cTimMill]=FALSE
       $TIMER_STOP[cTimMill]=FALSE
 	  WAIT SEC 0.1
-      WAIT FOR DI_KEBFreqReached OR $TIMER_FLAG[cTimMill] 
+      WAIT FOR (gIActSpeed == gISetSpeed) OR $TIMER_FLAG[cTimMill] ;DI_KEBFreqReached not input signal for this
       $TIMER_STOP[cTimMill]=TRUE    
       IF ($TIMER_FLAG[cTimMill]==TRUE) THEN 
          AMM_message(103, #QUIT, gnMillMsgAnswer)    
@@ -230,15 +234,15 @@ BOOL OTF
 Interrupt Off cItrMillWarning
 Interrupt Off cItrMillError
 
-    DI_gbSpindleOn=FALSE
-    oSpindleRpm=0
+    gDOSpindleEnable=FALSE
+    gISetSpeed=0
 
   IF (not OTF) THEN 
     WAIT SEC 0.1
       $TIMER[cTimMill]=-crTimeFrequency
       $TIMER_FLAG[cTimMill]=FALSE
       $TIMER_STOP[cTimMill]=FALSE    
-      WAIT FOR ((oActSpindleRpm)==0) OR $TIMER_FLAG[cTimMill]
+      WAIT FOR ((gIActSpeed)==0) OR $TIMER_FLAG[cTimMill]
       $TIMER_STOP[cTimMill]=TRUE    
       IF ($TIMER_FLAG[cTimMill]==TRUE) THEN 
          AMM_message(103, #QUIT, gnMillMsgAnswer)    
@@ -263,7 +267,7 @@ IF not gbSimulationModeActive THEN
     $TIMER[cTimTemp]=-cTimMill   
     $TIMER_FLAG[cTimTemp]=FALSE
     $TIMER_STOP[cTimTemp]=FALSE
-    WAIT FOR not ($CYCFLAG[cCycMillWarning] and not $CYCFLAG[cCycMillError] and $CYCFLAG[cCycMillSystemReady] and ((oActSpindleRpm)==(oSpindleRpm)) or $TIMER_FLAG[cTimTemp])
+    WAIT FOR not ($CYCFLAG[cCycMillWarning] and not $CYCFLAG[cCycMillError] and $CYCFLAG[cCycMillSystemReady] and (gIActSpeed==gISetSpeed) or $TIMER_FLAG[cTimTemp])
     $TIMER_STOP[cTimTemp]=TRUE
 
     IF ($TIMER_FLAG[cTimTemp]) THEN 
@@ -271,28 +275,28 @@ IF not gbSimulationModeActive THEN
         gnMillMsgAnswer=0
         AMM_message(100, #DIALOG, gnMillMsgAnswer)
         IF (gnMillMsgAnswer==1) THEN ; RESTART
-          IF DI_gbRobControlActive==TRUE THEN
+          IF gbRobControlActive==TRUE THEN
             UP_START(FALSE)
           ENDIF
         
         ELSE
           IF (gnMillMsgAnswer==7) THEN  ; INFO
-            IF (DI_gbMillSystemReady)==FALSE THEN
+            IF (gDISpindleEnableOK)==FALSE THEN
               AMM_message(110,#QUIT,gnMillMsgAnswer )
             ENDIF
-            IF not ((oActSpindleRpm)==gnMillMemFrequency) THEN
+            IF not ((gIActSpeed)==gnMillMemFrequency) THEN
               AMM_message(103,#QUIT,gnMillMsgAnswer )
             ENDIF
           ENDIF
         ENDIF
-      UNTIL (($CYCFLAG[cCycMillWarning] and $CYCFLAG[cCycmillError] and ((oActSpindleRpm)==gnMillMemFrequency)))
+      UNTIL (($CYCFLAG[cCycMillWarning] and $CYCFLAG[cCycmillError] and ((gIActSpeed)==gnMillMemFrequency)))
     ENDIF
  ELSE ; Simulation not active
   ; do nothing
  ENDIF
 
 END
-;ENDFOLDDI_gbRobControlActive
+;ENDFOLD 
 ;FOLD --> MILLING : Abort (irregular stop)
 GLOBAL DEF milling_abort()
   ; - Info: No wait allowed - 
@@ -300,8 +304,8 @@ GLOBAL DEF milling_abort()
   Interrupt Off cItrMillError
   ; - Spindle Faststop - 
   Wait sec 0.5
-  oSpindleRpm=0
-  DI_gbSpindleOn=FALSE
+  gISetSpeed=0
+  gDOSpindleEnable=FALSE
   gbMillingAborted=TRUE 
 END
 ;ENDFOLD
@@ -406,4 +410,3 @@ Wait sec 0.5
 ;gbSpindleWarmUpActive = FALSE
 END
 ;ENDFOLD
-

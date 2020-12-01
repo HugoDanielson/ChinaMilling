@@ -1,4 +1,4 @@
-&ACCESS RV
+&ACCESS RVE
 &REL 2
 DEF Station1 (lnTargetSt :IN)
    INT lnTargetSt,lnJobNumber

@@ -1,4 +1,4 @@
-&ACCESS RV1
+&ACCESS RV
 DEF Spindle ( )
    
 END
@@ -19,9 +19,10 @@ GLOBAL DEF SpindleRun (lrSpindleRPM :IN, FI_DIRECTION:IN)
      CONTINUE
 
    
- 
+   gbRobControlActive = TRUE
    gDOSpindleEnable = TRUE
    WAIT FOR gDISpindleEnableOK == TRUE
+    
    
     SWITCH FI_DIRECTION
     CASE #CLOCKWISE
@@ -32,7 +33,7 @@ GLOBAL DEF SpindleRun (lrSpindleRPM :IN, FI_DIRECTION:IN)
       ;gbDirectionClockwise=FALSE
     ENDSWITCH
     
-   
+    
    
 
  
@@ -42,20 +43,15 @@ END
 
 GLOBAL DEF SpindleStop ( )
    
-   CONTINUE
-   IF gISetSpeed < 0 THEN
       
-   gISetSpeed = 0
-
-         
-   ELSE
-   gISetSpeed = 0     
-   ENDIF
-   
+   gISetSpeed = 100
    WAIT SEC 5
    gISetSpeed = 0
+   WAIT SEC 0
+    
    gDOSpindleEnable = FALSE
    WAIT FOR gDISpindleEnableOK == FALSE
+   gbRobControlActive = FALSE
 END
 
 ;GLOBAL DEF SpindleRelease()

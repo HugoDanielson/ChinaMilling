@@ -1,9 +1,8 @@
 &ACCESS RVO
-&REL 3
+&REL 1
 &PARAM EDITMASK = *
 &PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
-&PARAM DISKPATH = KRC:\R1\Program
-DEF test1( )
+DEF test( )
 ;FOLD INI;%{PE}
   ;FOLD BASISTECH INI
     GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
@@ -23,11 +22,11 @@ DEF test1( )
 SPTP XHOME WITH $VEL_AXIS[1] = SVEL_JOINT(100.0), $TOOL = STOOL2(FHOME), $BASE = SBASE(FHOME.BASE_NO), $IPO_MODE = SIPO_MODE(FHOME.IPO_FRAME), $LOAD = SLOAD(FHOME.TOOL_NO), $ACC_AXIS[1] = SACC_JOINT(PDEFAULT), $APO = SAPO_PTP(PDEFAULT), $GEAR_JERK[1] = SGEAR_JERK(PDEFAULT), $COLLMON_TOL_PRO[1] = USE_CM_PRO_VALUES(0)
 ;ENDFOLD
 
-;FOLD R2_MillTech_Spindle Function.Off Trigger: On-Path, Offset: 0mm, Delay: 0 ms ;%{PE}
+;FOLD R2_MillTech_Spindle Function.SpindleEnable;%{PE}
 ;FOLD Parameters ;%{h}
-;Params IlfProvider=spindlefunction; SpindleFunc=Off; SpindleSpeed=0; SpindleTrigger=On-Path; SpindleOffset=0; SpindleDelay=0; SpindleDirection=ClockWise
+;Params IlfProvider=spindlefunction; SpindleFunc=SpindleEnable
 ;ENDFOLD
-Spindle_Stop(#OnTheFly, 0, 0)
+Spindle_Enable()
 ;ENDFOLD
 ;FOLD SPTP HOME Vel=100 % DEFAULT ;%{PE}
 ;FOLD Parameters ;%{h}

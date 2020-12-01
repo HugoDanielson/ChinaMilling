@@ -1,4 +1,4 @@
-&ACCESS RVO
+&ACCESS RVEO
 DEF  St1_Corner4 (lnActSt :IN,lnUseMillingTool :IN)
    INT lnActSt,lnUsedBase,lnUsedTool
    INT lnUseMillingTool,lnJobNr

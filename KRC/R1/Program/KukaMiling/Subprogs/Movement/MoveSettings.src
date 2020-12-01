@@ -1,4 +1,4 @@
-&ACCESS RV1
+&ACCESS RV
 &REL 1
 DEF MoveSettings (nBase: IN, nTool: IN, nAcc: IN, nVel : IN )
 INT nBase

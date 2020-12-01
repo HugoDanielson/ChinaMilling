@@ -1,4 +1,4 @@
-&ACCESS RVO1
+&ACCESS RVO
 &REL 350
 &PARAM DISKPATH = KRC:\R1\Program\KukaMiling\Subprogs\BaseCalib
 DEFDAT  BLOCKCALIBRATION PUBLIC
@@ -11,11 +11,13 @@ DECL GLOBAL REAL rCalibProbeSpeed=0.000500000
 
 
 DECL GLOBAL INT gCyf_Probe=22
-DECL GLOBAL INT gInterupt_Probe3=22
+DECL GLOBAL INT gCyf_ProbeError=23
+DECL GLOBAL INT gInterupt_Touch=22
+DECL GLOBAL INT gInterupt_Error=23
 
 
 DECL GLOBAL INT gnUsedTool=11
-DECL GLOBAL INT gnUsedBase=16 ; use for battery milling
+DECL GLOBAL INT gnUsedBase=18 ; use for battery milling
 ;DECL GLOBAL INT gnUsedBase=15
 
 

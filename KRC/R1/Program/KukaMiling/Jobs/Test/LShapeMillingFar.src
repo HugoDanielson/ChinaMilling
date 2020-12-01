@@ -1,84 +1,74 @@
 &ACCESS RVO
-&REL 5
-DEF  St1_Test_Mill (lnActSt :IN)
+&REL 6
+DEF  LShapeMillingFar (lnActSt :IN)
    INT lnActSt,lnUsedBase,lnUsedTool
-   INT lnJobNr
-
+   INT lnJobNr, lncounter, lncounter2
    
    ;FOLD INIT
       CONTINUE
-      IF ($T1 OR $T2)THEN
-         GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
-         INTERRUPT ON 3
-         BAS (#INITMOV,0)
-         lnActSt = 2
-         PTP $POS_ACT
-      ENDIF
+      ;IF ($T1 OR $T2)THEN
+      GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
+      INTERRUPT ON 3
+      BAS (#INITMOV,0)
+      lnActSt = 2
+      PTP $POS_ACT
+      ;ENDIF
       
       PTP XHOME
       
-     ; Used Base and tool
+      ; Used Base and tool
       lnUsedBase = 11
       lnUsedTool = 11
       gnLastToolNr = 3
-      
+      lncounter = 0
+      lncounter2 = 0
       
       gfMillingOffset = $NULLFRAME
-      gfMillingOffset.Z = -(grCuttingDepth*(gnMillingCounter-1))
+      ;gfMillingOffset.Z = -(grCuttingDepth*(gnMillingCounter-1))
       
-      BASE_DATA[lnUsedBase] = BASE_DATA[16]:gfBaseShift[lnActSt];:gfMillingOffset
+      BASE_DATA[lnUsedBase] = BASE_DATA[6]:gfBaseShift[2];:gfMillingOffset
+      BASE_DATA[lnUsedBase].Z=BASE_DATA[lnUsedBase].Z - 8.5
       TOOL_DATA[lnUsedTool] = TOOL_DATA[4] :{X 0,Y 0,Z 0,A 0,B 0,C 0}
+      LOAD_DATA[lnUsedTool] = LOAD_DATA[4]
       grUsedRPM = GetMillingRPM(grTool_VC[gnLastToolNr], grTool_Diameter[gnLastToolNr])
       grUsedMillingSpeed = GetMillingSpeed(grUsedRPM, grTool_ToothCount[gnLastToolNr], grTool_FeedPerTooth[gnLastToolNr])
    ;ENDFOLD
    ;MoveSettings (nBase: IN, nTool: IN, nAcc: IN, nVel : IN )
    
-   
    SpindleRun(grUsedRPM,#CLOCKWISE)
-   WAIT SEC 10
+   WAIT SEC 5
+   
+   ;WAIT FOR  gIActSpeed > grUsedMillingSpeed-100
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, 500)   
    PTP lfPrePos[1] C_PTP 
+   
    MoveSettings(lnUsedBase, lnUsedTool, 100, 200)   
    LIN lfPrePos[2] C_DIS
    
-   
-   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)   
-   LIN lfWorkPos[1] C_DIS
-   
-   LIN lfWorkPos[2] 
-   
-   LIN lfWorkPos[3]
-   
-   LIN lfWorkPos[4]
-   
-   LIN lfWorkPos[5]
-   
-   LIN lfWorkPos[6]
-   
-   LIN lfWorkPos[7]
-   
-   LIN lfWorkPos[8]
-   
-   LIN lfWorkPos[9] 
-   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)  
+   FOR lncounter2 = 1 TO 2 
+      FOR lncounter = 1 TO 11
+         
+         LIN lfWorkPos[lncounter] C_VEL
+         
+      ENDFOR
+      lncounter = 1
+      
+   ENDFOR
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, 20)
    
    WAIT SEC 0
    
    SpindleStop( )
-   LIN lfWorkPos[10]
+   LIN lfWorkPos[11]
    
-   WAIT SEC 0
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 2000)
    
-  MoveSettings(lnUsedBase, lnUsedTool, 100, 2000)
-  
    PTP XHOME
+   
   
-  
-
-
    
 END
 

@@ -1,6 +1,6 @@
-&ACCESS RV1
+&ACCESS RV
 &PARAM DISKPATH = Program/KukaMiling/Dat
-DEFDAT  bbool PUBLIC
+DEFDAT  BBOOL PUBLIC
 
 DECL GLOBAL BOOL gbSimulation=FALSE
 
@@ -16,17 +16,17 @@ DECL GLOBAL BOOL gbCycleDone=FALSE
 DECL GLOBAL BOOL gbRecoveryNeeded=FALSE
 
 
-DECL GLOBAL BOOL gbProbeCalibrated=TRUE
-DECL GLOBAL BOOL gbCalibrationRequest=TRUE
+DECL GLOBAL BOOL gbProbeCalibrated=FALSE
+DECL GLOBAL BOOL gbCalibrationRequest=FALSE
 DECL GLOBAL BOOL gbMillingRequest=FALSE
 DECL GLOBAL BOOL gbMillingMeasRequest=FALSE
 
-DECL GLOBAL BOOL gbToolChangeRequest=TRUE
+DECL GLOBAL BOOL gbToolChangeRequest=FALSE
 
 DECL GLOBAL BOOL gbToolAlowedToUse[3]
-gbToolAlowedToUse[1]=TRUE
-gbToolAlowedToUse[2]=TRUE
-gbToolAlowedToUse[3]=TRUE
+gbToolAlowedToUse[1]=FALSE
+gbToolAlowedToUse[2]=FALSE
+gbToolAlowedToUse[3]=FALSE
 
 
 DECL GLOBAL BOOL gbSt1=FALSE
@@ -41,8 +41,8 @@ gbJob1StartedSt[3]=FALSE
 
 DECL GLOBAL BOOL gbJob1DoneSt[3]
 gbJob1DoneSt[1]=FALSE
-gbJob1DoneSt[2]=TRUE
-gbJob1DoneSt[3]=TRUE
+gbJob1DoneSt[2]=FALSE
+gbJob1DoneSt[3]=FALSE
 
 DECL GLOBAL BOOL gbJob2StartedSt[3]
 gbJob2StartedSt[1]=FALSE
@@ -51,7 +51,7 @@ gbJob2StartedSt[3]=FALSE
 
 DECL GLOBAL BOOL gbJob2DoneSt[3]
 gbJob2DoneSt[1]=FALSE
-gbJob2DoneSt[2]=TRUE
+gbJob2DoneSt[2]=FALSE
 gbJob2DoneSt[3]=FALSE
 
 DECL GLOBAL BOOL gbJob3StartedSt[3]

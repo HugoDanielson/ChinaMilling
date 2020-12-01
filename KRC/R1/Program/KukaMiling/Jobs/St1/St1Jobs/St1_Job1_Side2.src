@@ -1,4 +1,4 @@
-&ACCESS RVO
+&ACCESS RVEO
 &REL 1
 &PARAM DISKPATH = krc:\r1\program\kukamiling\jobs\st1
 DEF  St1_Job1_Side2 (lnActSt :IN,lnUseMillingTool :IN)

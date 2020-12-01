@@ -1,9 +1,9 @@
-&ACCESS RVO1
+&ACCESS RVO
 &REL 5
 DEF getSearchPoint (lnUsedBase :IN,lnUsedTool :IN,lnPointNr : IN)
    INT lnUsedBase,lnUsedTool,lnPointNr
    BOOL bResult
-   INTERRUPT ON gInterupt_Probe3
+   INTERRUPT ON gInterupt_Touch
    WAIT SEC 0.012
    MoveSettings(lnUsedBase, lnUsedTool, 1, 1)
    $ACC.CP = 10
@@ -14,15 +14,15 @@ DEF getSearchPoint (lnUsedBase :IN,lnUsedTool :IN,lnPointNr : IN)
       
       CASE 1,6
          
-         LIN_REL {X 150}#TOOL
+         LIN_REL {X 5}#TOOL
 
       Case 2,4
          
-         LIN_REL {Y 150}#TOOL
+         LIN_REL {Y 5}#TOOL
          
       Case 3,5,7
          
-         LIN_REL {Z -150}#TOOL
+         LIN_REL {Z -5}#TOOL
          
    ENDSWITCH   
    

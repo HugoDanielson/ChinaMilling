@@ -1,0 +1,77 @@
+&ACCESS RVO
+&REL 5
+DEF  TestStationMoves (lnActSt :IN)
+   INT lnActSt,lnUsedBase,lnUsedTool
+   INT lnJobNr
+   INT lnCornerNumber
+   
+   ;FOLD INIT
+      CONTINUE
+      ;IF ($T1 OR $T2)THEN
+         GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
+         INTERRUPT ON 3
+         BAS (#INITMOV,0)
+         lnActSt = 2
+         PTP $POS_ACT
+      ;ENDIF
+      
+      PTP XHOME
+      
+      ; Used Base and tool
+      lnUsedBase = 11
+      lnUsedTool = 11
+      gnLastToolNr = 3
+      lnCornerNumber = 1
+      
+      BASE_DATA[lnUsedBase] = BASE_DATA[16]
+      TOOL_DATA[lnUsedTool] = TOOL_DATA[4] :{X 0,Y 0,Z 0,A 0,B 0,C 0}
+   ;ENDFOLD
+   ;MoveSettings (nBase: IN, nTool: IN, nAcc: IN, nVel : IN )
+   
+   ;MoveSettings(lnUsedBase, lnUsedTool, 100, 500) 
+   MoveSettings(0, 1, 100, 500) 
+   PTP XST20_ST1_1 C_PTP
+   PTP XST20_ST1_10 C_PTP
+   
+   REPEAT   
+      lnCornerNumber = lnCornerNumber +1
+      SWITCH lnCornerNumber
+         
+         CASE 2
+            BASE_DATA[lnUsedBase] = BASE_DATA[lnCornerNumber]
+         CASE 3
+            BASE_DATA[lnUsedBase] = BASE_DATA[lnCornerNumber]:{X 0,Y 0,Z 0,A -180,B 0,C 0}
+         CASE 4
+            BASE_DATA[lnUsedBase] = BASE_DATA[lnCornerNumber]:{X 0,Y 0,Z 0,A 90,B 0,C 0}
+         CASE 5
+            BASE_DATA[lnUsedBase] = BASE_DATA[lnCornerNumber]:{X 0,Y 0,Z 0,A 140,B 0,C 0}
+       ENDSWITCH
+      
+      
+      MoveSettings(0, 1, 100, 500)
+      LIN XST1 C_VEL 
+      
+      MoveSettings(lnUsedBase, lnUsedTool, 100, 500)
+      
+      LIN lfPrePos[3] C_VEL
+      
+      WAIT SEC 0.1
+      
+      MoveSettings(0, 1, 100, 500) 
+      
+      
+      
+      LIN XST1 C_VEL 
+      
+      
+   UNTIL lnCornerNumber >= 5
+   
+   PTP XHOME  
+   
+END
+
+DEF endOfJob()
+   gbJob1StartedSt[1] = FALSE
+   gbJob1DoneSt[1]    = TRUE
+   gnMillingCounter = gnMillingCounter+1
+END

@@ -1,22 +1,12 @@
 &ACCESS RV1
-&REL 2
-&PARAM DISKPATH = KRC:\R1\TP\Milling
 DEFDAT  R2M_SPINDLEVARIABLES PUBLIC
 
 ;FOLD USED Signals
 GLOBAL SIGNAL DI_MillQuitMessageByPLC $IN[601]
-GLOBAL SIGNAL DI_ToolReleased $IN[33] ; Spindle tool released
-GLOBAL SIGNAL DI_ToolClamped $IN[34] ; Spindle tool clamped
-GLOBAL SIGNAL DI_ToolPresent $IN[36] ; Spindle tool present
-GLOBAL SIGNAL DI_SpindlePistonOnTop $IN[53] ; Spindle piston on top
-GLOBAL SIGNAL DI_SpindleStandsStill $IN[88] ; Spindle standstill
-GLOBAL SIGNAL DI_KEBFreqReached $IN[168] ; KEB frequency reached
-GLOBAL SIGNAL DI_TCCoverIsOpen $IN[1275] ; Toolchanger cover open
-; 
 GLOBAL SIGNAL DO_PulseTCOpenCover $OUT[4094] ; Toolchanger open cover pulse
 GLOBAL SIGNAL DO_PulseTCCloseCover $OUT[4095] ; Toolchanger close cover pulse
 
-; Frequency converter control words 
+; Localization Frequency converter control words 
 GLOBAL SIGNAL oFreqconverterCtlw $OUT[101]  TO $OUT[116] ; instead of cw in sps 
 GLOBAL SIGNAL oSpindleOperMode $OUT[117]  TO $OUT[124]
 GLOBAL SIGNAL oConverterSetSpeed $OUT[601]  TO $OUT[616]
@@ -26,7 +16,6 @@ GLOBAL SIGNAL gDISpindleActSpeed $IN[224]  TO $IN[239]
 GLOBAL SIGNAL gDOProductNumber $OUT[1]  TO $OUT[8]
 
 ;ENDFOLD (Signals)
-
 
 ;FOLD USED TIMER / CONST
 GLOBAL CONST INT cTimTemp=1 ; Timer For Temp Functions
@@ -54,7 +43,7 @@ GLOBAL CONST INT cCycMsg=18 ; Cyclflag For Delet Messages
 GLOBAL ENUM TYPCoverTyp WAITFOR,DONTWAITFOR
 GLOBAL ENUM TYPMillDirection CLOCKWISE,COUNTERCLOCKWISE
 GLOBAL ENUM TYPMillReaction IMSTOP,FBSTOP,RESTART
-GLOBAL ENUM TYPUtecTrigger OnTheFly,AfterNextPoint,None,Standing,Contineous
+GLOBAL ENUM TYPUtecTrigger OnTheFly,AfterNextPoint,None,Standing,Continuous
 GLOBAL ENUM TYPCoverState OpenCover,CloseCover
 GLOBAL ENUM TYPChillerState ChillerOn,ChillerOff
 GLOBAL ENUM TYPSpindleToolReaction RELEASE,CLAMP,CLAMPWITHTOOL
@@ -67,19 +56,23 @@ DECL GLOBAL TYPMillReaction geReactionRob=#RESTART
 GLOBAL BOOL gbMillProcessActive=FALSE
 GLOBAL BOOL gbMillingAborted=FALSE
 GLOBAL BOOL gbSimulationModeActive=FALSE
-GLOBAL BOOL gbOverrideBlocked=FALSE
-GLOBAL BOOL gbCNC_ErrorReset=FALSE
-
-GLOBAL INT gnMillMemFrequency=3000
+GLOBAL INT gnMillMemFrequency=-1000
 GLOBAL INT gnSpindleActTool=1
 GLOBAL INT gnInputOffsetTool=1264 ; input of the first tool (toolchanger)
 ;ENDFOLD (USED VARIABLES)
 
 ;Milling Localization variables 
 GLOBAL INT gISetSpeed=0
-GLOBAL INT gIActSpeed=-655350
-GLOBAL INT giSpindlespeedchecksum=-65535
+GLOBAL INT gIActSpeed=0
+GLOBAL INT giSpindlespeedchecksum=0
+GLOBAL BOOL gbRobControlActive=FALSE
+GLOBAL BOOL gbRobControlEnable=FALSE
+GLOBAL BOOL gbRobControlRequest=FALSE
+GLOBAL BOOL gbMillSystemWarning=FALSE
+GLOBAL BOOL gbDirectionClockwise=TRUE
 
+GLOBAL INT oMinSpindleRpm=0 ;for test
+GLOBAL INT oMaxSpindleRpm=8600 ;for test
 
 ;FOLD /+/ UTEC LANGUAGE ### KONFIG ###
 GLOBAL ENUM TYPMillMessage DIALOG,QUIT,STATE,STATE_CLEAR,NOTIFY,WAITING
@@ -96,11 +89,11 @@ GLOBAL ENUM TYPMillLanguage GERMAN,ENGLISH,FRENCH,SPANISH,TURKEY
 ; -  #TURKEY  = Tuerkisch                     -
 ; ---------------------------------------------
 ; # UTEC - Language #
-DECL GLOBAL TYPMillLanguage MILL_LANGUAGE=#GERMAN
+DECL GLOBAL TYPMillLanguage MILL_LANGUAGE=#ENGLISH
 GLOBAL BOOL gbMillErrorMsgPresent=FALSE
 GLOBAL BOOL gbMillOptionMsgQuit=TRUE
 GLOBAL BOOL gbMillMsgQuitbyPLC=FALSE
-GLOBAL INT gnMillMsgAnswer=2
+GLOBAL INT gnMillMsgAnswer=1
 
 DECL GLOBAL KRLMSG_T Meine_Meldung
 DECL GLOBAL KRLMSGPAR_T Meine_Parameter[3]
@@ -108,108 +101,5 @@ DECL GLOBAL KRLMSGOPT_T Meine_Option
 DECL GLOBAL KRLMSGDLGSK_T Meine_SK[7]
 GLOBAL INT Ergebnis,Antwort
 ;ENDFOLD (Language)
-
-;FOLD USED SOFT PLC
-;---------- SOFTPLC To ProConOs --------------
-;--- SOFTPLC BOOL ---
-GLOBAL CONST INT cnPCOSpindleCoolingOn=1
-GLOBAL CONST INT cnPCOSpindleRelease=2
-GLOBAL CONST INT cnPCOSpindleClamp=3
-GLOBAL CONST INT cnPCODirectionClockwise=4
-GLOBAL CONST INT cnPCOSpindleOn=5
-GLOBAL CONST INT cnPCOMainAirOn=6
-GLOBAL CONST INT cnPCOBlastAirOn=7
-GLOBAL CONST INT cnPCORobControlActive=8
-GLOBAL CONST INT cnPCOSpindleOVBlocked=9
-GLOBAL CONST INT cnPCOCloseToolChanger=10
-GLOBAL CONST INT cnPCOOpenToolChanger=11
-GLOBAL CONST INT cnPCORobControlRequest=12
-GLOBAL CONST INT cnPCOcncActive=13
-GLOBAL CONST INT cnPCOSpindleSpeedMon=14 ;Spindel Geschwindigkeits?berwachung activ/inactiv
-
-;--- SOFTPLC INT ---
-GLOBAL CONST INT cnPCOSpindleRpm=1
-
-;---------- SOFTPLC From ProConOs -------------
-;--- SOFTPLCBOOL
-GLOBAL CONST INT cnPCOMillSystemReady=100
-GLOBAL CONST INT cnPCOMillSystemWarning=101
-GLOBAL CONST INT cnPCOMillSystemError=102
-GLOBAL CONST INT cnPCORobControlEnable=103
-GLOBAL CONST INT cnPCOToolChangerReady=104
-GLOBAL CONST INT cnPCOSpinToolHolderReady=105
-
-;--- SOFTPLC INT ---
-GLOBAL CONST INT cnPCOActSpindleRpm=100
-GLOBAL CONST INT cnPCOMinSpindleRpm=102
-GLOBAL CONST INT cnPCOMaxSpindleRpm=103
-;ENDFOLD (USED SOFT PLC)
-
-;FOLD INSTEAD OF SOFT PLC 
-;---Soft PLC bool -----
-GLOBAL SIGNAL DI_gbSpindleCoolingOn $IN[1]
-GLOBAL SIGNAL DI_gbSpindleRelease $IN[2]
-GLOBAL SIGNAL DI_gbSpindleClamp $IN[3]
-GLOBAL SIGNAL DI_gbDirectionClockwise $IN[4]
-GLOBAL SIGNAL DI_gbSpindleOn $IN[5]
-GLOBAL SIGNAL DI_gbMainAirOn $IN[6]
-GLOBAL SIGNAL DI_gbBlastAirOn $IN[7]
-GLOBAL SIGNAL DI_gbRobControlActive $IN[8]
-GLOBAL SIGNAL DI_gbSpindleOVBlocked $IN[9]
-GLOBAL SIGNAL DI_gbCloseToolChanger $IN[10]
-GLOBAL SIGNAL DI_gbOpenToolChanger $IN[11]
-GLOBAL SIGNAL DI_gbRobControlRequest $IN[12]
-
-GLOBAL SIGNAL DI_gbMillSystemReady $IN[100]
-GLOBAL SIGNAL DI_gbMillSystemWarning $IN[101]
-GLOBAL SIGNAL DI_gbMillSystemError $IN[102]
-GLOBAL SIGNAL DI_gbRobControlEnable $IN[103]
-GLOBAL SIGNAL DI_gbToolChangerReady $IN[104]
-GLOBAL SIGNAL DI_gbSpinToolHolderReady $IN[105]
-
-;GLOBAL INT T_VEL=0 
-
-;---Soft PLC INT -----
-;Int16
-GLOBAL SIGNAL oSpindleRpm $OUT[1]  TO $OUT[16] ;for test
-GLOBAL SIGNAL oActSpindleRpm $OUT[17]  TO $OUT[32] ;for test
-GLOBAL SIGNAL oMinSpindleRpm $OUT[33]  TO $OUT[48] ;for test
-GLOBAL SIGNAL oMaxSpindleRpm $OUT[49]  TO $OUT[64] ;for test
-
-;ENDFOLD (INSTEAD OF SOFT PLC)
-
-;FOLD INSTEAD OF SOFTPLC VARIABLES
-
-;GLOBAL BOOL DI_gbSpindleCoolingOn = $IN[1]
-;GLOBAL BOOL DI_gbSpindleRelease= $IN[2]
-;GLOBAL BOOL DI_gbSpindleClamp= $IN[3]
-;GLOBAL BOOL DI_gbDirectionClockwise= $IN[4]
-;GLOBAL BOOL DI_gbSpindleOn= $IN[5] 
-;GLOBAL BOOL DI_gbMainAirOn =$IN[6]
-;GLOBAL BOOL DI_gbBlastAirOn =$IN[7]
-;GLOBAL BOOL DI_gbRobControlActive= $IN[8]
-;GLOBAL BOOL DI_gbSpindleOVBlocked =$IN[9]
-;GLOBAL BOOL DI_gbCloseToolChanger =$IN[10]
-;GLOBAL BOOL DI_gbOpenToolChanger =$IN[11]
-;GLOBAL BOOL DI_gbRobControlRequest= $IN[12]
-
-;GLOBAL BOOL DI_gbMillSystemReady= $IN[100]
-;GLOBAL BOOL DI_gbMillSystemWarning= $IN[101]
-;GLOBAL BOOL DI_gbMillSystemError= $IN[102]
-;GLOBAL BOOL DI_gbRobControlEnable= $IN[103]
-;GLOBAL BOOL DI_gbToolChangerReady =$IN[104]
-;GLOBAL BOOL DI_gbSpinToolHolderReady= $IN[105]
-
-;;---Soft PLC INT -----
-;;Int16
-;GLOBAL INT oSpindleRpm $OUT[1] TO $OUT[16] ;for test
-;GLOBAL INT oActSpindleRpm $OUT[17] TO $OUT[32] ;for test
-;GLOBAL INT oMinSpindleRpm $OUT[33] TO $OUT[48] ;for test
-;GLOBAL INT oMaxSpindleRpm $OUT[49] TO $OUT[64] ;for test
-
-
-;ENDFOLD (INSTEAD OF SOFTPLC VARIABLES)
-
-
 
 ENDDAT

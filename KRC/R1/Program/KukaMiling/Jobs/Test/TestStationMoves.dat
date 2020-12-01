@@ -1,12 +1,12 @@
 &ACCESS RVO
 &REL 5
-DEFDAT  St1_Test_Mill
+DEFDAT  TestStationMoves
 
 
 DECL FRAME lfPrePos[3]
 lfPrePos[1]={X -150.000,Y 0.0,Z 150.000,A 0.0,B 0.0,C 0.0}
 lfPrePos[2]={X 0.0,Y 0.0,Z 25.0,A 0.0,B 0.0,C 0.0}
-lfPrePos[3]={X 0.0,Y 0.0,Z 0.0,A 0.0,B 0.0,C 0.0}
+lfPrePos[3]={X 0.0,Y 0.0,Z 150.0,A 0.0,B 0.0,C 0.0}
 
 
 DECL FRAME lfWorkPos[12]

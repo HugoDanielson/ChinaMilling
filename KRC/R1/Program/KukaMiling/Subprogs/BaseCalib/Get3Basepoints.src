@@ -1,12 +1,14 @@
-&ACCESS RVO1
-&REL 182
+&ACCESS RVO
+&REL 185
 &PARAM DISKPATH = KRC:\R1\Program\KukaMiling\Subprogs\BaseCalib
 DEFFCT FRAME Get3Basepoints (lnUsedBase :IN,lnUsedTool :IN)
    INT i,j,lnUsedBase,lnUsedTool
    FRAME lf3Points[3] 
    
-   $CYCFLAG[gCyf_Probe]         = IN_Probe
-   INTERRUPT DECL gInterupt_Probe3 WHEN $CYCFLAG[gCyf_Probe] DO SearchPoint()
+   $CYCFLAG[gCyf_Probe]       = IN_ProbeTouch
+   $CYCFLAG[gCyf_ProbeError]  = IN_ProbeError OR NOT IN_ProbeConnected OR IN_ProbeLowBat
+   INTERRUPT DECL gInterupt_Touch WHEN $CYCFLAG[gCyf_Probe] DO SearchPoint()
+   INTERRUPT DECL gInterupt_Error WHEN $CYCFLAG[gCyf_Probe] DO ProbeError()
    
    gfCalcBlockBase = $NULLFRAME
    MoveSettings(lnUsedBase, lnUsedTool, 100, 100)
@@ -18,10 +20,10 @@ DEFFCT FRAME Get3Basepoints (lnUsedBase :IN,lnUsedTool :IN)
    gnMeasPointNr = 1;   
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, 35)
-   LIN gfStartMeasPoint[1] : {X -15,Y 0,Z 55,A 0,B 0,C 0}
+    LIN gfStartMeasPoint[1] : {X -15,Y 0,Z 55,A 0,B 0,C 0}
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, 15)
-   LIN gfStartMeasPoint[1] : {X -5,Y 0,Z 0,A 0,B 0,C 0}
+   LIN gfStartMeasPoint[1] : {X 0,Y 0,Z 0,A 0,B 0,C 0}
    
    getSearchPoint(lnUsedBase,lnUsedTool,1)
    
@@ -35,7 +37,7 @@ DEFFCT FRAME Get3Basepoints (lnUsedBase :IN,lnUsedTool :IN)
    LIN gfStartMeasPoint[2] : {X 0,Y -15,Z 55,A 0,B 0,C 0}
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, 15)
-   LIN gfStartMeasPoint[2] : {X 0,Y -5,Z 0,A 0,B 0,C 0}
+   LIN gfStartMeasPoint[2] : {X 0,Y 0,Z 0,A 0,B 0,C 0}
    getSearchPoint(lnUsedBase,lnUsedTool,2)
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, 35)
@@ -48,7 +50,7 @@ DEFFCT FRAME Get3Basepoints (lnUsedBase :IN,lnUsedTool :IN)
    LIN gfStartMeasPoint[3] : {X 0,Y 0,Z 55,A 0,B 0,C 0}
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, 15)
-   LIN gfStartMeasPoint[3] : {X 0,Y 0,Z 5,A 0,B 0,C 0}
+   LIN gfStartMeasPoint[3] : {X 0,Y 0,Z 0,A 0,B 0,C 0}
    getSearchPoint(lnUsedBase,lnUsedTool,3)
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, 35)
@@ -60,7 +62,7 @@ DEFFCT FRAME Get3Basepoints (lnUsedBase :IN,lnUsedTool :IN)
    LIN gfStartMeasPoint[4] : {X 0,Y -15,Z 55,A 0,B 0,C 0}
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, 15)
-   LIN gfStartMeasPoint[4] : {X 0,Y -5,Z 0,A 0,B 0,C 0}
+   LIN gfStartMeasPoint[4] : {X 0,Y 0,Z 0,A 0,B 0,C 0}
    getSearchPoint(lnUsedBase,lnUsedTool,4)
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, 35)
@@ -72,7 +74,7 @@ DEFFCT FRAME Get3Basepoints (lnUsedBase :IN,lnUsedTool :IN)
    LIN gfStartMeasPoint[5] : {X 0,Y 0,Z 55,A 0,B 0,C 0}
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, 15)
-   LIN gfStartMeasPoint[5] : {X 0,Y 0,Z 5,A 0,B 0,C 0}
+   LIN gfStartMeasPoint[5] : {X 0,Y 0,Z 0,A 0,B 0,C 0}
    getSearchPoint(lnUsedBase,lnUsedTool,5)
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, 35)
@@ -84,7 +86,7 @@ DEFFCT FRAME Get3Basepoints (lnUsedBase :IN,lnUsedTool :IN)
    LIN gfStartMeasPoint[6] : {X -15,Y 0,Z 55,A 0,B 0,C 0}
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, 15)
-   LIN gfStartMeasPoint[6] : {X -5,Y 0,Z 0,A 0,B 0,C 0}
+   LIN gfStartMeasPoint[6] : {X 0,Y 0,Z 0,A 0,B 0,C 0}
    getSearchPoint(lnUsedBase,lnUsedTool,6)
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, 35)
@@ -97,7 +99,7 @@ DEFFCT FRAME Get3Basepoints (lnUsedBase :IN,lnUsedTool :IN)
    LIN gfStartMeasPoint[7] : {X 0,Y 0,Z 55,A 0,B 0,C 0}
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, 15)
-   LIN gfStartMeasPoint[7] : {X 0,Y 0,Z 5,A 0,B 0,C 0}
+   LIN gfStartMeasPoint[7] : {X 0,Y 0,Z 0,A 0,B 0,C 0}
    getSearchPoint(lnUsedBase,lnUsedTool,7)
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, 35)
@@ -128,8 +130,8 @@ ENDFCT
 
 DEF SearchPoint()
    BRAKE F
-   INTERRUPT OFF gInterupt_Probe3 
-   ;;Calib OK
+   INTERRUPT OFF gInterupt_Touch
+   ;; Calib OK
    ;; Send Message
    
    gfMeasPoint[gnMeasPointNr] = ChgBase($POS_INT,BASE_DATA[gnUsedBase],$nullframe)
@@ -152,4 +154,27 @@ DEF SearchPoint()
    
    WAIT SEC 0
    RESUME
+END
+
+DEF ProbeError()
+BRAKE F
+   INTERRUPT OFF gInterupt_Error 
+   SWITCH gnMeasPointNr
+      
+      CASE 1,6
+         
+         LIN_REL {X -10}#TOOL
+         
+      Case 2,4
+         
+         LIN_REL {Y -10}#TOOL
+         
+      Case 3,5,7
+         
+         LIN_REL {Z 10}#TOOL
+         
+   ENDSWITCH 
+
+WAIT FOR NOT  $CYCFLAG[gCyf_ProbeError]
+INTERRUPT ON gInterupt_Error 
 END

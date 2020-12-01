@@ -1,4 +1,4 @@
-&ACCESS RV
+&ACCESS RVO
 DEF TestMoves ( )
    
    ;FOLD  . INI (IF $T1 OR $T2):
@@ -15,23 +15,23 @@ DEF TestMoves ( )
    MoveTo(gnSt20, gnSt1)
    MoveTo(gnSt1, gnSt20)
    
-   MoveTo(gnSt20, gnSt2)
-   MoveTo(gnSt2, gnSt20)
+   ;MoveTo(gnSt20, gnSt2)
+   ;MoveTo(gnSt2, gnSt20)
+   ;
+   ;MoveTo(gnSt20, gnSt3)
+   ;MoveTo(gnSt3, gnSt20)
+   ;
+   ;MoveTo(gnSt20, gnSt1)
+   ;MoveTo(gnSt1, gnSt2)
+   ;MoveTo(gnSt2, gnSt1)
+   ;MoveTo(gnSt1, gnSt3)
+   ;MoveTo(gnSt3, gnSt1)
+   ;
+   ;MoveTo(gnSt1, gnSt2)
+   ;MoveTo(gnSt2, gnSt3)
+   ;MoveTo(gnSt3, gnSt2)
    
-   MoveTo(gnSt20, gnSt3)
-   MoveTo(gnSt3, gnSt20)
-   
-   MoveTo(gnSt20, gnSt1)
-   MoveTo(gnSt1, gnSt2)
-   MoveTo(gnSt2, gnSt1)
-   MoveTo(gnSt1, gnSt3)
-   MoveTo(gnSt3, gnSt1)
-   
-   MoveTo(gnSt1, gnSt2)
-   MoveTo(gnSt2, gnSt3)
-   MoveTo(gnSt3, gnSt2)
-   
-   MoveTo(gnSt2, gnSt20)
+   ;MoveTo(gnSt2, gnSt20)
   
    
 END

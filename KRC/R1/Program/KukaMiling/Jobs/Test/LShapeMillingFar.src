@@ -1,8 +1,9 @@
 &ACCESS RVO
 &REL 6
 DEF  LShapeMillingFar (lnActSt :IN)
-   INT lnActSt,lnUsedBase,lnUsedTool
+   INT lnActSt,lnUsedBase,lnUsedTool,lnBaseNr
    INT lnJobNr, lncounter, lncounter2
+   REAL lrZCut
    
    ;FOLD INIT
       CONTINUE
@@ -16,20 +17,29 @@ DEF  LShapeMillingFar (lnActSt :IN)
       
       PTP XHOME
       
+      ;Loop Counters
+      lncounter = 0
+      lncounter2 = 0
+      
       ; Used Base and tool
       lnUsedBase = 11
       lnUsedTool = 11
-      gnLastToolNr = 3
-      lncounter = 0
-      lncounter2 = 0
+      
+      gnLastToolNr = 4
+      lnBaseNr = 6
+      
+      ;Depth of Cut
+      lrZCut = 0.0
       
       gfMillingOffset = $NULLFRAME
       ;gfMillingOffset.Z = -(grCuttingDepth*(gnMillingCounter-1))
       
-      BASE_DATA[lnUsedBase] = BASE_DATA[6]:gfBaseShift[2];:gfMillingOffset
-      BASE_DATA[lnUsedBase].Z=BASE_DATA[lnUsedBase].Z - 8.5
-      TOOL_DATA[lnUsedTool] = TOOL_DATA[4] :{X 0,Y 0,Z 0,A 0,B 0,C 0}
-      LOAD_DATA[lnUsedTool] = LOAD_DATA[4]
+      BASE_DATA[lnUsedBase] = BASE_DATA[lnBaseNr]:gfBaseShift[lnBaseNr];:gfMillingOffset
+      BASE_DATA[lnUsedBase].Z=BASE_DATA[lnUsedBase].Z - lrZCut
+      
+      TOOL_DATA[lnUsedTool] = TOOL_DATA[gnLastToolNr] :{X 0,Y 0,Z 0,A 0,B 0,C 0}
+      LOAD_DATA[lnUsedTool] = LOAD_DATA[gnLastToolNr]
+      
       grUsedRPM = GetMillingRPM(grTool_VC[gnLastToolNr], grTool_Diameter[gnLastToolNr])
       grUsedMillingSpeed = GetMillingSpeed(grUsedRPM, grTool_ToothCount[gnLastToolNr], grTool_FeedPerTooth[gnLastToolNr])
    ;ENDFOLD
@@ -47,6 +57,7 @@ DEF  LShapeMillingFar (lnActSt :IN)
    LIN lfPrePos[2] C_DIS
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)  
+   
    FOR lncounter2 = 1 TO 2 
       FOR lncounter = 1 TO 11
          

@@ -1,0 +1,77 @@
+&ACCESS RV1
+&REL 4
+&PARAM DISKPATH = KRC:\R1\Program\KukaMiling\Subprogs
+DEF Pdetection (inSwitch1 :IN,inSwitch2 :IN,inSwitch3 :IN,inSwitch4 :IN)
+   BOOL inSwitch1,inSwitch2,inSwitch3,inSwitch4
+   BOOL lbOK
+   
+   CONTINUE
+   lbOK = inSwitch1 OR inSwitch2 OR inSwitch3 OR inSwitch4 
+   
+   Nor1 = NOT (lbOK     AND NOT Nor2            )
+   Nor2 = NOT (Nor1     AND     Nor3   AND gbClk)
+   Nor3 = NOT (gbClk    AND     Nor4            )
+   Nor4 = NOT (Nor1     AND     Nor3            )
+   Nor5 = NOT (Nor2     AND     Nor6         )
+   Nor6 = NOT (Nor3     AND     Nor5         )
+   
+   IF (lbOK AND Nor6) AND lbMem == TRUE THEN
+      IF lbMem == TRUE THEN
+         IF(inSwitch1)THEN
+            gbSet1 = NOT gbSet1
+         ENDIF
+         IF(inSwitch2)THEN
+            gbSet2 = NOT gbSet2
+         ENDIF
+         IF(inSwitch3)THEN
+            gbSet3 = NOT gbSet3
+         ENDIF
+         IF(inSwitch4)THEN
+            gbSet4 = NOT gbSet4
+         ENDIF
+      ENDIF
+      lbMem =FALSE
+   ELSE
+      IF NOT lbOK THEN
+         lbMem = TRUE
+      ENDIF
+   ENDIF
+   
+   ;Nor1 = NOT (IN_Switch   AND NOT Nor2            )
+   ;Nor2 = NOT (Nor1        AND     Nor3   AND gbClk)
+   ;Nor3 = NOT (gbClk       AND     Nor4            )
+   ;Nor4 = NOT (Nor1        AND     Nor3            )
+   ;Nor5 = NOT (Nor2     AND     Nor6         )
+   ;Nor6 = NOT (Nor3     AND     Nor5         )
+   
+   ;IF (IN_Switch AND Nor6) AND $TIMER_STOP[33] == TRUE THEN
+   ;IF $TIMER_STOP[33] == TRUE THEN
+   ;gbSet = NOT gbSet
+   ;ENDIF  
+   ;$TIMER_STOP[33] =FALSE
+   ;ELSE
+   ;IF NOT IN_Switch THEN
+   ;$TIMER_STOP[33] = TRUE
+   ;ENDIF
+   ;ENDIF
+   ;
+   ;IF $TIMER_STOP[33] == TRUE THEN
+   ;$TIMER[33] = 0
+   ;ENDIF
+   
+   ; MEMORY BIT
+   ;IF (IN_Switch AND Nor6) AND lbMem == TRUE THEN
+   ;IF lbMem == TRUE THEN
+   ;gbSet = NOT gbSet
+   ;ENDIF  
+   ;lbMem =FALSE
+   ;ELSE
+   ;IF NOT IN_Switch THEN
+   ;lbMem = TRUE
+   ;ENDIF
+   ;ENDIF
+   
+   ;IF $TIMER_STOP[33] == TRUE THEN
+   ;$TIMER[33] = 0
+   ;ENDIF
+END

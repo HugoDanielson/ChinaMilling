@@ -44,24 +44,18 @@ END
 GLOBAL DEF SpindleStop ( )
    
       
-   gISetSpeed = 100
-   WAIT SEC 5
+   
    gISetSpeed = 0
-   WAIT SEC 0
+   ;;WAIT SEC 0
     
    gDOSpindleEnable = FALSE
    WAIT FOR gDISpindleEnableOK == FALSE
    gbRobControlActive = FALSE
 END
 
-;GLOBAL DEF SpindleRelease()
+GLOBAL DEF SpindleSetSpeed (lnSpeed :IN )
+INT lnSpeed
 
-;END
+gISetSpeed = lnSpeed
 
-;GLOBAL DEF SpindleClamp()
-
-;END
-
-;GLOBAL DEF SpindleClampWithTool()
-
-;END
+END

@@ -1,0 +1,29 @@
+&ACCESS RV1
+DEF PulsGen12ms ( )
+   
+   IF ($TIMER_STOP[30] == TRUE) AND ($TIMER_STOP[31] == TRUE) THEN
+      $TIMER[30] = 0
+      $TIMER_STOP[30] = FALSE
+   ENDIF
+   
+   IF $TIMER_STOP[30]==FALSE  THEN     
+      IF $TIMER[30] > 12 THEN
+         $TIMER_STOP[30] = TRUE
+         $TIMER[30] = 0
+         $TIMER[31] = 0
+         $TIMER_STOP[31]    = FALSE
+         gbClk       = TRUE
+      ENDIF
+   ENDIF  
+   
+   IF $TIMER_STOP[31]==FALSE  THEN     
+      IF $TIMER[31] > 12 THEN
+         $TIMER_STOP[31] = TRUE
+         $TIMER[31] = 0
+         $TIMER[30] = 0
+         $TIMER_STOP[30] = FALSE
+         gbClk       = FALSE
+      ENDIF
+   ENDIF  
+   
+END

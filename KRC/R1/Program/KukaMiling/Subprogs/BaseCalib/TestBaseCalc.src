@@ -1,0 +1,36 @@
+&ACCESS RVO
+DEF TestBaseCalc ( )
+FRAME lfPorg
+FRAME lfPx
+FRAME lfPxy
+FRAME gfCalibPrepos11
+FRAME gfCalibPrepos12
+FRAME gfCalibPrepos13
+FRAME gfCalibPrepos14
+FRAME gfCalibPrepos15
+FRAME gfCalibPrepos16
+
+  gfCalibPrepos11={X -0.758253098,Y 24.9999,Z -2.99881101,A -1.25694332E-05,B 1.93169035E-05,C 1.18988864E-05}
+  gfCalibPrepos12={X 25.0001278,Y -1.00336087,Z -2.99629092,A -2.53806302E-05,B 4.30850596E-05,C 3.15193829E-05}
+  gfCalibPrepos13={X 9.99969482,Y 9.99987602,Z 5.00191593,A -2.99141E-05,B 8.33990634E-05,C 5.93959485E-05}
+  gfCalibPrepos14={X 149.999878,Y -1.13149643,Z -2.99819207,A 6.41448132E-05,B 0.000124444705,C 7.50124673E-05}
+  gfCalibPrepos15={X 149.999741,Y 10.0000114,Z 4.93427134,A 5.37354681E-05,B 0.000227571742,C 0.000159899311}
+  gfCalibPrepos16={X -0.518223941,Y 150.000015,Z -2.99905634,A -1.07721553E-05,B 1.64280955E-05,C 8.81058895E-06}
+
+
+lfPorg.X = gfCalibPrepos11.X
+lfPorg.Y = gfCalibPrepos12.Y
+lfPorg.Z = gfCalibPrepos13.Z
+
+
+lfPx.X = gfCalibPrepos14.X
+lfPx.Y = gfCalibPrepos14.Y
+lfPx.Z = gfCalibPrepos15.Z
+
+lfPxy.X = gfCalibPrepos16.X
+lfPxy.Y = gfCalibPrepos16.Y
+lfPxy.Z = gfCalibPrepos15.Z
+
+testBase = MAKEFRAME(lfPorg,lfPx,lfPxy)
+
+END

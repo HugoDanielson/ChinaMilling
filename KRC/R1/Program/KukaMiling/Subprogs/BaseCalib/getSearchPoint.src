@@ -1,5 +1,5 @@
 &ACCESS RVO
-&REL 5
+&REL 6
 DEF getSearchPoint (lnUsedBase :IN,lnUsedTool :IN,lnPointNr : IN)
    INT lnUsedBase,lnUsedTool,lnPointNr
    BOOL bResult
@@ -14,24 +14,18 @@ DEF getSearchPoint (lnUsedBase :IN,lnUsedTool :IN,lnPointNr : IN)
       
       CASE 1,6
          
-         LIN_REL {X 5}#TOOL
+         LIN_REL {X 7}#TOOL
 
       Case 2,4
          
-         LIN_REL {Y 5}#TOOL
+         LIN_REL {Y 7}#TOOL
          
       Case 3,5,7
          
          LIN_REL {Z -5}#TOOL
          
    ENDSWITCH   
-   
-   
-   
-    
-   
-  
-   
+
    WAIT SEC 0
    
 END

@@ -1,38 +1,48 @@
 &ACCESS RVO
-&REL 357
+&REL 382
 &PARAM DISKPATH = KRC:\R1\Program\KukaMiling\Subprogs\BaseCalib
 DEF BlockCalibration_LTest ()
    BOOL bResult
    FRAME lfBlockPos,lfBlockPrepos1,lfNewBase,lfToolOffset
    INT lnUsedBase,lnUsedTool
    INT lnGroupNr,lnPointNr,lnSideNr
+   CHAR lTempName[50]
+   CHAR sBaseName[25] 
+   BOOL lbOK
       CONTINUE
 ;   IF $T1 THEN
       BAS(#INITMOV,0)
       PTP $POS_ACT
 ;   ENDIF
-   ptp xhome1
-   TOOL_DATA[11] = $NULLFRAME
-   TOOL_DATA[11] = TOOL_DATA[5]:{X 0,Y 0,Z 0,A -90,B 0,C 0}
-   
-   BASE_DATA[18] = $NULLFRAME
-   BASE_DATA[18] = BASE_DATA[17] :{X -10,Y -10,Z 5,A 0,B 0,C 0} ; Use for l shape Base
-   
+$advance =1
 
+   TOOL_DATA[11] = $NULLFRAME
+   ;;TOOL_DATA[5]  = TOOL_DATA[3]:{X 0,Y 0,Z 0,A 15,B 0,C 0}
+   TOOL_DATA[11] = TOOL_DATA[3]:{X 0,Y 0,Z -5,A 90,B 0,C 0}
+ 
+;;   USE FOR L shape 
+   BASE_DATA[18] = $NULLFRAME
+   BASE_DATA[18] = BASE_DATA[17] :{X 0,Y 0,Z -5,A 0,B 0,C 0} ; Use for l shape Base
    lnUsedBase = 18
-   ;lnUsedBase = 16 ; Use for battery milling
-   lnUsedTool = 11  
-   
+   lnUsedTool = 11
+
    gnUsedBase = lnUsedBase
    gnUsedTool = lnUsedTool 
    
+  
    ;; Get new Base_data[15] from Get3Basepoints function
    ;;Get3Basepoints -> return new base origin coordinates based on 7 touch points
    ;;shift origin to the middle of calibration block
+   
+   lfNewbase = $NULLFRAME
    lfNewBase = Get3Basepoints(lnUsedBase,lnUsedTool)
    
-   BASE_DATA[lnUsedBase] = lfNewBase:{X 5,Y 5,Z 5,A 0,B 0,C 0}
-   gfNewBlockBase =  BASE_DATA[lnUsedBase]
-   MoveSettings(lnUsedBase, lnUsedTool, 100, 60)
-ptp xhome1
+  
+   ;; lbOK = GetName(sBaseName[],lTempName[])
+   ;; BASE_NAME[lnUsedBase,]=lTempName[]
+   BASE_DATA[19] = lfNewBase;;:{X -25,Y -25,Z 0,A 0,B 0,C 0}
+  ;; BASE_DATA[19] = lfNewBase:{X -3.5,Y -3.5,Z 3.5,A 0,B 0,C 0}
+   gfNewBlockBase =  lfNewbase
+   MoveSettings(19, lnUsedTool, 100, 60)
+
    END

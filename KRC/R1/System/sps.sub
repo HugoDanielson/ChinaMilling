@@ -39,6 +39,10 @@ DEF  SPS ( )
    
    LOOP
       WAIT FOR NOT($POWER_FAIL)
+      
+      PulsGen12ms ()
+      Pdetection(IN_Switch1,IN_Switch2,FALSE,FALSE)
+      
       ;FOLD BASISTECH PLC
          BasisTech_PLC_LOOP()
       ;ENDFOLD (BASISTECH PLC)

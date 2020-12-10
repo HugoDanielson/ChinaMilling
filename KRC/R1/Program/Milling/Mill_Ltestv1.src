@@ -1,0 +1,264 @@
+&ACCESS RVO
+&REL 150
+&PARAM DISKPATH = KRC:\R1\Program\Milling
+DEF Mill_Ltestv1 ( )
+   INT lnActSt,lnUsedBase,lnUsedTool,lnBaseNr
+   INT lnJobNr, lncounter, lncounter2
+   FRAME lfZcut
+   FRAME lfToolDiamShift
+   FRAME lfStartMillingPos
+   FRAME lfBaseShift
+   FRAME lfBaseCycleZ
+   
+   ;FOLD INIT
+      CONTINUE     
+      ;IF ($T1 OR $T2)THEN
+      GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
+      INTERRUPT ON 3
+      BAS (#INITMOV,0)
+      lnActSt = 1
+      PTP $POS_ACT
+      ;ENDIF
+      
+      ; PTP XHOME
+      
+      PTP lAstartPos
+      
+      SpindleRun(grUsedRPM,#CLOCKWISE)
+      ; Used Base and tool
+      lnUsedBase = 11
+      lnUsedTool = 11
+      
+      gnLastToolNr = 4
+      lnBaseNr = 18
+      
+      gfMillingOffset = $NULLFRAME
+      ;gfMillingOffset.Z = -(grCuttingDepth*(gnMillingCounter-1))
+      
+      lfZcut = $NULLFRAME
+      lfZcut.Z = 0
+      lfBaseShift = {X 1.9,Y 1.9,Z 0.8,A 0,B 0,C 0}   
+      lfBaseShift = {X 11.7,Y 11.5,Z -0.5,A 0,B 0,C 0}   
+      lfBaseCycleZ = $NULLFRAME
+      lfBaseCycleZ.Z = 0
+      BASE_DATA[lnUsedBase] = BASE_DATA[lnBaseNr] : lfBaseShift : lfBaseCycleZ
+      TOOL_DATA[lnUsedTool] = TOOL_DATA[gnLastToolNr] :{X 0,Y 0,Z 0,A 180,B 90,C -90}
+      ;;LOAD_DATA[lnUsedTool] = LOAD_DATA[gnLastToolNr]
+      
+      grUsedRPM = GetMillingRPM(grTool_VC[gnLastToolNr], grTool_Diameter[gnLastToolNr])
+      grUsedMillingSpeed = GetMillingSpeed(grUsedRPM, grTool_ToothCount[gnLastToolNr], grTool_FeedPerTooth[gnLastToolNr])
+   ;ENDFOLD
+   ;MoveSettings (nBase: IN, nTool: IN, nAcc: IN, nVel : IN )
+   lfPrePos[1].X = - grTool_Diameter[4]
+   lfPrePos[2].X = - grTool_Diameter[4]
+   lfPrePos[3].Y = - grTool_Diameter[4]
+   lfPrePos[4].Y = - grTool_Diameter[4]
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 500)  
+   PTP lfPrePos[1] C_PTP    
+   LIN lfPrePos[2] C_DIS
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   ;; Move To PreposMillingPos Point P1 {5mm far from WP surface}
+   lfToolDiamShift   = $NULLFRAME   
+   lfToolDiamShift.X = -5; - grTool_Diameter[4]
+   lfToolDiamShift.Y = grtool_diameter[4]/2;- 5
+   lfToolDiamShift.Z =  grTool_Diameter[4]
+   lfStartMillingPos = lfWorkPos[1] : lfToolDiamShift 
+   LIN lfStartMillingPos
+   WAIT FOR  (ABS(gIActSpeed) > grUsedMillingSpeed-100)
+   ;; Move To Milling Point P1
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   lfToolDiamShift   = $NULLFRAME   
+   lfToolDiamShift.X = 0;  grTool_Diameter[4]
+   lfToolDiamShift.Y = grtool_diameter[4]/2;- 5
+   lfToolDiamShift.Z =  grTool_Diameter[4]
+   LIN lfWorkPos[1]:lfToolDiamShift C_VEL 
+   ;; Move To Milling Point P2
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   lfToolDiamShift   = $NULLFRAME   
+   lfToolDiamShift.X = 0;+ grTool_Diameter[4]
+   lfToolDiamShift.Y = grtool_diameter[4]/2;- 5
+   lfToolDiamShift.Z =  -grTool_Diameter[4]
+   LIN lfWorkPos[2]:lfToolDiamShift C_VEL
+   
+   ;;**********************
+   ;; 2nd Cycle 
+   ;;**********************
+   lfBaseCycleZ = $NULLFRAME
+   lfBaseCycleZ.Z = - grTool_Diameter[4]+1
+   BASE_DATA[lnUsedBase] = BASE_DATA[lnBaseNr] : lfBaseShift : lfBaseCycleZ
+   ;; Move To Milling Point P2
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   lfToolDiamShift   = $NULLFRAME   
+   lfToolDiamShift.X = 0;+ grTool_Diameter[4]
+   lfToolDiamShift.Y = grtool_diameter[4]/2;- 5
+   lfToolDiamShift.Z =  -grTool_Diameter[4]
+   LIN lfWorkPos[2]:lfToolDiamShift C_VEL
+   ;; Move To Milling Point P1
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   lfToolDiamShift   = $NULLFRAME   
+   lfToolDiamShift.X = 0;  grTool_Diameter[4]
+   lfToolDiamShift.Y = grtool_diameter[4]/2;- 5
+   lfToolDiamShift.Z =  grTool_Diameter[4]
+   LIN lfWorkPos[1]:lfToolDiamShift C_VEL 
+   
+   ;; End of Milling Move Out of the WP
+   LIN_REL {X -5} C_VEL #TOOL 
+   LIN_REL {Z 100} C_VEL #BASE
+   lfBaseCycleZ = $NULLFRAME
+   lfBaseCycleZ.Z = 0
+   
+   BASE_DATA[lnUsedBase] = BASE_DATA[lnBaseNr] : lfBaseShift : lfBaseCycleZ
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 500)   
+   LIN lfPrePos[2] C_DIS
+   LIN lfPrePos[3] C_DIS
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   ;; Move To PreposMillingPos Point P3 {5mm far from WP surface}
+   lfToolDiamShift   = $NULLFRAME   
+   lfToolDiamShift.X = -5
+   lfToolDiamShift.Y = - grTool_Diameter[4]/2
+   lfToolDiamShift.Z =  grTool_Diameter[4]
+   lfStartMillingPos = lfWorkPos[3] : lfToolDiamShift 
+   LIN lfStartMillingPos
+   
+   ;; Move To Milling Point P3
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   lfToolDiamShift   =   $NULLFRAME   
+   lfToolDiamShift.x =  0
+   lfToolDiamShift.Y =  -grTool_Diameter[4]/2
+   lfToolDiamShift.Z =  grTool_Diameter[4] 
+   LIN lfWorkPos[3]:lfToolDiamShift C_VEL
+   ;; Move To Milling Point P4
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   lfToolDiamShift   =   $NULLFRAME   
+   lfToolDiamShift.Y = -  grTool_Diameter[4]/2
+   lfToolDiamShift.Z = - grTool_Diameter[4] 
+   LIN lfWorkPos[4]:lfToolDiamShift C_VEL
+   ;;**********************
+   ;; 2nd Cycle 
+   ;;**********************
+   lfBaseCycleZ = $NULLFRAME
+   lfBaseCycleZ.Z = - grTool_Diameter[4]+1
+   BASE_DATA[lnUsedBase] = BASE_DATA[lnBaseNr] : lfBaseShift : lfBaseCycleZ
+   ;; Move To Milling Point P4
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   lfToolDiamShift   =   $NULLFRAME   
+   lfToolDiamShift.Y = -  grTool_Diameter[4]/2
+   lfToolDiamShift.Z = - grTool_Diameter[4] 
+   LIN lfWorkPos[4]:lfToolDiamShift C_VEL
+   ;; Move To Milling Point P3
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   lfToolDiamShift   =   $NULLFRAME   
+   lfToolDiamShift.x =  0
+   lfToolDiamShift.Y =  -grTool_Diameter[4]/2
+   lfToolDiamShift.Z =  grTool_Diameter[4] 
+   LIN lfWorkPos[3]:lfToolDiamShift C_VEL
+  
+  ;; End of Milling Move Out of the WP
+   LIN_REL {X -5} C_VEL #TOOL    
+   LIN_REL {Z 100} C_VEL #BASE
+   
+   
+   ;*************************************************************
+   ;*                      Mill TOP SURFACE                     *
+   ;*************************************************************
+   lfBaseCycleZ = $NULLFRAME
+   lfBaseCycleZ.Z = 0
+   BASE_DATA[lnUsedBase] = BASE_DATA[lnBaseNr] : lfBaseShift : lfBaseCycleZ
+   TOOL_DATA[lnUsedTool] = TOOL_DATA[gnLastToolNr] :{X 0,Y 0,Z 0,A 270,B 0,C 0}
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   ;; Move To PreposMillingPos Point P5 {5mm far from WP surface}
+   lfToolDiamShift   = $NULLFRAME   
+   lfToolDiamShift.X = 0
+   lfToolDiamShift.Y = grTool_Diameter[4]
+   lfToolDiamShift.Z = 5
+   lfStartMillingPos = lfWorkPos[5] : lfToolDiamShift 
+   LIN lfStartMillingPos
+   ;; Move To Milling Point P5
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   lfToolDiamShift   =   $NULLFRAME   
+   lfToolDiamShift.x =  0
+   lfToolDiamShift.Y =  0;grTool_Diameter[4]
+   lfToolDiamShift.Z =  0
+   LIN lfWorkPos[5]:lfToolDiamShift C_VEL
+   
+   ;; Move To Milling Point P6
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   lfToolDiamShift   =   $NULLFRAME   
+   lfToolDiamShift.x =  0
+   lfToolDiamShift.Y =  0
+   lfToolDiamShift.Z =  0
+   LIN lfWorkPos[6]:lfToolDiamShift C_VEL
+   
+   ;; Move To Milling Point P7
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   lfToolDiamShift   =   $NULLFRAME   
+   lfToolDiamShift.x =  grtool_diameter[4]
+   lfToolDiamShift.Y =  0
+   lfToolDiamShift.Z =  0
+   LIN lfWorkPos[7]:lfToolDiamShift C_VEL
+   
+   ;*************************************************************
+   ;*                      Mill CHAMFER                         *
+   ;*************************************************************
+   ;; Move To PreposMillingPos Point P8 {5mm far from WP surface}
+   lfToolDiamShift   = $NULLFRAME   
+   lfToolDiamShift.X = grtool_diameter[4]
+   lfToolDiamShift.Y = 0;grTool_Diameter[4]
+   lfToolDiamShift.Z = 5
+   lfStartMillingPos = lfWorkPos[8] : lfToolDiamShift 
+   LIN lfStartMillingPos
+   
+    MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   lfToolDiamShift   =   $NULLFRAME   
+   lfToolDiamShift.x =  grTool_Diameter[4]
+   lfToolDiamShift.Y =  0
+   lfToolDiamShift.Z =  0
+   LIN lfWorkPos[8]:lfToolDiamShift C_VEL
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   lfToolDiamShift   =   $NULLFRAME   
+   lfToolDiamShift.x =  -grTool_Diameter[4]
+   lfToolDiamShift.Y =  0
+   lfToolDiamShift.Z =  0
+   LIN lfWorkPos[9]:lfToolDiamShift C_VEL
+   
+    ;; Move To PreposMillingPos Point P10 {5mm far from WP surface}
+   lfToolDiamShift   = $NULLFRAME   
+   lfToolDiamShift.X = 0
+   lfToolDiamShift.Y = -grTool_Diameter[4]
+   lfToolDiamShift.Z = 5
+   lfStartMillingPos = lfWorkPos[10] : lfToolDiamShift 
+   LIN lfStartMillingPos
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   lfToolDiamShift   =   $NULLFRAME   
+   lfToolDiamShift.x =  0
+   lfToolDiamShift.Y =  -grTool_Diameter[4]
+   lfToolDiamShift.Z =  0
+   LIN lfWorkPos[10]:lfToolDiamShift C_VEL
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   lfToolDiamShift   =   $NULLFRAME   
+   lfToolDiamShift.x =  0
+   lfToolDiamShift.Y =  grTool_Diameter[4]
+   lfToolDiamShift.Z =  0
+   LIN lfWorkPos[11]:lfToolDiamShift C_VEL
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 500)   
+   ;; End of Milling Move Out of the WP
+   TRIGGER WHEN DISTANCE=1 DELAY=0 DO  SpindleSetSpeed(50) PRIO=-1 
+   LIN_REL {Z 5} C_VEL #TOOL 
+   
+   LIN_REL {Z 100} C_VEL #BASE
+   
+   TOOL_DATA[lnUsedTool] = TOOL_DATA[gnLastToolNr] :{X 0,Y 0,Z 0,A 180,B 90,C -90}
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 500)  
+   PTP lfPrePos[1] C_PTP    
+   
+  
+   WAIT SEC 1
+   SpindleStop() 
+END

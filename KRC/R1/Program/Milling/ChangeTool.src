@@ -1,0 +1,23 @@
+&ACCESS RV
+DEF ChangeTool ( )
+   INT lnAnswer
+   
+   lnAnswer = 0
+   MsgDialog(lnAnswer, "Tool Change", "TOOL OPERATION", "TOOL", "PICK", "RETURN", "CANCEL") 
+   
+   SWITCH lnAnswer
+      CASE 5
+         MsgNotify("Cancel")
+         RETURN
+      CASE 6
+         MsgNotify("RETURN Tool")
+         RETURN
+      CASE 7
+         MsgNotify("PICK Tool")
+        ;; Station2(gnSt2)
+         
+         RETURN
+      DEFAULT
+   ENDSWITCH
+   
+END

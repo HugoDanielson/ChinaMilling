@@ -1,4 +1,4 @@
-&ACCESS RV$1
+&ACCESS RV$
 &REL 11
 DEFDAT  $CONFIG
 ;FOLD BASISTECH GLOBALS
@@ -770,17 +770,20 @@ DECL CONV_MODE_TYPE ActualConveyorMode=#Relative
 ; Userdefined Externals 
 ;==================================
 
-SIGNAL IN_ToolHolder1 $IN[601]
-SIGNAL IN_ToolHolder2 $IN[602]
-SIGNAL IN_ToolHolder3 $IN[603]
-SIGNAL IN_ToolHolder4 $IN[604]
+SIGNAL IN_ToolHolder1 $IN[1001]
+SIGNAL IN_ToolHolder2 $IN[1002]
+SIGNAL IN_ToolHolder3 $IN[1003]
+SIGNAL IN_ToolHolder4 $IN[1004]
 
-SIGNAL IN_ProbeConnected $IN[610]
-SIGNAL IN_ProbeLowBat $IN[611]
-SIGNAL IN_ProbeError $IN[612]
-SIGNAL IN_ProbeTouch $IN[613]
-SIGNAL IN_Switch2 $IN[615]
-SIGNAL IN_Switch1 $IN[616]
+SIGNAL IN_ProbeConnected $IN[1010]
+SIGNAL IN_ProbeLowBat $IN[1011]
+SIGNAL IN_ProbeError $IN[1012]
+SIGNAL IN_ProbeTouch $IN[1013]
+SIGNAL IN_Switch2 $IN[1015]
+SIGNAL IN_Switch1 $IN[1016]
+
+SIGNAL OUT_Light $OUT[1032]
+SIGNAL OUT_ProbeStart $OUT[1039]
 ; Milling 
 
 

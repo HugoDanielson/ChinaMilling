@@ -25,8 +25,7 @@ GLOBAL SIGNAL gDIChangeToolEnableOK $IN[160]
 GLOBAL SIGNAL gDOToolRelease $OUT[131]
 GLOBAL SIGNAL gDIToolReleasedOK $IN[125]
 GLOBAL SIGNAL gDOToolClamp $OUT[132]
-GLOBAL SIGNAL gDOSpindleEnable $OUT[133]
-GLOBAL SIGNAL gDISpindleEnableOK $IN[161]
+
 
 ;ENDFOLD (SpindleControlGroup) 
 ;FOLD FixtureControlGroup

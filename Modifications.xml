@@ -3,7 +3,7 @@
   <Folder OriginalName="KRC:" CurrentName="KRC:" Type="None" OriginalPath="KRC:\">
     <Folder OriginalName="R1" CurrentName="R1" Type="None" OriginalPath="KRC:\R1">
       <Folder OriginalName="Mada" CurrentName="Mada" Type="None" OriginalPath="KRC:\R1\Mada">
-        <File OriginalName="$machine.dat" CurrentName="$machine.dat" Type="None" OriginalPath="KRC:\R1\Mada\$machine.dat" OriginalChecksum="efacde4ea43d9f171befd97d553e6411" CurrentChecksum="efacde4ea43d9f171befd97d553e6411" />
+        <File OriginalName="$machine.dat" CurrentName="$machine.dat" Type="None" OriginalPath="KRC:\R1\Mada\$machine.dat" OriginalChecksum="ba23146ebd756479b93f62d9cadf646f" CurrentChecksum="ba23146ebd756479b93f62d9cadf646f" />
         <File OriginalName="$robcor.dat" CurrentName="$robcor.dat" Type="None" OriginalPath="KRC:\R1\Mada\$robcor.dat" OriginalChecksum="c88316bcd4ce9fd1e7acd5c8e7780376" CurrentChecksum="c88316bcd4ce9fd1e7acd5c8e7780376" />
       </Folder>
       <Folder OriginalName="Program" CurrentName="Program" Type="None" OriginalPath="KRC:\R1\Program">
@@ -72,7 +72,7 @@
               <File OriginalName="TestStationMoves.dat" CurrentName="TestStationMoves.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Jobs\Test\TestStationMoves.dat" OriginalChecksum="40a1fb0f4698156b7bf20120ce72aeca" CurrentChecksum="40a1fb0f4698156b7bf20120ce72aeca" />
               <File OriginalName="TestStationMoves.src" CurrentName="TestStationMoves.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Jobs\Test\TestStationMoves.src" OriginalChecksum="f4b5f3207e8bc4c49c3b35c017ba7202" CurrentChecksum="f4b5f3207e8bc4c49c3b35c017ba7202" />
             </Folder>
-            <File OriginalName="Spindle.src" CurrentName="Spindle.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Jobs\Spindle.src" OriginalChecksum="c46adf7945bb12559f1bf54a0e99f703" CurrentChecksum="c46adf7945bb12559f1bf54a0e99f703" />
+            <File OriginalName="Spindle.src" CurrentName="Spindle.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Jobs\Spindle.src" OriginalChecksum="444341bb581a50bdd7387f259cfb521d" CurrentChecksum="444341bb581a50bdd7387f259cfb521d" />
             <File OriginalName="WatchDog.src" CurrentName="WatchDog.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Jobs\WatchDog.src" OriginalChecksum="22ba8f10f9376ae4e93d15cbde1ef156" CurrentChecksum="22ba8f10f9376ae4e93d15cbde1ef156" />
           </Folder>
           <Folder OriginalName="Moves" CurrentName="Moves" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Moves">
@@ -122,6 +122,13 @@
               <File OriginalName="TestBaseCalc.dat" CurrentName="TestBaseCalc.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\BaseCalib\TestBaseCalc.dat" OriginalChecksum="8bd8061a26f9ae5944476e29f5d981e4" CurrentChecksum="8bd8061a26f9ae5944476e29f5d981e4" />
               <File OriginalName="TestBaseCalc.src" CurrentName="TestBaseCalc.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\BaseCalib\TestBaseCalc.src" OriginalChecksum="0719cb6669fdbd3d669223eefeb286e6" CurrentChecksum="0719cb6669fdbd3d669223eefeb286e6" />
             </Folder>
+            <Folder OriginalName="BaseCalibNew" CurrentName="BaseCalibNew" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\BaseCalibNew">
+              <File OriginalName="FRAMELIB.dat" CurrentName="FRAMELIB.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\BaseCalibNew\FRAMELIB.dat" OriginalChecksum="0858d82bc33a80c605d215e78121e6f0" CurrentChecksum="0858d82bc33a80c605d215e78121e6f0" />
+              <File OriginalName="FRAMELIB.src" CurrentName="FRAMELIB.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\BaseCalibNew\FRAMELIB.src" OriginalChecksum="e2639a27bda1e48f74f342044dbb6841" CurrentChecksum="e2639a27bda1e48f74f342044dbb6841" />
+            </Folder>
+            <Folder OriginalName="Functions" CurrentName="Functions" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Functions">
+              <File OriginalName="GetName.src" CurrentName="GetName.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Functions\GetName.src" OriginalChecksum="ca2ea8a8c6acc66191938493f1c6e8d6" CurrentChecksum="ca2ea8a8c6acc66191938493f1c6e8d6" />
+            </Folder>
             <Folder OriginalName="Milling" CurrentName="Milling" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Milling">
               <File OriginalName="GetMillingRPM.src" CurrentName="GetMillingRPM.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Milling\GetMillingRPM.src" OriginalChecksum="31c6a29f8397b0eb12874e4d598d37d3" CurrentChecksum="31c6a29f8397b0eb12874e4d598d37d3" />
               <File OriginalName="GetMillingSpeed.src" CurrentName="GetMillingSpeed.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Milling\GetMillingSpeed.src" OriginalChecksum="96827b44b2bf0a4442621ee3b8e8989e" CurrentChecksum="96827b44b2bf0a4442621ee3b8e8989e" />
@@ -148,33 +155,30 @@
               <File OriginalName="ResetIO.src" CurrentName="ResetIO.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Vars_Buttons\ResetIO.src" OriginalChecksum="a51dc9159fef1350ef9d6d313e07e57e" CurrentChecksum="a51dc9159fef1350ef9d6d313e07e57e" />
               <File OriginalName="ResetVars.src" CurrentName="ResetVars.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Vars_Buttons\ResetVars.src" OriginalChecksum="fbd8d7e38df791ca23b1d254876199f8" CurrentChecksum="fbd8d7e38df791ca23b1d254876199f8" />
             </Folder>
-            <File OriginalName="Pdetection.dat" CurrentName="Pdetection.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Pdetection.dat" OriginalChecksum="e757e257c9aa2d2ef24f4a75f6153454" CurrentChecksum="e757e257c9aa2d2ef24f4a75f6153454" />
-            <File OriginalName="PulsGen12ms.dat" CurrentName="PulsGen12ms.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\PulsGen12ms.dat" OriginalChecksum="62bc6d4c2e6b17ed10b25f96fe945cd0" CurrentChecksum="62bc6d4c2e6b17ed10b25f96fe945cd0" />
-            <Folder OriginalName="BaseCalibNew" CurrentName="BaseCalibNew" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\BaseCalibNew">
-              <File OriginalName="FRAMELIB.dat" CurrentName="FRAMELIB.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\BaseCalibNew\FRAMELIB.dat" OriginalChecksum="0858d82bc33a80c605d215e78121e6f0" CurrentChecksum="0858d82bc33a80c605d215e78121e6f0" />
-              <File OriginalName="FRAMELIB.src" CurrentName="FRAMELIB.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\BaseCalibNew\FRAMELIB.src" OriginalChecksum="e2639a27bda1e48f74f342044dbb6841" CurrentChecksum="e2639a27bda1e48f74f342044dbb6841" />
-            </Folder>
-            <Folder OriginalName="Functions" CurrentName="Functions" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Functions">
-              <File OriginalName="GetName.src" CurrentName="GetName.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Functions\GetName.src" OriginalChecksum="ca2ea8a8c6acc66191938493f1c6e8d6" CurrentChecksum="ca2ea8a8c6acc66191938493f1c6e8d6" />
-            </Folder>
-            <File OriginalName="Pdetection.src" CurrentName="Pdetection.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Pdetection.src" OriginalChecksum="77b638e17492bc76c5aa3bbae1e2d6b9" CurrentChecksum="77b638e17492bc76c5aa3bbae1e2d6b9" />
-            <File OriginalName="PulsGen12ms.src" CurrentName="PulsGen12ms.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\PulsGen12ms.src" OriginalChecksum="df215c1954f650124592cbdab089333a" CurrentChecksum="df215c1954f650124592cbdab089333a" />
+            <File OriginalName="Pdetection.dat" CurrentName="Pdetection.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Pdetection.dat" OriginalChecksum="8fa0cc39976b91e85e88a7f7c5686982" CurrentChecksum="8fa0cc39976b91e85e88a7f7c5686982" />
+            <File OriginalName="Pdetection.src" CurrentName="Pdetection.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Pdetection.src" OriginalChecksum="89f762593a0a23966224d1358fdb0155" CurrentChecksum="89f762593a0a23966224d1358fdb0155" />
+            <File OriginalName="PulsGen12ms.dat" CurrentName="PulsGen12ms.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\PulsGen12ms.dat" OriginalChecksum="e4d04143fd430a75432c4be8ca2e7879" CurrentChecksum="e4d04143fd430a75432c4be8ca2e7879" />
+            <File OriginalName="PulsGen12ms.src" CurrentName="PulsGen12ms.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\PulsGen12ms.src" OriginalChecksum="c8d651ec5ad7bdada0f02f90c190f42e" CurrentChecksum="c8d651ec5ad7bdada0f02f90c190f42e" />
           </Folder>
           <File OriginalName="Main.src" CurrentName="Main.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Main.src" OriginalChecksum="834d5f56916cb97e29115e9b92d879a6" CurrentChecksum="834d5f56916cb97e29115e9b92d879a6" />
           <File OriginalName="Main_2.src" CurrentName="Main_2.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Main_2.src" OriginalChecksum="0dc2f2c7017f4155b2fe9a95a0148445" CurrentChecksum="0dc2f2c7017f4155b2fe9a95a0148445" />
+          <Folder OriginalName="MetalTestMill" CurrentName="MetalTestMill" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\MetalTestMill">
+            <File OriginalName="BaseCalib.dat" CurrentName="BaseCalib.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\MetalTestMill\BaseCalib.dat" OriginalChecksum="290119fe429bf69a7b0b0177be613a14" CurrentChecksum="290119fe429bf69a7b0b0177be613a14" />
+            <File OriginalName="BaseCalib.src" CurrentName="BaseCalib.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\MetalTestMill\BaseCalib.src" OriginalChecksum="3c7deed3eba4233827d9cedf6b00d5a2" CurrentChecksum="3c7deed3eba4233827d9cedf6b00d5a2" />
+          </Folder>
         </Folder>
         <Folder OriginalName="Milling" CurrentName="Milling" Type="None" OriginalPath="KRC:\R1\Program\Milling">
           <File OriginalName="ChangeTool.dat" CurrentName="ChangeTool.dat" Type="None" OriginalPath="KRC:\R1\Program\Milling\ChangeTool.dat" OriginalChecksum="6dde587dc9fc7516438dc294cd212304" CurrentChecksum="6dde587dc9fc7516438dc294cd212304" />
-          <File OriginalName="Mill_Ltestv1.dat" CurrentName="Mill_Ltestv1.dat" Type="None" OriginalPath="KRC:\R1\Program\Milling\Mill_Ltestv1.dat" OriginalChecksum="f921d55cac32092d436e0e9524f0ba55" CurrentChecksum="f921d55cac32092d436e0e9524f0ba55" />
-          <File OriginalName="Wood_Test.dat" CurrentName="Wood_Test.dat" Type="None" OriginalPath="KRC:\R1\Program\Milling\Wood_Test.dat" OriginalChecksum="7065e0bbf4ba1186fc214f673c6c639e" CurrentChecksum="7065e0bbf4ba1186fc214f673c6c639e" />
-          <File OriginalName="Wood_Test_2.dat" CurrentName="Wood_Test_2.dat" Type="None" OriginalPath="KRC:\R1\Program\Milling\Wood_Test_2.dat" OriginalChecksum="5935ca215049f92fd9b54383c0b5b652" CurrentChecksum="5935ca215049f92fd9b54383c0b5b652" />
           <File OriginalName="ChangeTool.src" CurrentName="ChangeTool.src" Type="None" OriginalPath="KRC:\R1\Program\Milling\ChangeTool.src" OriginalChecksum="eb8855826919ad170e74bf8955deddcc" CurrentChecksum="eb8855826919ad170e74bf8955deddcc" />
+          <File OriginalName="Mill_Ltestv1.dat" CurrentName="Mill_Ltestv1.dat" Type="None" OriginalPath="KRC:\R1\Program\Milling\Mill_Ltestv1.dat" OriginalChecksum="f921d55cac32092d436e0e9524f0ba55" CurrentChecksum="f921d55cac32092d436e0e9524f0ba55" />
           <File OriginalName="Mill_Ltestv1.src" CurrentName="Mill_Ltestv1.src" Type="None" OriginalPath="KRC:\R1\Program\Milling\Mill_Ltestv1.src" OriginalChecksum="7e84d8a175b8a3fa6502ea21c0b361bf" CurrentChecksum="7e84d8a175b8a3fa6502ea21c0b361bf" />
+          <File OriginalName="Wood_Test.dat" CurrentName="Wood_Test.dat" Type="None" OriginalPath="KRC:\R1\Program\Milling\Wood_Test.dat" OriginalChecksum="7065e0bbf4ba1186fc214f673c6c639e" CurrentChecksum="7065e0bbf4ba1186fc214f673c6c639e" />
           <File OriginalName="Wood_Test.src" CurrentName="Wood_Test.src" Type="None" OriginalPath="KRC:\R1\Program\Milling\Wood_Test.src" OriginalChecksum="515d20ab94d26f09c064c6fefb4572be" CurrentChecksum="515d20ab94d26f09c064c6fefb4572be" />
+          <File OriginalName="Wood_Test_2.dat" CurrentName="Wood_Test_2.dat" Type="None" OriginalPath="KRC:\R1\Program\Milling\Wood_Test_2.dat" OriginalChecksum="5935ca215049f92fd9b54383c0b5b652" CurrentChecksum="5935ca215049f92fd9b54383c0b5b652" />
           <File OriginalName="Wood_Test_2.src" CurrentName="Wood_Test_2.src" Type="None" OriginalPath="KRC:\R1\Program\Milling\Wood_Test_2.src" OriginalChecksum="ef000d8258d3a0aa4f8c16e322ce3efb" CurrentChecksum="ef000d8258d3a0aa4f8c16e322ce3efb" />
         </Folder>
-        <File OriginalName="CollDetect_UserAction.dat" CurrentName="CollDetect_UserAction.dat" Type="None" OriginalPath="KRC:\R1\Program\CollDetect_UserAction.dat" OriginalChecksum="525fb8ceb628df9818e433edf1e6f1bf" CurrentChecksum="525fb8ceb628df9818e433edf1e6f1bf" />
-        <File OriginalName="CollDetect_UserAction.src" CurrentName="CollDetect_UserAction.src" Type="None" OriginalPath="KRC:\R1\Program\CollDetect_UserAction.src" OriginalChecksum="66e63c582463d895b3c02d3a038a6672" CurrentChecksum="66e63c582463d895b3c02d3a038a6672" />
+        <File OriginalName="CollDetect_UserAction.dat" CurrentName="CollDetect_UserAction.dat" Type="None" OriginalPath="KRC:\R1\Program\CollDetect_UserAction.dat" OriginalChecksum="c1a6d93fc434d0ce300c781afe888fcc" CurrentChecksum="c1a6d93fc434d0ce300c781afe888fcc" />
+        <File OriginalName="CollDetect_UserAction.src" CurrentName="CollDetect_UserAction.src" Type="None" OriginalPath="KRC:\R1\Program\CollDetect_UserAction.src" OriginalChecksum="788146b24429f3a3e10be98b12bd8f40" CurrentChecksum="788146b24429f3a3e10be98b12bd8f40" />
         <File OriginalName="masref_user.dat" CurrentName="masref_user.dat" Type="None" OriginalPath="KRC:\R1\Program\masref_user.dat" OriginalChecksum="f67ff606ea52204705eb1141cf7808a2" CurrentChecksum="f67ff606ea52204705eb1141cf7808a2" />
         <File OriginalName="masref_user.src" CurrentName="masref_user.src" Type="None" OriginalPath="KRC:\R1\Program\masref_user.src" OriginalChecksum="a78246b787ecdb0d82dc7e0181ae9159" CurrentChecksum="a78246b787ecdb0d82dc7e0181ae9159" />
         <File OriginalName="millingcn.dat" CurrentName="millingcn.dat" Type="None" OriginalPath="KRC:\R1\Program\millingcn.dat" OriginalChecksum="830b8b05ed9e059ce159596597e66bae" CurrentChecksum="830b8b05ed9e059ce159596597e66bae" />
@@ -183,17 +187,17 @@
         <File OriginalName="test.src" CurrentName="test.src" Type="None" OriginalPath="KRC:\R1\Program\test.src" OriginalChecksum="e07681abb36ec9fa2006b8858f7439b8" CurrentChecksum="e07681abb36ec9fa2006b8858f7439b8" />
       </Folder>
       <Folder OriginalName="System" CurrentName="System" Type="None" OriginalPath="KRC:\R1\System">
-        <File OriginalName="$config.dat" CurrentName="$config.dat" Type="None" OriginalPath="KRC:\R1\System\$config.dat" OriginalChecksum="040138e7b26ace49f538449359101394" CurrentChecksum="040138e7b26ace49f538449359101394" />
-        <File OriginalName="bas.src" CurrentName="bas.src" Type="None" OriginalPath="KRC:\R1\System\bas.src" OriginalChecksum="99a1d207c2bcefae2dc764b2afad5e2b" CurrentChecksum="99a1d207c2bcefae2dc764b2afad5e2b" />
-        <File OriginalName="collmonlib.dat" CurrentName="collmonlib.dat" Type="None" OriginalPath="KRC:\R1\System\collmonlib.dat" OriginalChecksum="4edec7718879cda7d357761d769ebda6" CurrentChecksum="4edec7718879cda7d357761d769ebda6" />
-        <File OriginalName="collmonlib.src" CurrentName="collmonlib.src" Type="None" OriginalPath="KRC:\R1\System\collmonlib.src" OriginalChecksum="470a8061fd6d0ce8f7fc0891401c2614" CurrentChecksum="470a8061fd6d0ce8f7fc0891401c2614" />
-        <File OriginalName="ir_stopm.src" CurrentName="ir_stopm.src" Type="None" OriginalPath="KRC:\R1\System\ir_stopm.src" OriginalChecksum="3991d21dcf3fb403f09a3f67574fece6" CurrentChecksum="3991d21dcf3fb403f09a3f67574fece6" />
+        <File OriginalName="$config.dat" CurrentName="$config.dat" Type="None" OriginalPath="KRC:\R1\System\$config.dat" OriginalChecksum="f18a3e0dc7c76fe8bb7caed344dfd75b" CurrentChecksum="f18a3e0dc7c76fe8bb7caed344dfd75b" />
+        <File OriginalName="bas.src" CurrentName="bas.src" Type="None" OriginalPath="KRC:\R1\System\bas.src" OriginalChecksum="1330eeda5ce21b4b3ef485e112d4811c" CurrentChecksum="1330eeda5ce21b4b3ef485e112d4811c" />
+        <File OriginalName="collmonlib.dat" CurrentName="collmonlib.dat" Type="None" OriginalPath="KRC:\R1\System\collmonlib.dat" OriginalChecksum="c6f31fdb406f40b92fd52c2a02365e00" CurrentChecksum="c6f31fdb406f40b92fd52c2a02365e00" />
+        <File OriginalName="collmonlib.src" CurrentName="collmonlib.src" Type="None" OriginalPath="KRC:\R1\System\collmonlib.src" OriginalChecksum="9a239cb0f0f0486afcd2f1c433b29fa5" CurrentChecksum="9a239cb0f0f0486afcd2f1c433b29fa5" />
+        <File OriginalName="ir_stopm.src" CurrentName="ir_stopm.src" Type="None" OriginalPath="KRC:\R1\System\ir_stopm.src" OriginalChecksum="9b238352122e0e1cc238219ba5ea578b" CurrentChecksum="9b238352122e0e1cc238219ba5ea578b" />
         <File OriginalName="masref_main.dat" CurrentName="masref_main.dat" Type="None" OriginalPath="KRC:\R1\System\masref_main.dat" OriginalChecksum="1bb5d06ccb2b89ecda13ff7b7d69fc69" CurrentChecksum="1bb5d06ccb2b89ecda13ff7b7d69fc69" />
         <File OriginalName="masref_main.src" CurrentName="masref_main.src" Type="None" OriginalPath="KRC:\R1\System\masref_main.src" OriginalChecksum="0bf966476bc5a47eba933e80b15733ad" CurrentChecksum="0bf966476bc5a47eba933e80b15733ad" />
-        <File OriginalName="MsgLib.dat" CurrentName="MsgLib.dat" Type="None" OriginalPath="KRC:\R1\System\MsgLib.dat" OriginalChecksum="41b47238c5c391cb2e0dffad9ba5641f" CurrentChecksum="41b47238c5c391cb2e0dffad9ba5641f" />
-        <File OriginalName="MsgLib.src" CurrentName="MsgLib.src" Type="None" OriginalPath="KRC:\R1\System\MsgLib.src" OriginalChecksum="12636340a19ec237230a51d543e84240" CurrentChecksum="12636340a19ec237230a51d543e84240" />
+        <File OriginalName="MsgLib.dat" CurrentName="MsgLib.dat" Type="None" OriginalPath="KRC:\R1\System\MsgLib.dat" OriginalChecksum="bf7e42cf357e2ac59038824fed3c218f" CurrentChecksum="bf7e42cf357e2ac59038824fed3c218f" />
+        <File OriginalName="MsgLib.src" CurrentName="MsgLib.src" Type="None" OriginalPath="KRC:\R1\System\MsgLib.src" OriginalChecksum="ccfa4e214d75d5b810af3c5de62354bf" CurrentChecksum="ccfa4e214d75d5b810af3c5de62354bf" />
         <File OriginalName="PokeOutputs.src" CurrentName="PokeOutputs.src" Type="None" OriginalPath="KRC:\R1\System\PokeOutputs.src" OriginalChecksum="57d990f826b6db857024b5ce895785fe" CurrentChecksum="57d990f826b6db857024b5ce895785fe" />
-        <File OriginalName="sps.sub" CurrentName="sps.sub" Type="None" OriginalPath="KRC:\R1\System\sps.sub" OriginalChecksum="992b9461b39102d5d191d1e42bb515d1" CurrentChecksum="992b9461b39102d5d191d1e42bb515d1" />
+        <File OriginalName="sps.sub" CurrentName="sps.sub" Type="None" OriginalPath="KRC:\R1\System\sps.sub" OriginalChecksum="0451213370c760c2c6acfa88514f098b" CurrentChecksum="0451213370c760c2c6acfa88514f098b" />
       </Folder>
       <Folder OriginalName="TP" CurrentName="TP" Type="None" OriginalPath="KRC:\R1\TP">
         <Folder OriginalName="BrakeTest" CurrentName="BrakeTest" Type="None" OriginalPath="KRC:\R1\TP\BrakeTest">
@@ -209,7 +213,7 @@
           <File OriginalName="BrakeTestStart.src" CurrentName="BrakeTestStart.src" Type="None" OriginalPath="KRC:\R1\TP\BrakeTest\BrakeTestStart.src" OriginalChecksum="2872134dcf6bc698ce343dd84c4c6ed5" CurrentChecksum="2872134dcf6bc698ce343dd84c4c6ed5" />
         </Folder>
         <Folder OriginalName="Milling" CurrentName="Milling" Type="None" OriginalPath="KRC:\R1\TP\Milling">
-          <File OriginalName="AMM_autostop.src" CurrentName="AMM_autostop.src" Type="None" OriginalPath="KRC:\R1\TP\Milling\AMM_autostop.src" OriginalChecksum="031ed0141e6e71cf2fbcddc6c20d0907" CurrentChecksum="031ed0141e6e71cf2fbcddc6c20d0907" />
+          <File OriginalName="AMM_autostop.src" CurrentName="AMM_autostop.src" Type="None" OriginalPath="KRC:\R1\TP\Milling\AMM_autostop.src" OriginalChecksum="6c60b07129ee60663832b0212809f7e4" CurrentChecksum="6c60b07129ee60663832b0212809f7e4" />
           <File OriginalName="AMM_Config.dat" CurrentName="AMM_Config.dat" Type="None" OriginalPath="KRC:\R1\TP\Milling\AMM_Config.dat" OriginalChecksum="70adce7feab9ca4c878b686dde783e83" CurrentChecksum="70adce7feab9ca4c878b686dde783e83" />
           <File OriginalName="AMM_error.src" CurrentName="AMM_error.src" Type="None" OriginalPath="KRC:\R1\TP\Milling\AMM_error.src" OriginalChecksum="db24c77a9436df7d55677d3a3b60faeb" CurrentChecksum="db24c77a9436df7d55677d3a3b60faeb" />
           <File OriginalName="amm_main.src" CurrentName="amm_main.src" Type="None" OriginalPath="KRC:\R1\TP\Milling\amm_main.src" OriginalChecksum="13c11c30a9c5e4313e1762668e3b21a4" CurrentChecksum="13c11c30a9c5e4313e1762668e3b21a4" />
@@ -222,9 +226,12 @@
           <File OriginalName="AMM_USER.dat" CurrentName="AMM_USER.dat" Type="None" OriginalPath="KRC:\R1\TP\Milling\AMM_USER.dat" OriginalChecksum="9b54c105e8eca1bc5c3acb01e8d3adfb" CurrentChecksum="9b54c105e8eca1bc5c3acb01e8d3adfb" />
           <File OriginalName="AMM_USER.src" CurrentName="AMM_USER.src" Type="None" OriginalPath="KRC:\R1\TP\Milling\AMM_USER.src" OriginalChecksum="5a98d8d9691f319fa45925ead3ade8f5" CurrentChecksum="5a98d8d9691f319fa45925ead3ade8f5" />
           <File OriginalName="amm_warning.src" CurrentName="amm_warning.src" Type="None" OriginalPath="KRC:\R1\TP\Milling\amm_warning.src" OriginalChecksum="7aaff51fdbbf2fea038a507bdc092fab" CurrentChecksum="7aaff51fdbbf2fea038a507bdc092fab" />
-          <File OriginalName="R2M_ChkSpindleSpeed.src" CurrentName="R2M_ChkSpindleSpeed.src" Type="None" OriginalPath="KRC:\R1\TP\Milling\R2M_ChkSpindleSpeed.src" OriginalChecksum="984e81db37847505cc9df7876d8e1a0c" CurrentChecksum="984e81db37847505cc9df7876d8e1a0c" />
-          <File OriginalName="R2M_ConfigSignals.dat" CurrentName="R2M_ConfigSignals.dat" Type="None" OriginalPath="KRC:\R1\TP\Milling\R2M_ConfigSignals.dat" OriginalChecksum="bd7a953d2d14dcdc94229764cfcf7f77" CurrentChecksum="bd7a953d2d14dcdc94229764cfcf7f77" />
-          <File OriginalName="R2M_SpindleVariables.dat" CurrentName="R2M_SpindleVariables.dat" Type="None" OriginalPath="KRC:\R1\TP\Milling\R2M_SpindleVariables.dat" OriginalChecksum="359e1dcbb2890476bde6d3f1bd8cefa0" CurrentChecksum="359e1dcbb2890476bde6d3f1bd8cefa0" />
+          <File OriginalName="R2M_ChkSpindleSpeed.src" CurrentName="R2M_ChkSpindleSpeed.src" Type="None" OriginalPath="KRC:\R1\TP\Milling\R2M_ChkSpindleSpeed.src" OriginalChecksum="a0a28ce0b2e98b84d25464a862049994" CurrentChecksum="a0a28ce0b2e98b84d25464a862049994" />
+          <File OriginalName="R2M_ConfigSignals.dat" CurrentName="R2M_ConfigSignals.dat" Type="None" OriginalPath="KRC:\R1\TP\Milling\R2M_ConfigSignals.dat" OriginalChecksum="190111b0b975cb65511aaa9196fa8d36" CurrentChecksum="190111b0b975cb65511aaa9196fa8d36" />
+          <File OriginalName="R2M_SpindleVariables.dat" CurrentName="R2M_SpindleVariables.dat" Type="None" OriginalPath="KRC:\R1\TP\Milling\R2M_SpindleVariables.dat" OriginalChecksum="e12ccd312c82dbf1d23b3320481b8465" CurrentChecksum="e12ccd312c82dbf1d23b3320481b8465" />
+          <File OriginalName="R2_Milling.dat" CurrentName="R2_Milling.dat" Type="None" OriginalPath="KRC:\R1\TP\Milling\R2_Milling.dat" OriginalChecksum="1e3036d5a492044cd1197c27148bea71" CurrentChecksum="1e3036d5a492044cd1197c27148bea71" />
+          <File OriginalName="R2_Milling.src" CurrentName="R2_Milling.src" Type="None" OriginalPath="KRC:\R1\TP\Milling\R2_Milling.src" OriginalChecksum="db05d7ecfbce51f5d7f587669c759526" CurrentChecksum="db05d7ecfbce51f5d7f587669c759526" />
+          <File OriginalName="R2_MillingStartUp.src" CurrentName="R2_MillingStartUp.src" Type="None" OriginalPath="KRC:\R1\TP\Milling\R2_MillingStartUp.src" OriginalChecksum="a1e08ef24eab13137ba15b697f089e51" CurrentChecksum="a1e08ef24eab13137ba15b697f089e51" />
         </Folder>
         <File OriginalName="p00.dat" CurrentName="p00.dat" Type="None" OriginalPath="KRC:\R1\TP\p00.dat" OriginalChecksum="976925778011f82c7cae80d6e287eeb1" CurrentChecksum="976925778011f82c7cae80d6e287eeb1" />
         <File OriginalName="p00.src" CurrentName="p00.src" Type="None" OriginalPath="KRC:\R1\TP\p00.src" OriginalChecksum="ead0efefbde68dcceac4e3479ab671eb" CurrentChecksum="ead0efefbde68dcceac4e3479ab671eb" />
@@ -238,7 +245,7 @@
         <File OriginalName="$machine.dat" CurrentName="$machine.dat" Type="None" OriginalPath="KRC:\STEU\Mada\$machine.dat" OriginalChecksum="5aec06571317bb250fb557b9b4c1473c" CurrentChecksum="5aec06571317bb250fb557b9b4c1473c" />
         <File OriginalName="$option.dat" CurrentName="$option.dat" Type="None" OriginalPath="KRC:\STEU\Mada\$option.dat" OriginalChecksum="6af919ad81584a2bcbbe4946373b2604" CurrentChecksum="6af919ad81584a2bcbbe4946373b2604" />
       </Folder>
-      <File OriginalName="$config.dat" CurrentName="$config.dat" Type="None" OriginalPath="KRC:\STEU\$config.dat" OriginalChecksum="bb819252e2bd4be741415f13f83eba3f" CurrentChecksum="bb819252e2bd4be741415f13f83eba3f" />
+      <File OriginalName="$config.dat" CurrentName="$config.dat" Type="None" OriginalPath="KRC:\STEU\$config.dat" OriginalChecksum="54e5f243cf675316c7bf1737ff090795" CurrentChecksum="54e5f243cf675316c7bf1737ff090795" />
     </Folder>
   </Folder>
 </Folder>

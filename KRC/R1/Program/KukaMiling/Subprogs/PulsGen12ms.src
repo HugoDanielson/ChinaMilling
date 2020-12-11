@@ -1,4 +1,4 @@
-&ACCESS RV1
+&ACCESS RV
 DEF PulsGen12ms ( )
    
    IF ($TIMER_STOP[30] == TRUE) AND ($TIMER_STOP[31] == TRUE) THEN

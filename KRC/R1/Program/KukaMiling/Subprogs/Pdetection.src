@@ -1,6 +1,4 @@
-&ACCESS RV1
-&REL 4
-&PARAM DISKPATH = KRC:\R1\Program\KukaMiling\Subprogs
+&ACCESS RV
 DEF Pdetection (inSwitch1 :IN,inSwitch2 :IN,inSwitch3 :IN,inSwitch4 :IN)
    BOOL inSwitch1,inSwitch2,inSwitch3,inSwitch4
    BOOL lbOK
@@ -18,7 +16,7 @@ DEF Pdetection (inSwitch1 :IN,inSwitch2 :IN,inSwitch3 :IN,inSwitch4 :IN)
    IF (lbOK AND Nor6) AND lbMem == TRUE THEN
       IF lbMem == TRUE THEN
          IF(inSwitch1)THEN
-            gbSet1 = NOT gbSet1
+            P_Button[1].ActState = NOT  P_Button[1].ActState
          ENDIF
          IF(inSwitch2)THEN
             gbSet2 = NOT gbSet2

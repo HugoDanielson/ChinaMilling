@@ -1,4 +1,4 @@
-&ACCESS RVO1
+&ACCESS RVO
 &REL 4
 DEF R2M_ChkSpindleSpeed ( )
 
@@ -11,16 +11,15 @@ DEF R2M_ChkSpindleSpeed ( )
       ;   gDOToolClamp = TRUE
       
       ;check view control       
-      if gbRobControlActive == FALSE THEN 
-         
+      if gbRobControlActive == FALSE THEN     
          IF gDOSpindleEnable==true THEN   
             oSpindleOperMode=2
-            if oFreqconverterCtlw==128 then               
+            IF oFreqconverterCtlw==128 THEN               
                $TIMER_STOP[20] = FALSE
-               if $timer[20]>500 then
+               IF $timer[20]>500 THEN
                   oFreqconverterCtlw =127
-               endif
-            endif
+               ENDIF
+            ENDIF
          ENDIF
          if (gDOSpindleEnable==false) OR (gDISpindleEnableOK == FALSE) then
             oFreqconverterCtlw=128
@@ -37,11 +36,7 @@ DEF R2M_ChkSpindleSpeed ( )
             oConverterSetSpeed=gISetSpeed/10
          ENDIF
          
-         if not (gDISpindleActSpeed == 0) THEN
-            giSpindlespeedchecksum = gDISpindleActSpeed - 65535  
-         else
-            giSpindlespeedchecksum =0
-         endif
+        
          
          if giSpindlespeedchecksum < 0 then
             gIActSpeed=  giSpindlespeedchecksum *10

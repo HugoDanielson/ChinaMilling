@@ -8,6 +8,7 @@ DEF AMM_autostop()
   halt
   ;Start Process
     up_start(TRUE)
+
 END
 
 

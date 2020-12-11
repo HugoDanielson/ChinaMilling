@@ -1,18 +1,16 @@
-&ACCESS RV1
+&ACCESS RV
 DEFDAT  R2M_SPINDLEVARIABLES PUBLIC
 
 ;FOLD USED Signals
-GLOBAL SIGNAL DI_MillQuitMessageByPLC $IN[601]
+
 GLOBAL SIGNAL DO_PulseTCOpenCover $OUT[4094] ; Toolchanger open cover pulse
 GLOBAL SIGNAL DO_PulseTCCloseCover $OUT[4095] ; Toolchanger close cover pulse
 
 ; Localization Frequency converter control words 
-GLOBAL SIGNAL oFreqconverterCtlw $OUT[101]  TO $OUT[116] ; instead of cw in sps 
-GLOBAL SIGNAL oSpindleOperMode $OUT[117]  TO $OUT[124]
-GLOBAL SIGNAL oConverterSetSpeed $OUT[601]  TO $OUT[616]
+
 GLOBAL SIGNAL iSpindleOperMode $IN[200]  TO $IN[207]
 GLOBAL SIGNAL iConverterStatus $IN[208]  TO $IN[223]
-GLOBAL SIGNAL gDISpindleActSpeed $IN[224]  TO $IN[239]
+
 GLOBAL SIGNAL gDOProductNumber $OUT[1]  TO $OUT[8]
 
 ;ENDFOLD (Signals)
@@ -62,17 +60,7 @@ GLOBAL INT gnInputOffsetTool=1264 ; input of the first tool (toolchanger)
 ;ENDFOLD (USED VARIABLES)
 
 ;Milling Localization variables 
-GLOBAL INT gISetSpeed=0
-GLOBAL INT gIActSpeed=0
-GLOBAL INT giSpindlespeedchecksum=0
-GLOBAL BOOL gbRobControlActive=FALSE
-GLOBAL BOOL gbRobControlEnable=FALSE
-GLOBAL BOOL gbRobControlRequest=FALSE
-GLOBAL BOOL gbMillSystemWarning=FALSE
-GLOBAL BOOL gbDirectionClockwise=TRUE
 
-GLOBAL INT oMinSpindleRpm=0 ;for test
-GLOBAL INT oMaxSpindleRpm=8600 ;for test
 
 ;FOLD /+/ UTEC LANGUAGE ### KONFIG ###
 GLOBAL ENUM TYPMillMessage DIALOG,QUIT,STATE,STATE_CLEAR,NOTIFY,WAITING

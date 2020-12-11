@@ -1,0 +1,51 @@
+&ACCESS RV
+DEF R2_Milling ( )
+   
+   IF($PRO_STATE1==#P_RESET) OR ($PRO_STATE1==#P_FREE) THEN
+      gbRobControlActive = FALSE
+   ENDIF
+   
+   IF gDOSpindleEnable THEN  
+
+      oSpindleOperMode = gnSpindleOperatinMode
+      oFreqconverterCtlw = gsSpindleWord.RunSpindle
+      oConverterSetSpeed =  setSpindleSpeed(gISetSpeed)
+   ELSE
+      IF( gDISpindleActSpeed <> 0)THEN
+         oFreqconverterCtlw = gsSpindleWord.StopDec1
+      ELSE
+         oFreqconverterCtlw = gsSpindleWord.WaitForCommand
+      ENDIF
+      oConverterSetSpeed = 0
+   ENDIF  
+   
+   SetSisiHMI()
+END
+
+DEFFCT INT setSpindleSpeed (lrSetSpindleSpeed :IN)
+   INT lrSetSpindleSpeed
+   
+   IF gISetSpeed<0 THEN
+      RETURN (lrSetSpindleSpeed/10+65535)
+   ELSE
+      RETURN (lrSetSpindleSpeed/10)
+   ENDIF
+   
+   RETURN 0
+ENDFCT
+
+DEF SetSisiHMI()
+
+   IF NOT (gDISpindleActSpeed == 0) THEN
+      giSpindlespeedchecksum = gDISpindleActSpeed - 65535  
+   ELSE
+      giSpindlespeedchecksum =0
+   ENDIF
+   
+   IF giSpindlespeedchecksum < 0 THEN
+      gIActSpeed=  giSpindlespeedchecksum *10
+   ELSE 
+      gIActSpeed = gDISpindleActSpeed*10
+      
+   ENDIF 
+END

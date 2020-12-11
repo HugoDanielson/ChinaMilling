@@ -1,0 +1,36 @@
+&ACCESS RV
+DEFDAT  R2_MILLING PUBLIC
+
+
+GLOBAL SIGNAL DI_MillQuitMessageByPLC $IN[601]
+
+GLOBAL SIGNAL gDISpindleActSpeed $IN[224]  TO $IN[239]
+GLOBAL SIGNAL gDISpindleEnableOK $IN[161]
+
+
+GLOBAL SIGNAL oFreqconverterCtlw $OUT[101]  TO $OUT[116] ; instead of cw in sps 
+GLOBAL SIGNAL oSpindleOperMode $OUT[117]  TO $OUT[124]
+GLOBAL SIGNAL oConverterSetSpeed $OUT[601]  TO $OUT[616]
+GLOBAL SIGNAL gDOSpindleEnable $OUT[133]
+
+
+DECL GLOBAL BOOL gbStartSpindle
+DECL GLOBAL INT gnSpindleOperatinMode=2
+
+
+GLOBAL STRUC sSpindleWord INT RunSpindle,StopDec1,QuickStop,WaitForCommand
+DECL GLOBAL sSpindleWord gsSpindleWord={RunSpindle 127,StopDec1 128,QuickStop 129,WaitForCommand 126}
+
+
+GLOBAL INT gISetSpeed=0
+GLOBAL INT gIActSpeed=-8000
+GLOBAL INT giSpindlespeedchecksum=-800
+GLOBAL BOOL gbRobControlActive=FALSE
+GLOBAL BOOL gbRobControlEnable=FALSE
+GLOBAL BOOL gbRobControlRequest=FALSE
+GLOBAL BOOL gbMillSystemWarning=FALSE
+GLOBAL BOOL gbDirectionClockwise=TRUE
+
+GLOBAL INT oMinSpindleRpm=0
+GLOBAL INT oMaxSpindleRpm=15000
+ENDDAT

@@ -1,4 +1,4 @@
-&ACCESS R1
+&ACCESS R
 &COMMENT Collision monitoring library
 DEF CollMonLib( )
 

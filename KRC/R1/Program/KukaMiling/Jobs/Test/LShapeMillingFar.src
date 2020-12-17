@@ -1,4 +1,4 @@
-&ACCESS RVO
+&ACCESS RVEO
 &REL 6
 DEF  LShapeMillingFar (lnActSt :IN)
    INT lnActSt,lnUsedBase,lnUsedTool,lnBaseNr

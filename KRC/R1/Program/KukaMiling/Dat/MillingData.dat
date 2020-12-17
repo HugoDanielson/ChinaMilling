@@ -3,29 +3,34 @@ DEFDAT  MILLINGDATA PUBLIC
 
 
 ;;MILLING TOOL DATA
-DECL GLOBAL REAL grTool_Diameter[4]
-grTool_Diameter[1]=0.0
+DECL GLOBAL REAL grTool_Diameter[5]
+grTool_Diameter[1]=63.0000
 grTool_Diameter[2]=0.0
 grTool_Diameter[3]=0.0
 grTool_Diameter[4]=32.0000
+grTool_Diameter[5]=63.0000
 
-DECL GLOBAL REAL grTool_FeedPerTooth[4]
+DECL GLOBAL REAL grTool_FeedPerTooth[5]
 grTool_FeedPerTooth[1]=0.0
 grTool_FeedPerTooth[2]=0.0
 grTool_FeedPerTooth[3]=0.0
 grTool_FeedPerTooth[4]=0.100000
+grTool_FeedPerTooth[5]=0.100000
 
-DECL GLOBAL INT grTool_ToothCount[4]
+
+DECL GLOBAL INT grTool_ToothCount[5]
 grTool_ToothCount[1]=0
 grTool_ToothCount[2]=0
 grTool_ToothCount[3]=0
 grTool_ToothCount[4]=3
+grTool_ToothCount[5]=5
 
-DECL GLOBAL INT grTool_VC[4]
+DECL GLOBAL INT grTool_VC[5]
 grTool_VC[1]=0
 grTool_VC[2]=1000
 grTool_VC[3]=960
 grTool_VC[4]=960
+grTool_VC[5]=250
 
 DECL GLOBAL REAL grUSedRPM=9554.14
 DECL GLOBAL REAL grUSedMillingSpeed=47.7707

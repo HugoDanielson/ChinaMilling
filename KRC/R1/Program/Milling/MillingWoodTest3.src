@@ -1,0 +1,112 @@
+&ACCESS RVO
+&REL 7
+&PARAM DISKPATH = KRC:\R1\Program\Milling
+DEF MillingWoodTest3 ( )
+   INT lnActSt,lnUsedBase,lnUsedTool,lnBaseNr
+   INT lnJobNr, lnCounter,lnCounter2
+   FRAME lfZcut
+   FRAME lfToolDiamShift
+   FRAME lfStartMillingPos
+   FRAME lfBaseShift
+   FRAME lfBaseCycleZ
+   FRAME lfBaseCycleShift
+   FRAME lfCircAuxPoint1
+   FRAME lfCircEndPoint1
+   
+   CONTINUE     
+   ;IF ($T1 OR $T2)THEN
+   GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
+   INTERRUPT ON 3
+   BAS (#INITMOV,0)
+   lnActSt = 1
+   PTP $POS_ACT
+   PTP lAstartPos
+   
+   gbRobControlActive = FALSE
+   
+   ; Used Base and tool
+   lnUsedBase = 11
+   lnUsedTool = 11
+   
+   gnLastToolNr = 4
+   lnBaseNr = 24
+   
+   gfMillingOffset = $NULLFRAME
+   
+   lfZcut = $NULLFRAME
+   lfZcut.Z = 0
+   lfBaseShift = {X 50,Y 48.5,Z -3,A 0,B 0,C 0}   
+   lfBaseCycleZ = $NULLFRAME
+   lfBaseCycleZ.Z = 0
+   
+   ;*************************************************************
+   ;*                      Mill TOP SURFACE                     *
+   ;*************************************************************
+   grUsedRPM = GetMillingRPM(grTool_VC[gnLastToolNr], grTool_Diameter[gnLastToolNr])
+   grUsedMillingSpeed = GetMillingSpeed(grUsedRPM, grTool_ToothCount[gnLastToolNr], grTool_FeedPerTooth[gnLastToolNr])
+   
+   SpindleRun(TRUE,grUsedRPM,#CLOCKWISE)
+   
+   lfBaseCycleZ = $NULLFRAME
+   lfBaseCycleZ.Z = 0
+   BASE_DATA[lnUsedBase] = BASE_DATA[lnBaseNr] : lfBaseShift : lfBaseCycleZ
+   TOOL_DATA[lnUsedTool] = TOOL_DATA[gnLastToolNr] :{X 0,Y 0,Z 0,A 270,B 0,C 0}
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   
+   ;; Move To PreposMillingPos Point P1 {5mm far from WP surface}
+   ;lfToolDiamShift   = $NULLFRAME   
+   ;lfToolDiamShift.X = -10 - grTool_Diameter[4]/2
+   ;lfToolDiamShift.Y = 0
+   ;lfToolDiamShift.Z = 0
+   ;lfStartMillingPos = lfWorkPos[1] : lfToolDiamShift
+   ;LIN lfStartMillingPos
+   
+   ;MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   ;lfToolDiamShift   =   $NULLFRAME   
+   ;lfToolDiamShift.x =  - grTool_Diameter[4]/2
+   ;lfToolDiamShift.Y =  0
+   ;lfToolDiamShift.Z =  0
+   ;LIN lfWorkPos[1]:lfToolDiamShift C_VEL
+   ;
+   ;
+   ;lfToolDiamShift   =   $NULLFRAME   
+   ;lfToolDiamShift.x =  0 
+   ;lfToolDiamShift.Y =  0;grTool_Diameter[4]/2
+   ;lfToolDiamShift.Z =  0 
+   ;lfCircAuxPoint1 = lfWorkPos[2]:lfToolDiamShift 
+   ;
+   ;lfToolDiamShift   =   $NULLFRAME   
+   ;lfToolDiamShift.x =  0;-grTool_Diameter[4]/2
+   ;lfToolDiamShift.Y =  0
+   ;lfToolDiamShift.Z =  0
+   ;lfCircEndPoint1 = lfWorkPos[3]:lfToolDiamShift 
+   ;
+ ;;  MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+  ;; LIN getCircFrame(270,34,100,0)
+  ;; LIN lfWorkPos[2] C_VEL
+   LIN getCircFrame(-270,39,100,0,lfWorkPos[1]):{X 0,Y 0,Z 5,A 0,B 0,C 0 }
+   FOR lnCounter = 0 TO 100
+      LIN getCircFrame(-270,39,100,lnCounter,lfWorkPos[1]) C_VEL
+   ENDFOR
+   
+   TRIGGER WHEN DISTANCE=1 DELAY=0 DO  SpindleRun(FALSE,0,#CLOCKWISE) PRIO=-1 
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 500)
+   LIN_REL {Z 100} C_VEL #BASE
+   
+   BAS (#INITMOV,0)
+   PTP lAstartPos
+END
+
+DEFFCT FRAME getCircFrame(lrAngle :IN,lrRadius :IN,lnDevPart :IN,lnActPoint :IN ,lfStartPoint :IN)
+   REAL lrAngle,lrRadius
+   INT lnDevPart,lnActPoint
+   FRAME lfStartPoint,lfPoint
+   
+   lfPoint = $NULLFRAME
+   lfPoint.X = -(lrRadius * COS((lrAngle/lnDevPart*lnActPoint)))
+   lfPoint.Y = -(lrRadius * SIN((lrAngle/lnDevPart*lnActPoint)))
+   
+   RETURN lfStartPoint:lfPoint
+   
+ENDFCT

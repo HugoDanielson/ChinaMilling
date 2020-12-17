@@ -1,14 +1,15 @@
-&ACCESS RV
-DEF R2_MillingStartUp( )
+&ACCESS RV1
+DEF R2_MillingInit ( )
    
    ;******************************************************
    ;*             Reset signals on startup               *
    ;******************************************************
    gbRobControlActive   = FALSE
    gDOSpindleEnable     = FALSE
-   gbStartSpindle       = FALSE
+   gbSpindleStart      = FALSE
    
    oFreqconverterCtlw = gsSpindleWord.WaitForCommand
    oConverterSetSpeed = 0
-   
+  
 END
+

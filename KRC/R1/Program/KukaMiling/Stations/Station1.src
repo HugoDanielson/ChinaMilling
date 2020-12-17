@@ -2,7 +2,7 @@
 &REL 2
 DEF Station1 (lnTargetSt :IN)
    INT lnTargetSt,lnJobNumber
-   
+   ST
    ;CONTINUE
    ;IF (gnLastToolNr == 2) OR (gnLastToolNr == 3) AND DI_SpindleStandsStill THEN
       ;; CALCULATE REQUIERED RPM BASE ON USED USED MILLING TOOL
@@ -15,7 +15,7 @@ DEF Station1 (lnTargetSt :IN)
    IF(gnActSt <> lnTargetSt) THEN
       MoveTo (gnActSt,lnTargetSt)
    ENDIF
-   
+  
    REPEAT 
       CONTINUE
    UNTIL gnActSt ==lnTargetSt
@@ -83,6 +83,7 @@ END
 
 DEFFCT INT getJobNr()
    BOOL lbOK,lbWorkPiecePresented,lbToolClamped
+   
    
    CONTINUE 
    lbWorkPiecePresented = DI_WorkPiecePresented

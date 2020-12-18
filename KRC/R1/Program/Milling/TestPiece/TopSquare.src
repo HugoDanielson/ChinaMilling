@@ -3,7 +3,8 @@
 &PARAM DISKPATH = KRC:\R1\Program\Milling
 DEF TopSquare ( )
    INT lnActSt,lnUsedBase,lnUsedTool,lnBaseNr
-   INT lnJobNr, lnCounter,lnCounter2
+   INT lnJobNr, lnCounter,lnCounter2,lnSegments
+   REAL lrAmountCut, lrWorkPieceSize,lrRadius,lrDepthOfCut
    FRAME lfZcut
    FRAME lfToolDiamShift
    FRAME lfStartMillingPos
@@ -35,16 +36,14 @@ DEF TopSquare ( )
    
    lfZcut = $NULLFRAME
    lfZcut.Z = 0
-   
-   lfBaseShift = {X 18,Y 16, Z -3,A 0,B 0,C 0}
-   lfBaseShift.x = lfBaseShift.x - grTool_Diameter[gnLastToolNr]/2
-   lfBaseShift.y = lfBaseShift.y - grTool_Diameter[gnLastToolNr]/2
-   
+   lfBaseShift = {X 2.0,Y -2.0, Z -17.0,A 0,B 0,C 0}
+   ;lfBaseShift = {X 18,Y 16, Z -3,A 0,B 0,C 0}
+   ;lfBaseShift.x = lfBaseShift.x - grTool_Diameter[gnLastToolNr]/2
+   ;lfBaseShift.y = lfBaseShift.y - grTool_Diameter[gnLastToolNr]/2
    
    ;lfBaseShift = {X 50,Y 48.5,Z -3,A 0,B 0,C 0}   
    lfBaseCycleZ = $NULLFRAME
    lfBaseCycleZ.Z = 0
-   
    
    ;*************************************************************
    ;*                SPINDLE START + CUT PARAMS                 *
@@ -61,17 +60,46 @@ DEF TopSquare ( )
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
    
+   lrAmountCut = 24.0
+   lrWorkPieceSize = 100.0
+   ;lrRadius = (218.0/2)/2
+   lrRadius = (lrWorkPieceSize-lrAmountCut*2)/2 + grTool_Diameter[gnLastToolNr]/2
+   
+   lrDepthOfCut = 0.0
    ;*************************************************************
    ;*                Main Material Removal PASS                 *
    ;*************************************************************
    LIN {X -50, Y -50, Z 0,A 0, B 0, C 0}
-   MillSquarePass(100,50,grTool_Diameter[gnLastToolNr])
    
-   ;LIN getCircFrame(-270,39,100,0,lfWorkPos[1]):{X 0,Y 0,Z 5,A 0,B 0,C 0 }
-   ;
-   ;FOR lnCounter = 0 TO 100
-      ;LIN getCircFrame(-270,39,100,lnCounter,lfWorkPos[1]) C_VEL
-   ;ENDFOR
+   REPEAT
+      
+      MillSquarePass(lrWorkPieceSize,lrAmountCut,lrDepthOfCut,grTool_Diameter[gnLastToolNr])
+      
+      lrDepthOfCut = lrDepthOfCut - 0.2
+   UNTIL lrDepthOfCut == -0.4
+   
+   lnSegments = 1000
+   lfWorkPos[2] = $NULLFRAME
+   lfWorkPos[2].X = lrWorkPieceSize/2
+   lfWorkPos[2].Y = lfWorkPos[2].X
+   
+   LIN {X -50, Y -50, Z 0,A 0, B 0, C 0}
+   
+   FOR lnCounter2 = 0 TO 2
+      
+      FOR lnCounter = 0 TO lnSegments
+         LIN getCircFrame(360,lrRadius+3,lnSegments,lnCounter,lfWorkPos[2]) C_VEL
+      ENDFOR
+      FOR lnCounter = 0 TO lnSegments
+         LIN getCircFrame(360,lrRadius+1,lnSegments,lnCounter,lfWorkPos[2]) C_VEL
+      ENDFOR
+      FOR lnCounter = 0 TO lnSegments
+         LIN getCircFrame(360,lrRadius,lnSegments,lnCounter,lfWorkPos[2]) C_VEL
+      ENDFOR
+      
+      lfWorkPos[2].Z = lfWorkPos[2].Z - 0.2
+   ENDFOR
+   
    ;
    TRIGGER WHEN DISTANCE=1 DELAY=0 DO  SpindleRun(FALSE,0,#CLOCKWISE) PRIO=-1 
    MoveSettings(lnUsedBase, lnUsedTool, 100, 500)
@@ -94,22 +122,21 @@ DEFFCT FRAME getCircFrame(lrAngle :IN,lrRadius :IN,lnDevPart :IN,lnActPoint :IN 
    
 ENDFCT
 
-DEF MillSquarePass(lrFrameLength :IN,lrInCut :IN, lrToolDiam: IN)
+DEF MillSquarePass(lrFrameLength :IN,lrInCut :IN, lrDepthOfCut: IN, lrToolDiam: IN)
    
    DECL FRAME lfCorner[4]
    INT i
    REAL lrFrameLength, lrInCut, lrToolDiam
-   REAL lrCurrentCut, lrAP,lrDepth , lrToolRad
+   REAL lrCurrentCut, lrAP , lrToolRad,lrDepthOfCut
    
    lrToolRad = lrToolDiam/2
-   lrAP = 6.0
+   ;lrAP = 6.0
+   lrAP = 12
    lrCurrentCut = 0.0
-   lrDepth = 2.0
-   lrToolRad = lrToolDiam/2
    
    FOR i = 1 TO 4 STEP 1
       lfCorner[i] = $NULLFRAME
-      lfCorner[i].Z = -lrDepth
+      lfCorner[i].Z = lrDepthOfCut
    ENDFOR
    
    REPEAT 
@@ -133,12 +160,10 @@ DEF MillSquarePass(lrFrameLength :IN,lrInCut :IN, lrToolDiam: IN)
       lrCurrentCut = lrCurrentCut+lrAP
       
       FOR i = 1 TO 4 STEP 1
-       LIN  lfCorner[i] C_VEL
+         LIN  lfCorner[i] C_VEL
       ENDFOR
       LIN  lfCorner[1] C_VEL
       
-      
-      
    UNTIL lrCurrentCut >= lrInCut
-   
+   ;ENDFOR
 END

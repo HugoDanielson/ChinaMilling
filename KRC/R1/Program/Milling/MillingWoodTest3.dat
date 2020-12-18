@@ -12,7 +12,7 @@ lfPrePos[4]={X 0.0,Y -32.0000,Z 50.0000,A 90.0000,B 0.0,C 0.0}
 lfPrePos[5]={X 0.0,Y -50.0000,Z 350.000,A 90.0000,B 0.0,C 0.0}
 
 DECL FRAME lfWorkPos[12]
-lfWorkPos[1]={X 120.0000,Y 0.0,Z 0.0,A 0.0,B 0.0,C 0.0}
+lfWorkPos[1]={X 200.0000,Y 0.0,Z 0.0,A 0.0,B 0.0,C 0.0}
 lfWorkPos[2]={X -60,Y 0.0000,Z 0.0,A 0.0,B 0.0,C 0.0}
 lfWorkPos[3]={X 0.0000,Y 60.0,Z 0.0,A 0.0,B 0.0,C 0.0}
 lfWorkPos[4]={X 60,Y 0.000,Z 0.0,A 0.0,B 0.0,C 0.0000}

@@ -35,7 +35,7 @@ DEF MillingWoodTest3 ( )
    
    lfZcut = $NULLFRAME
    lfZcut.Z = 0
-   lfBaseShift = {X 50,Y 48.5,Z -3,A 0,B 0,C 0}   
+   lfBaseShift = {X 50,Y 48.5,Z -7,A 0,B 0,C 0}   
    lfBaseCycleZ = $NULLFRAME
    lfBaseCycleZ.Z = 0
    
@@ -54,40 +54,10 @@ DEF MillingWoodTest3 ( )
    
    MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
    
-   ;; Move To PreposMillingPos Point P1 {5mm far from WP surface}
-   ;lfToolDiamShift   = $NULLFRAME   
-   ;lfToolDiamShift.X = -10 - grTool_Diameter[4]/2
-   ;lfToolDiamShift.Y = 0
-   ;lfToolDiamShift.Z = 0
-   ;lfStartMillingPos = lfWorkPos[1] : lfToolDiamShift
-   ;LIN lfStartMillingPos
-   
-   ;MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
-   ;lfToolDiamShift   =   $NULLFRAME   
-   ;lfToolDiamShift.x =  - grTool_Diameter[4]/2
-   ;lfToolDiamShift.Y =  0
-   ;lfToolDiamShift.Z =  0
-   ;LIN lfWorkPos[1]:lfToolDiamShift C_VEL
-   ;
-   ;
-   ;lfToolDiamShift   =   $NULLFRAME   
-   ;lfToolDiamShift.x =  0 
-   ;lfToolDiamShift.Y =  0;grTool_Diameter[4]/2
-   ;lfToolDiamShift.Z =  0 
-   ;lfCircAuxPoint1 = lfWorkPos[2]:lfToolDiamShift 
-   ;
-   ;lfToolDiamShift   =   $NULLFRAME   
-   ;lfToolDiamShift.x =  0;-grTool_Diameter[4]/2
-   ;lfToolDiamShift.Y =  0
-   ;lfToolDiamShift.Z =  0
-   ;lfCircEndPoint1 = lfWorkPos[3]:lfToolDiamShift 
-   ;
- ;;  MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
-  ;; LIN getCircFrame(270,34,100,0)
-  ;; LIN lfWorkPos[2] C_VEL
-   LIN getCircFrame(-270,39,100,0,lfWorkPos[1]):{X 0,Y 0,Z 5,A 0,B 0,C 0 }
+
+   LIN getCircFrame(-360,getDiameter(70,grTool_Diameter[gnLastToolNr]),100,0,lfWorkPos[1]):{X 0,Y 0,Z 5,A 0,B 0,C 0 }
    FOR lnCounter = 0 TO 100
-      LIN getCircFrame(-270,39,100,lnCounter,lfWorkPos[1]) C_VEL
+      LIN getCircFrame(-360,getDiameter(70,grTool_Diameter[gnLastToolNr]),100,lnCounter,lfWorkPos[1]) C_VEL
    ENDFOR
    
    TRIGGER WHEN DISTANCE=1 DELAY=0 DO  SpindleRun(FALSE,0,#CLOCKWISE) PRIO=-1 
@@ -109,4 +79,13 @@ DEFFCT FRAME getCircFrame(lrAngle :IN,lrRadius :IN,lnDevPart :IN,lnActPoint :IN 
    
    RETURN lfStartPoint:lfPoint
    
+ENDFCT
+
+DEFFCT REAL getDiameter(lrRequestedDiameter:IN,lrToolDiameter :IN)
+REAL lrRequestedDiameter
+REAL lrToolDiameter
+
+RETURN  lrRequestedDiameter-(lrToolDiameter/2)-3
+
+
 ENDFCT

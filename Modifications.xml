@@ -158,7 +158,7 @@
               <File OriginalName="ResetIO.src" CurrentName="ResetIO.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Vars_Buttons\ResetIO.src" OriginalChecksum="a51dc9159fef1350ef9d6d313e07e57e" CurrentChecksum="a51dc9159fef1350ef9d6d313e07e57e" />
               <File OriginalName="ResetVars.src" CurrentName="ResetVars.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Vars_Buttons\ResetVars.src" OriginalChecksum="fbd8d7e38df791ca23b1d254876199f8" CurrentChecksum="fbd8d7e38df791ca23b1d254876199f8" />
             </Folder>
-            <File OriginalName="Pdetection.dat" CurrentName="Pdetection.dat" Type="Changed" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Pdetection.dat" OriginalChecksum="d0a5e811c0ebe4c12a59320b3a89bfc3" CurrentChecksum="039c6e41c481f855628adcca88c8f62e" />
+            <File OriginalName="Pdetection.dat" CurrentName="Pdetection.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Pdetection.dat" OriginalChecksum="039c6e41c481f855628adcca88c8f62e" CurrentChecksum="039c6e41c481f855628adcca88c8f62e" />
             <File OriginalName="Pdetection.src" CurrentName="Pdetection.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Pdetection.src" OriginalChecksum="0b38d9957a42aac1540d96128f68ddae" CurrentChecksum="0b38d9957a42aac1540d96128f68ddae" />
             <File OriginalName="PulsGen12ms.dat" CurrentName="PulsGen12ms.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\PulsGen12ms.dat" OriginalChecksum="62bc6d4c2e6b17ed10b25f96fe945cd0" CurrentChecksum="62bc6d4c2e6b17ed10b25f96fe945cd0" />
             <File OriginalName="PulsGen12ms.src" CurrentName="PulsGen12ms.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\PulsGen12ms.src" OriginalChecksum="df215c1954f650124592cbdab089333a" CurrentChecksum="df215c1954f650124592cbdab089333a" />
@@ -171,7 +171,7 @@
         <Folder OriginalName="Milling" CurrentName="Milling" Type="None" OriginalPath="KRC:\R1\Program\Milling">
           <Folder OriginalName="TestPiece" CurrentName="TestPiece" Type="None" OriginalPath="KRC:\R1\Program\Milling\TestPiece">
             <File OriginalName="TopSquare.dat" CurrentName="TopSquare.dat" Type="None" OriginalPath="KRC:\R1\Program\Milling\TestPiece\TopSquare.dat" OriginalChecksum="f35aebcdd49e6ab09c0bb9fc0eda7da3" CurrentChecksum="f35aebcdd49e6ab09c0bb9fc0eda7da3" />
-            <File OriginalName="TopSquare.src" CurrentName="TopSquare.src" Type="Changed" OriginalPath="KRC:\R1\Program\Milling\TestPiece\TopSquare.src" OriginalChecksum="281bf582a019824876a9a81771d370c6" CurrentChecksum="f98570c9e7e92db5b3e471b043ec748b" />
+            <File OriginalName="TopSquare.src" CurrentName="TopSquare.src" Type="Changed" OriginalPath="KRC:\R1\Program\Milling\TestPiece\TopSquare.src" OriginalChecksum="e6450e42545bf942ae6e89610da8e20e" CurrentChecksum="77166cd9f679661ab64fba6b124023af" />
           </Folder>
           <File OriginalName="ChangeTool.dat" CurrentName="ChangeTool.dat" Type="None" OriginalPath="KRC:\R1\Program\Milling\ChangeTool.dat" OriginalChecksum="6dde587dc9fc7516438dc294cd212304" CurrentChecksum="6dde587dc9fc7516438dc294cd212304" />
           <File OriginalName="ChangeTool.src" CurrentName="ChangeTool.src" Type="None" OriginalPath="KRC:\R1\Program\Milling\ChangeTool.src" OriginalChecksum="eb8855826919ad170e74bf8955deddcc" CurrentChecksum="eb8855826919ad170e74bf8955deddcc" />

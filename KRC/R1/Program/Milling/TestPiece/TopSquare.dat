@@ -1,7 +1,7 @@
 &ACCESS RVO
-&REL 7
-&PARAM DISKPATH = KRC:\R1\Program\Milling
-DEFDAT  TopSquare PUBLIC
+&REL 8
+&PARAM DISKPATH = KRC:\R1\Program\Milling\TestPiece
+DEFDAT  TOPSQUARE PUBLIC
 
 DECL AXIS lAstartPos={A1 2.09890103,A2 -99.5414124,A3 132.718292,A4 75.8801346,A5 -68.2717209,A6 -55.2195663}
 DECL FRAME lfPrePos[5]
@@ -12,12 +12,12 @@ lfPrePos[4]={X 0.0,Y -32.0000,Z 50.0000,A 90.0000,B 0.0,C 0.0}
 lfPrePos[5]={X 0.0,Y -50.0000,Z 350.000,A 90.0000,B 0.0,C 0.0}
 
 DECL FRAME lfWorkPos[12]
-lfWorkPos[1]={X 120.0000,Y 0.0,Z 0.0,A 0.0,B 0.0,C 0.0}
-lfWorkPos[2]={X -60,Y 0.0000,Z 0.0,A 0.0,B 0.0,C 0.0}
-lfWorkPos[3]={X 0.0000,Y 60.0,Z 0.0,A 0.0,B 0.0,C 0.0}
-lfWorkPos[4]={X 60,Y 0.000,Z 0.0,A 0.0,B 0.0,C 0.0000}
-lfWorkPos[5]={X 0.000,Y -60.000,Z 0.0,A 0.0,B 0.0,C 0.0}
-lfWorkPos[6]={X -60,Y 0,Z 0.0,A 0.0,B 0.0,C 0.0}
+lfWorkPos[1]={X 120.000,Y 0.0,Z 0.0,A 0.0,B 0.0,C 0.0}
+lfWorkPos[2]={X 50.0000,Y 50.0000,Z -1.20000,A 0.0,B 0.0,C 0.0}
+lfWorkPos[3]={X 0.0,Y 60.0000,Z 0.0,A 0.0,B 0.0,C 0.0}
+lfWorkPos[4]={X 60.0000,Y 0.0,Z 0.0,A 0.0,B 0.0,C 0.0}
+lfWorkPos[5]={X 0.0,Y -60.0000,Z 0.0,A 0.0,B 0.0,C 0.0}
+lfWorkPos[6]={X -60.0000,Y 0.0,Z 0.0,A 0.0,B 0.0,C 0.0}
 
 lfWorkPos[7]={X 200.000,Y 12.5000,Z 0.0,A 0.0,B 0.0,C 0.0}
 

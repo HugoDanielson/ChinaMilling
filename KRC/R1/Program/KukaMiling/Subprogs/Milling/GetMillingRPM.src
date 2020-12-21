@@ -1,9 +1,0 @@
-&ACCESS RV
-&PARAM EDITMASK = *
-DEFFCT REAL GetMillingRPM(lrCuttingSpeed :IN,lrMillingToolDiameter :IN)
-REAL lrCuttingSpeed
-REAL lrMillingToolDiameter
-
-  RETURN (lrCuttingSpeed*1000)/(3.14*lrMillingToolDiameter)
-  
-ENDFCT

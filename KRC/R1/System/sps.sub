@@ -40,10 +40,10 @@ DEF  SPS ( )
    R2_MillingInit()
    LOOP
       WAIT FOR NOT($POWER_FAIL)
-      
-      PulsGen12ms ()
-      Pdetection(IN_Switch1,IN_Switch2,FALSE,FALSE)
-     OUT_Light = P_Button[1].ActState
+      ;
+      ;PulsGen12ms ()
+      ;Pdetection(IN_Switch1,IN_Switch2,FALSE,FALSE)
+     ;OUT_Light = P_Button[1].ActState
 ;out_light =in_switch1
       
       R2_Milling()

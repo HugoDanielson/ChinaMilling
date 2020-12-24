@@ -1,4 +1,4 @@
-&ACCESS RVO
+&ACCESS RVO1
 &REL 227
 &PARAM DISKPATH = KRC:\R1\Program\KukaMiling\Subprogs\BaseCalib
 DEFFCT FRAME Get3Basepoints (lnUsedBase :IN,lnUsedTool :IN)

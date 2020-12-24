@@ -1,0 +1,113 @@
+&ACCESS RVO
+&REL 1
+&PARAM EDITMASK = *
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\ExpertVorgabe
+&PARAM DISKPATH = KRC:\R1\Program
+DEF milling_1224_yuan24( )
+ 
+
+SpindleRun(TRUE,9000,#CLOCKWISE)
+
+wait sec 1
+pos_d=xp3
+
+;FOLD PTP P1 CONT Vel=30 % PDAT1 Tool[6]:milling_8mm Base[7]:zts-1222;%{PE}
+;FOLD Parameters ;%{h}
+;Params IlfProvider=kukaroboter.basistech.inlineforms.movement.old; Kuka.IsGlobalPoint=False; Kuka.PointName=P1; Kuka.BlendingEnabled=True; Kuka.MoveDataPtpName=PDAT1; Kuka.VelocityPtp=30; Kuka.CurrentCDSetIndex=0; Kuka.MovementParameterFieldEnabled=True; IlfCommand=PTP
+;ENDFOLD
+$BWDSTART = FALSE
+PDAT_ACT = PPDAT1
+FDAT_ACT = FP1
+BAS(#PTP_PARAMS, 30.0)
+SET_CD_PARAMS (0)
+PTP XP1 C_Dis
+;ENDFOLD
+;FOLD LIN P2 CONT Vel=0.1 m/s CPDAT1 Tool[6]:milling_8mm Base[7]:zts-1222 ;%{PE}
+;FOLD Parameters ;%{h}
+;Params IlfProvider=kukaroboter.basistech.inlineforms.movement.old; Kuka.IsGlobalPoint=False; Kuka.PointName=P2; Kuka.BlendingEnabled=True; Kuka.MoveDataName=CPDAT1; Kuka.VelocityPath=0.1; Kuka.CurrentCDSetIndex=0; Kuka.MovementParameterFieldEnabled=True; IlfCommand=LIN
+;ENDFOLD
+$BWDSTART = FALSE
+LDAT_ACT = LCPDAT1
+FDAT_ACT = FP2
+BAS(#CP_PARAMS, 0.1)
+SET_CD_PARAMS (0)
+LIN XP2 C_Dis C_Dis
+;ENDFOLD
+;FOLD LIN P3 CONT Vel=0.05 m/s CPDAT2 Tool[6]:milling_8mm Base[7]:zts-1222 ;%{PE}
+;FOLD Parameters ;%{h}
+;Params IlfProvider=kukaroboter.basistech.inlineforms.movement.old; Kuka.IsGlobalPoint=False; Kuka.PointName=P3; Kuka.BlendingEnabled=True; Kuka.MoveDataName=CPDAT2; Kuka.VelocityPath=0.05; Kuka.CurrentCDSetIndex=0; Kuka.MovementParameterFieldEnabled=True; IlfCommand=LIN
+;ENDFOLD
+$BWDSTART = FALSE
+LDAT_ACT = LCPDAT2
+FDAT_ACT = FP3
+BAS(#CP_PARAMS, 0.05)
+SET_CD_PARAMS (0)
+LIN XP3 C_Dis C_Dis
+;ENDFOLD
+$vel.cp=0.003
+pos_d.z=pos_d.z-4
+wait sec 0
+$timer[1]=0
+$timer_stop[1]=false
+lin pos_d
+;$base=base_data[25]
+;$tool=tool_data[3]
+x0_offset=pos_d.x
+y0_offset=pos_d.y
+z0_offset=pos_d.z
+Rc=8
+
+
+direc=true
+if direc==true then
+for ii=1 to 91
+theta[ii]=(ii-1)*4.0
+xy361[1,ii]=Rc*cos(theta[ii])+x0_offset
+xy361[2,ii]=Rc*sin(theta[ii])+y0_offset
+endfor
+endif
+
+cirp0.x=x0_offset
+cirp0.y=y0_offset
+cirp1.x=xy361[1,1]
+cirp1.y=xy361[2,1]
+
+
+cirp2.x=xy361[1,20]
+cirp2.y=xy361[2,20]
+
+cirp3.x=xy361[1,40]
+cirp3.y=xy361[2,40]
+$APO.CVEL=1
+for ii=1 to 6
+;$vel_axis[ii]=10
+;$vel_axis[ii]=10
+endfor
+$vel.cp=0.003
+lin cirp1
+circ cirp2,cirp3,CA 365
+
+
+
+
+wait sec 0
+$timer_stop[1]=true
+
+$vel.cp=0.05
+lin pos_d
+lin xp3
+
+;FOLD LIN P4 CONT Vel=0.3 m/s CPDAT3 Tool[3]:Probe_Pin Base[25]:Base25 ;%{PE}
+;FOLD Parameters ;%{h}
+;Params IlfProvider=kukaroboter.basistech.inlineforms.movement.old; Kuka.IsGlobalPoint=False; Kuka.PointName=P4; Kuka.BlendingEnabled=True; Kuka.MoveDataName=CPDAT3; Kuka.VelocityPath=0.3; Kuka.CurrentCDSetIndex=0; Kuka.MovementParameterFieldEnabled=True; IlfCommand=LIN
+;ENDFOLD
+$BWDSTART = FALSE
+LDAT_ACT = LCPDAT3
+FDAT_ACT = FP4
+BAS(#CP_PARAMS, 0.3)
+SET_CD_PARAMS (0)
+LIN XP4 C_Dis C_Dis
+;ENDFOLD
+wait sec 1
+SpindleRun(FALSE,0,#CLOCKWISE)
+END

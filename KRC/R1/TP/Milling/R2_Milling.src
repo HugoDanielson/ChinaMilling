@@ -1,14 +1,59 @@
-&ACCESS RV2
+&ACCESS RV1
 &REL 3
 &PARAM DISKPATH = KRC:\R1\TP\Milling
 DEF R2_Milling ( )
-   $CYCFLAG[cycEmStop]       = NOT $ALARM_STOP OR NOT gDiExtEmStop OR NOT gDiExtOpSafAckn
-   
+;FOLD INIT
+   ;******************************************************************
+   ;* Safety Monitoring                                              *
+   ;******************************************************************
+   $CYCFLAG[cycEmStop]       = NOT $ALARM_STOP OR NOT gDiExtEmStop OR NOT gDiExtOpSafAckn 
+   ;******************************************************************
+   ;* Enable Switch monitoring                                       *
+   ;******************************************************************
+   IF $T1 AND NOT $USER_SAF THEN
+      gbSpindleStart = FALSE
+   ENDIF
+   ;******************************************************************
+   ;* gbRobControlActive = FALSE always when Prog not Runnin         *
+   ;******************************************************************
    IF($PRO_STATE1==#P_RESET) OR ($PRO_STATE1==#P_FREE) THEN
-      ; gbRobControlActive = FALSE
+      gbRobControlActive = FALSE
+   ELSE
+      gbRobControlActive = TRUE
+      gnSetSpindleSpeedHmi = 0
    ENDIF
    
-   IF $CYCFLAG[cycEmStop] THEN
+   ;******************************************************************
+   ;* Act Spindle speed monitoring for HMI                           *
+   ;******************************************************************
+   gnActSpindleSpeed = getActSpindleSpeed(gDISpindleActSpeed)
+   ;******************************************************************
+   ;* Spindle Runing state monitoring for HMI                        *
+   ;******************************************************************
+   gbSpindleRunning  = ( gDISpindleActSpeed <> 0)
+;ENDFOLD INIT  
+;FOLD CLAMP
+   ;******************************************************************
+   ;* Call Clamp/Unclamp program Based on HMI                        *
+   ;* After clamping gbClampHmiEnable will be  FALSE (Automaticaly)  *
+   ;******************************************************************
+   IF gbClampHmiEnable AND $T1 AND NOT gbRobControlActive THEN
+      IF gbSpindleClamp THEN
+         SpindleClamp(TRUE)
+      ENDIF
+      IF gbSpindleRelease THEN
+         SpindleClamp(FALSE)
+      ENDIF
+      ENDIF
+;ENDFOLD CLAMP
+;FOLD SPINDLE CONTROL
+   ;******************************************************************
+   ;* Main Spindle Run function                                      *
+   ;* Start / Stop / QuickStop                                       *
+   ;* Speed                                                          *
+   ;* SpindleWord (Acel,Decel,Wait)                                  *
+   ;******************************************************************
+   IF $CYCFLAG[cycEmStop]  THEN
       gDoQuickStop = TRUE
       oFreqconverterCtlw = gsSpindleWord.WaitForCommand
       oConverterSetSpeed = 0
@@ -16,45 +61,88 @@ DEF R2_Milling ( )
       gbSpindleStart = FALSE
       IF( gDISpindleActSpeed == 0)THEN
          gDoSto1 = FALSE
-         gDoSto2 = FALSE
-         
+         gDoSto2 = FALSE  
       ENDIF
    ELSE
       gDoSto1 = TRUE
       gDoSto2 = TRUE
       gDoQuickStop = FALSE
-      
-      IF gbSpindleStart THEN  
-         oSpindleOperMode = gnSpindleOperatinMode
-         oConverterSetSpeed =  getSpindleSpeed(gISetSpeed)
+      oSpindleOperMode   = gnSpindleOperatinMode
+      ;******************************************************************
+      ;* Spindle Operated from Program                                  *
+      ;******************************************************************
+      IF gbSpindleStart AND NOT gbRobControlActive THEN  
+         $TIMER_STOP[33] = TRUE
+         $TIMER[33] = 0
+         oConverterSetSpeed = getSpindleSpeed(gnSetSpindleSpeedHmi)
          oFreqconverterCtlw = gsSpindleWord.RunSpindle
-         
-         ;; gDOSpindleEnable = TRUE
+         $TIMER_STOP[33] = FALSE
+      ENDIF  
+      ;******************************************************************
+      ;* Spindle Operated from HMI                                      *
+      ;******************************************************************
+      IF gbSpindleStart AND gbRobControlActive THEN  
+         $TIMER_STOP[33] = TRUE
+         $TIMER[33] = 0
+         oConverterSetSpeed = getSpindleSpeed(gISetSpeed)
+         oFreqconverterCtlw = gsSpindleWord.RunSpindle
+         $TIMER_STOP[33] = FALSE
+      ENDIF
+      ;******************************************************************
+      ;* Stop Spindle                                                   *
+      ;******************************************************************
+      IF gbSpindleRunning AND NOT gbSpindleStart THEN
+         oFreqconverterCtlw = gsSpindleWord.StopDec1
+         $TIMER_STOP[33] = TRUE
+         $TIMER[33] = 0
       ELSE
-         IF( gDISpindleActSpeed <> 0)THEN
-            oFreqconverterCtlw = gsSpindleWord.StopDec1
-         ELSE
+       ;******************************************************************
+       ;*After Stop change controlWord to WAIT                           *
+       ;******************************************************************
+         IF  ($TIMER[33] > 500) THEN
+            $TIMER_STOP[33] = TRUE
+            $TIMER[33] = 0
             oFreqconverterCtlw = gsSpindleWord.WaitForCommand
          ENDIF
-         oConverterSetSpeed = 0
-         gISetSpeed = 0
-      ENDIF  
+      ENDIF
    ENDIF
+   ;ENDFOLD SPINDLE CONTROL
 END
 
-DEFFCT INT getSpindleSpeed (lrSetSpindleSpeed :IN)
-   INT lrSetSpindleSpeed
+;FOLD getSpindleSpeed
+DEFFCT INT getSpindleSpeed (lnSetSpindleSpeed :IN)
+   INT lnSetSpindleSpeed
    
-   IF gISetSpeed<0 THEN
-      RETURN (lrSetSpindleSpeed/10+65535)
+   IF lnSetSpindleSpeed<0 THEN
+      RETURN (lnSetSpindleSpeed/10+65535)
    ELSE
-      RETURN (lrSetSpindleSpeed/10)
+      RETURN (lnSetSpindleSpeed/10)
    ENDIF
    
    RETURN 0
 ENDFCT
-
-
+;ENDFOLD getSpindleSpeed
+;FOLD getActSpindleSpeed
+DEFFCT INT getActSpindleSpeed (lnSpeedFeedback :IN)
+   INT lnSpeedFeedback
+   IF lnSpeedFeedback>30000 THEN
+      gbSpindleDirCw = FALSE
+      gbSpindleDirCcw = TRUE
+      RETURN  ((65535 - lnSpeedFeedback)*10)
+   ELSE
+      IF (lnSpeedFeedback>0) AND  (lnSpeedFeedback<30000) THEN
+         gbSpindleDirCw = TRUE
+         gbSpindleDirCcw = FALSE
+         RETURN (lnSpeedFeedback*10)
+      ELSE
+         gbSpindleDirCw = FALSE
+         gbSpindleDirCcw = FALSE  
+      ENDIF
+   ENDIF
+   RETURN 0
+ENDFCT
+;ENDFOLD getActSpindleSpeed
+;FOLD SpindleRun
 GLOBAL DEF SpindleRun (lbStartSpindle :IN,lrSpindleRPM :IN, FI_DIRECTION:IN)
    BOOL lbStartSpindle
    INT lrSpindleRPM
@@ -62,11 +150,10 @@ GLOBAL DEF SpindleRun (lbStartSpindle :IN,lrSpindleRPM :IN, FI_DIRECTION:IN)
    IF lbStartSpindle THEN
       SWITCH FI_DIRECTION
          CASE #CLOCKWISE
-            gISetSpeed = -lrSpindleRPM
+            gISetSpeed = -lrSpindleRPM        
          CASE #COUNTERCLOCKWISE
             gISetSpeed = lrSpindleRPM
          DEFAULT
-            gISetSpeed = 0
       ENDSWITCH
       gbSpindleStart = TRUE
    ELSE
@@ -74,7 +161,8 @@ GLOBAL DEF SpindleRun (lbStartSpindle :IN,lrSpindleRPM :IN, FI_DIRECTION:IN)
    ENDIF
    
 END
-
+;ENDFOLD SpindleRun
+;FOLD SpindleClamp
 GLOBAL DEF SpindleClamp(lbTooleReleaseReq :IN)   
    BOOL lbTooleReleaseReq
    gDOChangeToolEnable = TRUE
@@ -88,6 +176,7 @@ GLOBAL DEF SpindleClamp(lbTooleReleaseReq :IN)
       ELSE
          gDOToolClamp        = TRUE
          gDOToolRelease      = FALSE
+         gbClampHmiEnable    = FALSE
       ENDIF
       WAIT SEC 1
       
@@ -95,5 +184,7 @@ GLOBAL DEF SpindleClamp(lbTooleReleaseReq :IN)
    
    gDOChangeToolEnable = FALSE
    gDOToolClamp        = FALSE
-   gDOToolRelease = FALSE
+   gDOToolRelease      = FALSE
+   
 END
+;ENDFOLD SpindleClamp

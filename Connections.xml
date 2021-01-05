@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Connections>
-  <Connection Type="KukaRoboter.WorkOnline.Connections.KrcConnectionTarget" ConnectionString="PCRC-DU9J1489H4;PCRC-DU9J1489H4;192.168.1.2;RobMiller 210;V8.6.5.268;KR C;Options:DiagnosisSafety,3.1.3.48|DiagnosisServiceEtherCAT,1.0.3.97|KUKA.BoardPackage,2.1.4.3|KUKA.PROFINET MS,5.0.2.30|KUKA.SoftwarePackage smartPAD-2,1.0.6.2|KUKA.UpdatePackageFirmware,1.1.0.40|KUKA.UpdateService,1.1.11.953|KUKA.UpdateServiceConfiguration,1.0.6.213|LoadDataDetermination,7.0.5.123|UserTech,4.0.15.2570" LastActive="true" />
+  <Connection Type="KukaRoboter.WorkOnline.Connections.KrcConnectionTarget" ConnectionString="PCRC-DU9J1489H4;PCRC-DU9J1489H4;192.168.1.2;RobMiller 210;V8.6.5.268;KR C;Options:DiagnosisSafety,3.1.3.48|DiagnosisServiceEtherCAT,1.0.3.97|HMI Easy,1.0.5.116|KUKA.BoardPackage,2.1.4.3|KUKA.PROFINET MS,5.0.2.30|KUKA.SoftwarePackage smartPAD-2,1.0.6.2|KUKA.UpdatePackageFirmware,1.1.0.40|KUKA.UpdateService,1.1.11.953|KUKA.UpdateServiceConfiguration,1.0.6.213|LoadDataDetermination,7.0.5.123|UserTech,4.0.15.2570" LastActive="true" />
 </Connections>

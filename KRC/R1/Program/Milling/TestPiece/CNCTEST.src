@@ -63,37 +63,8 @@ DEF CNCTEST()
    MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
    ;MoveSettings(lnUsedBase, lnUsedTool, 100, 10)
    
+   CNC_LOOP()
 
-
-FOR counter = 1 TO 30000 
-gfCNCPoint1[counter].A=-30 
-LIN gfCNCPoint1[counter] C_VEL 
-ENDFOR 
-
-FOR counter = 1 TO 30000 
-gfCNCPoint2[counter].A=-30 
-LIN gfCNCPoint2[counter] C_VEL 
-ENDFOR 
-
-FOR counter = 1 TO 30000 
-gfCNCPoint3[counter].A=-30 
-LIN gfCNCPoint3[counter] C_VEL 
-ENDFOR 
-
-FOR counter = 1 TO 30000 
-gfCNCPoint4[counter].A=-30 
-LIN gfCNCPoint4[counter] C_VEL 
-ENDFOR 
-
-FOR counter = 1 TO 30000 
-gfCNCPoint5[counter].A=-30 
-LIN gfCNCPoint5[counter] C_VEL 
-ENDFOR 
-
-FOR counter = 1 TO 23468 
-gfCNCPoint6[counter] .A=-30 
-LIN gfCNCPoint6[counter] C_VEL 
-ENDFOR 
 
    
    LIN_REL {Z 100} C_VEL #BASE

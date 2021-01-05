@@ -1,4 +1,4 @@
-&ACCESS RV1
+&ACCESS RV
 &PARAM EDITMASK = *
 DEFFCT REAL GetMillingSpeed(lrMillingRPM :IN,lnCuttingTeeth :IN,lrFeedPerTooth :IN)
    REAL lrMillingRPM

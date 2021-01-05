@@ -1,0 +1,28 @@
+&ACCESS RVEO
+&REL 12
+&PARAM EDITMASK = *
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
+DEF CVExampleTest( )
+
+WHILE NOT (CVViewIsOpen("ExampleModule"))
+  MsgNotify("ExampleModule wird geoeffnet")
+  WAIT SEC 2.0
+  CVOpenView("ExampleModule")
+ENDWHILE
+
+WAIT SEC 2.0
+
+WHILE NOT (CVTabIsOpen(2))
+  MsgNotify("Tab 2 wird ausgewaehlt")
+  WAIT SEC 2.0
+  CVOpenTab(2)
+ENDWHILE
+
+MsgNotify("ExampleModule wird geschlossen")
+WAIT SEC 2.0
+
+CVCloseView("ExampleModule")
+
+MsgNotify("Testprogramm beendet")
+
+END

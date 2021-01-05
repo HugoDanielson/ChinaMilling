@@ -1,0 +1,7 @@
+&ACCESS RVO
+&REL 6
+&PARAM EDITMASK = *
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\ExpertVorgabe
+DEF hmi( )
+wait sec 1000
+END

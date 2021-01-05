@@ -1,4 +1,4 @@
-&ACCESS RV2
+&ACCESS RV1
 &REL 3
 &PARAM DISKPATH = KRC:\R1\TP\Milling
 DEFDAT  R2_MILLING PUBLIC
@@ -35,7 +35,6 @@ DECL GLOBAL INT gnSpindleOperatinMode=2
 GLOBAL STRUC sSpindleWord INT RunSpindle,StopDec1,QuickStop,WaitForCommand
 DECL GLOBAL sSpindleWord gsSpindleWord={RunSpindle 127,StopDec1 128,QuickStop 129,WaitForCommand 126}
 
-
 GLOBAL INT gISetSpeed=0
 GLOBAL INT gIActSpeed=-8000
 GLOBAL INT giSpindlespeedchecksum=-800
@@ -44,15 +43,22 @@ GLOBAL BOOL gbRobControlEnable=FALSE
 GLOBAL BOOL gbRobControlRequest=FALSE
 GLOBAL BOOL gbMillSystemWarning=FALSE
 GLOBAL BOOL gbDirectionClockwise=TRUE
-
+GLOBAL BOOL gbSpindleRunning=FALSE
 GLOBAL INT cycEmStop=30
 GLOBAL INT oMinSpindleRpm=0
 GLOBAL INT oMaxSpindleRpm=15000
-
+GLOBAL INT gnActSpindleSpeed=0
+GLOBAL INT gnSetSpindleSpeedHmi=-10000
+GLOBAL BOOL gbSpindleDirCcw=FALSE
+GLOBAL BOOL gbSpindleDirCw=FALSE
+GLOBAL BOOL gbClampHmiEnable=FALSE
+GLOBAL BOOL gbSpindleClamp=FALSE
+GLOBAL BOOL gbSpindleRelease=FALSE
+GLOBAL BOOL gbTableClamp=FALSE
+GLOBAL BOOL gbSpindleBlowOff=FALSE
 
 
 GLOBAL ENUM TYPMillDirection CLOCKWISE,COUNTERCLOCKWISE
-
 GLOBAL STRUC sR2Param REAL VC,FZ,AP,Dia,NrE,RPM,rSpeed,FRAME toolOffset
 DECL GLOBAL sR2Param gsR2Param[16]
 gsR2Param[1]={VC 0.100000,FZ 0.200000,AP 0.300000,Dia 24.0000,NrE 3.00000,toolOffset {X 0.0,Y 0.0,Z 0.0,A 0.0,B 0.0,C 0.0}}

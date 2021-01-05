@@ -1,4 +1,4 @@
-&ACCESS RV1
+&ACCESS RV
 &REL 4
 DEF Timer_500()
    INT lnTimerNr

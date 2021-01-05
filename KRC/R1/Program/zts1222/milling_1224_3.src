@@ -1,5 +1,5 @@
 &ACCESS RVO
-&REL 1
+&REL 11
 &PARAM EDITMASK = *
 &PARAM TEMPLATE = C:\KRC\Roboter\Template\ExpertVorgabe
 &PARAM DISKPATH = KRC:\R1\Program\zts1222
@@ -8,7 +8,7 @@ DEF milling_1224_3( )
 
 SpindleRun(TRUE,9000,#CLOCKWISE)
 
-wait sec 3
+wait sec 1
 pos_d=xp3
 
 ;FOLD PTP P1 CONT Vel=30 % PDAT1 Tool[6]:milling_8mm Base[7]:zts-1222;%{PE}
@@ -33,30 +33,30 @@ BAS(#CP_PARAMS, 0.1)
 SET_CD_PARAMS (0)
 LIN XP2 C_Dis C_Dis
 ;ENDFOLD
-;FOLD LIN P3 Vel=0.05 m/s CPDAT2 Tool[6]:milling_8mm Base[7]:zts-1222 ;%{PE}
+;FOLD LIN P3 Vel=0.01 m/s CPDAT2 Tool[6]:milling_8mm Base[7]:zts-1222 ;%{PE}
 ;FOLD Parameters ;%{h}
-;Params IlfProvider=kukaroboter.basistech.inlineforms.movement.old; Kuka.IsGlobalPoint=False; Kuka.PointName=P3; Kuka.BlendingEnabled=False; Kuka.MoveDataName=CPDAT2; Kuka.VelocityPath=0.05; Kuka.CurrentCDSetIndex=0; Kuka.MovementParameterFieldEnabled=True; IlfCommand=LIN
+;Params IlfProvider=kukaroboter.basistech.inlineforms.movement.old; Kuka.IsGlobalPoint=False; Kuka.PointName=P3; Kuka.BlendingEnabled=False; Kuka.MoveDataName=CPDAT2; Kuka.VelocityPath=0.01; Kuka.CurrentCDSetIndex=0; Kuka.MovementParameterFieldEnabled=True; IlfCommand=LIN
 ;ENDFOLD
 $BWDSTART = FALSE
 LDAT_ACT = LCPDAT2
 FDAT_ACT = FP3
-BAS(#CP_PARAMS, 0.05)
+BAS(#CP_PARAMS, 0.01)
 SET_CD_PARAMS (0)
 LIN XP3
 ;ENDFOLD
-$vel.cp=0.003
+$vel.cp=0.005
 wait sec 0
 $timer[1]=0
 $timer_stop[1]=false
 lin_rel {z -4} #TOOL
 
 
+
+
+wait sec 0
+lin_rel {z 5} #TOOL
 wait sec 0
 $timer_stop[1]=true
-
-
-wait sec 1
-lin_rel {z 5} #TOOL
 lin_rel {z 10} #TOOL
 SpindleRun(FALSE,0,#CLOCKWISE)
 END

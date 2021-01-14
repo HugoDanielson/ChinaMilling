@@ -63,7 +63,11 @@ DEF CNCTEST()
    MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
    ;MoveSettings(lnUsedBase, lnUsedTool, 100, 10)
    
+   ; Loop of CNC CODE
+   
    CNC_LOOP()
+   
+   ; Loop of CNC CODE
 
 
    

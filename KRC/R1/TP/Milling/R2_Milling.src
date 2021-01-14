@@ -1,12 +1,12 @@
 &ACCESS RV1
-&REL 3
+&REL 4
 &PARAM DISKPATH = KRC:\R1\TP\Milling
 DEF R2_Milling ( )
 ;FOLD INIT
    ;******************************************************************
    ;* Safety Monitoring                                              *
    ;******************************************************************
-   $CYCFLAG[cycEmStop]       = NOT $ALARM_STOP OR NOT gDiExtEmStop OR NOT gDiExtOpSafAckn 
+   $CYCFLAG[cycEmStop]       = NOT $ALARM_STOP OR NOT $MOVE_ENABLE 
    ;******************************************************************
    ;* Enable Switch monitoring                                       *
    ;******************************************************************
@@ -31,6 +31,7 @@ DEF R2_Milling ( )
    ;* Spindle Runing state monitoring for HMI                        *
    ;******************************************************************
    gbSpindleRunning  = ( gDISpindleActSpeed <> 0)
+$OUT[1531] = gbSpindleRunning
 ;ENDFOLD INIT  
 ;FOLD CLAMP
    ;******************************************************************

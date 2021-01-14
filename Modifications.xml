@@ -7,11 +7,6 @@
         <File OriginalName="$robcor.dat" CurrentName="$robcor.dat" Type="None" OriginalPath="KRC:\R1\Mada\$robcor.dat" OriginalChecksum="c88316bcd4ce9fd1e7acd5c8e7780376" CurrentChecksum="c88316bcd4ce9fd1e7acd5c8e7780376" />
       </Folder>
       <Folder OriginalName="Program" CurrentName="Program" Type="None" OriginalPath="KRC:\R1\Program">
-        <Folder OriginalName="CVExample" CurrentName="CVExample" Type="None" OriginalPath="KRC:\R1\Program\CVExample">
-          <File OriginalName="CVExample.dat" CurrentName="CVExample.dat" Type="None" OriginalPath="KRC:\R1\Program\CVExample\CVExample.dat" OriginalChecksum="397fa1f26864e7413fa17951a98faac4" CurrentChecksum="397fa1f26864e7413fa17951a98faac4" />
-          <File OriginalName="CVExample.src" CurrentName="CVExample.src" Type="None" OriginalPath="KRC:\R1\Program\CVExample\CVExample.src" OriginalChecksum="b97570f670dfbb37d04d07bdce13ffdc" CurrentChecksum="b97570f670dfbb37d04d07bdce13ffdc" />
-          <File OriginalName="CVExampleTest.src" CurrentName="CVExampleTest.src" Type="None" OriginalPath="KRC:\R1\Program\CVExample\CVExampleTest.src" OriginalChecksum="7669ec20ba8ce6fa48b642de36acf956" CurrentChecksum="7669ec20ba8ce6fa48b642de36acf956" />
-        </Folder>
         <Folder OriginalName="KukaMiling" CurrentName="KukaMiling" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling">
           <Folder OriginalName="Commisioning" CurrentName="Commisioning" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Commisioning">
             <File OriginalName="Home.src" CurrentName="Home.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Commisioning\Home.src" OriginalChecksum="75436f15283045e7d90e23bcf35a804a" CurrentChecksum="75436f15283045e7d90e23bcf35a804a" />
@@ -20,6 +15,14 @@
             <File OriginalName="TestMoves.src" CurrentName="TestMoves.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Commisioning\TestMoves.src" OriginalChecksum="56a53fbf401798d3fa03ab1a94a3bdb1" CurrentChecksum="56a53fbf401798d3fa03ab1a94a3bdb1" />
           </Folder>
           <Folder OriginalName="Dat" CurrentName="Dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Dat">
+            <Folder OriginalName="CNC" CurrentName="CNC" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\CNC">
+              <File OriginalName="CNC1.dat" CurrentName="CNC1.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\CNC\CNC1.dat" OriginalChecksum="074aba70abc989d1098a97082baadcdd" CurrentChecksum="074aba70abc989d1098a97082baadcdd" />
+              <File OriginalName="CNC2.dat" CurrentName="CNC2.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\CNC\CNC2.dat" OriginalChecksum="8f86566927f8cb897ba29e1454f14c4c" CurrentChecksum="8f86566927f8cb897ba29e1454f14c4c" />
+              <File OriginalName="CNC3.dat" CurrentName="CNC3.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\CNC\CNC3.dat" OriginalChecksum="cbaadf001fe0681926c2902689fdf8bc" CurrentChecksum="cbaadf001fe0681926c2902689fdf8bc" />
+              <File OriginalName="CNC4.dat" CurrentName="CNC4.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\CNC\CNC4.dat" OriginalChecksum="6beb6a0dc0975334f15e7293a964ae4e" CurrentChecksum="6beb6a0dc0975334f15e7293a964ae4e" />
+              <File OriginalName="CNC5.dat" CurrentName="CNC5.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\CNC\CNC5.dat" OriginalChecksum="57aae878baa125cbd6e2f5efb9cf5e56" CurrentChecksum="57aae878baa125cbd6e2f5efb9cf5e56" />
+              <File OriginalName="CNC6.dat" CurrentName="CNC6.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\CNC\CNC6.dat" OriginalChecksum="496a48669814d7a04fd10d3494265cd1" CurrentChecksum="496a48669814d7a04fd10d3494265cd1" />
+            </Folder>
             <File OriginalName="bBool.dat" CurrentName="bBool.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\bBool.dat" OriginalChecksum="820da41c5d671f8a0eaa3b239671af8c" CurrentChecksum="820da41c5d671f8a0eaa3b239671af8c" />
             <File OriginalName="fFrame.dat" CurrentName="fFrame.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\fFrame.dat" OriginalChecksum="61067295237836be2be6cb1864281e3f" CurrentChecksum="61067295237836be2be6cb1864281e3f" />
             <File OriginalName="IOs.dat" CurrentName="IOs.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\IOs.dat" OriginalChecksum="5ee87f10d3daabd437608376311875f2" CurrentChecksum="5ee87f10d3daabd437608376311875f2" />
@@ -78,10 +81,6 @@
               <File OriginalName="TestStationMoves.src" CurrentName="TestStationMoves.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Jobs\Test\TestStationMoves.src" OriginalChecksum="f4b5f3207e8bc4c49c3b35c017ba7202" CurrentChecksum="f4b5f3207e8bc4c49c3b35c017ba7202" />
             </Folder>
             <File OriginalName="WatchDog.src" CurrentName="WatchDog.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Jobs\WatchDog.src" OriginalChecksum="22ba8f10f9376ae4e93d15cbde1ef156" CurrentChecksum="22ba8f10f9376ae4e93d15cbde1ef156" />
-          </Folder>
-          <Folder OriginalName="MetalTestMill" CurrentName="MetalTestMill" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\MetalTestMill">
-            <File OriginalName="BaseCalib.dat" CurrentName="BaseCalib.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\MetalTestMill\BaseCalib.dat" OriginalChecksum="290119fe429bf69a7b0b0177be613a14" CurrentChecksum="290119fe429bf69a7b0b0177be613a14" />
-            <File OriginalName="BaseCalib.src" CurrentName="BaseCalib.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\MetalTestMill\BaseCalib.src" OriginalChecksum="3c7deed3eba4233827d9cedf6b00d5a2" CurrentChecksum="3c7deed3eba4233827d9cedf6b00d5a2" />
           </Folder>
           <Folder OriginalName="Moves" CurrentName="Moves" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Moves">
             <Folder OriginalName="FromSt1" CurrentName="FromSt1" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Moves\FromSt1">
@@ -163,8 +162,8 @@
               <File OriginalName="ResetIO.src" CurrentName="ResetIO.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Vars_Buttons\ResetIO.src" OriginalChecksum="a51dc9159fef1350ef9d6d313e07e57e" CurrentChecksum="a51dc9159fef1350ef9d6d313e07e57e" />
               <File OriginalName="ResetVars.src" CurrentName="ResetVars.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Vars_Buttons\ResetVars.src" OriginalChecksum="fbd8d7e38df791ca23b1d254876199f8" CurrentChecksum="fbd8d7e38df791ca23b1d254876199f8" />
             </Folder>
-            <File OriginalName="Pdetection.dat" CurrentName="Pdetection.dat" Type="Changed" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Pdetection.dat" OriginalChecksum="71feec97d62060b936e71ea6196dd949" CurrentChecksum="ea3cbfac28709deeb57ea71300a92f7e" />
-            <File OriginalName="Pdetection.src" CurrentName="Pdetection.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Pdetection.src" OriginalChecksum="119667b7e23e6bc8e3853e75f00a6e4a" CurrentChecksum="119667b7e23e6bc8e3853e75f00a6e4a" />
+            <File OriginalName="Pdetection.dat" CurrentName="Pdetection.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Pdetection.dat" OriginalChecksum="d2a1bc727ec63cd5e313d93a9177bbb6" CurrentChecksum="d2a1bc727ec63cd5e313d93a9177bbb6" />
+            <File OriginalName="Pdetection.src" CurrentName="Pdetection.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\Pdetection.src" OriginalChecksum="d50303ffee694c3532cbe1d6c1fb4779" CurrentChecksum="d50303ffee694c3532cbe1d6c1fb4779" />
             <File OriginalName="PulsGen12ms.dat" CurrentName="PulsGen12ms.dat" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\PulsGen12ms.dat" OriginalChecksum="62bc6d4c2e6b17ed10b25f96fe945cd0" CurrentChecksum="62bc6d4c2e6b17ed10b25f96fe945cd0" />
             <File OriginalName="PulsGen12ms.src" CurrentName="PulsGen12ms.src" Type="None" OriginalPath="KRC:\R1\Program\KukaMiling\Subprogs\PulsGen12ms.src" OriginalChecksum="df215c1954f650124592cbdab089333a" CurrentChecksum="df215c1954f650124592cbdab089333a" />
           </Folder>
@@ -175,19 +174,11 @@
         </Folder>
         <Folder OriginalName="Milling" CurrentName="Milling" Type="None" OriginalPath="KRC:\R1\Program\Milling">
           <Folder OriginalName="TestPiece" CurrentName="TestPiece" Type="None" OriginalPath="KRC:\R1\Program\Milling\TestPiece">
-            <Folder OriginalName="CNC" CurrentName="CNC" Type="Moved" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\CNC">
-              <File OriginalName="CNC1.dat" CurrentName="CNC1.dat" Type="Changed" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\CNC\CNC1.dat" OriginalChecksum="074aba70abc989d1098a97082baadcdd" CurrentChecksum="d3feba2ff3faad092ec55727b7ecf02d" />
-              <File OriginalName="CNC2.dat" CurrentName="CNC2.dat" Type="Changed" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\CNC\CNC2.dat" OriginalChecksum="8f86566927f8cb897ba29e1454f14c4c" CurrentChecksum="92a2a612a7622a5e7c4aef8dde827f5f" />
-              <File OriginalName="CNC3.dat" CurrentName="CNC3.dat" Type="Changed" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\CNC\CNC3.dat" OriginalChecksum="cbaadf001fe0681926c2902689fdf8bc" CurrentChecksum="b78f0f63a050f1c3d78ed0c08844b13c" />
-              <File OriginalName="CNC4.dat" CurrentName="CNC4.dat" Type="Changed" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\CNC\CNC4.dat" OriginalChecksum="6beb6a0dc0975334f15e7293a964ae4e" CurrentChecksum="3e5cb39e8322f7c6ba45d1c8b1ced813" />
-              <File OriginalName="CNC5.dat" CurrentName="CNC5.dat" Type="Changed" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\CNC\CNC5.dat" OriginalChecksum="57aae878baa125cbd6e2f5efb9cf5e56" CurrentChecksum="2b6c2952fad1a35ccb6b120280eeeb1a" />
-              <File OriginalName="CNC6.dat" CurrentName="CNC6.dat" Type="Changed" OriginalPath="KRC:\R1\Program\KukaMiling\Dat\CNC\CNC6.dat" OriginalChecksum="496a48669814d7a04fd10d3494265cd1" CurrentChecksum="c7bef7e843a59fe1101f1c4ce0849da5" />
-            </Folder>
             <Folder OriginalName="Loop" CurrentName="Loop" Type="None" OriginalPath="KRC:\R1\Program\Milling\TestPiece\Loop">
-              <File OriginalName="CNC_LOOP.src" CurrentName="CNC_LOOP.src" Type="Changed" OriginalPath="KRC:\R1\Program\Milling\TestPiece\Loop\CNC_LOOP.src" OriginalChecksum="bf33e4ebc03a2fac6122d5eae4cd1cb0" CurrentChecksum="a22ca294ae1b5cbc380ff1fb769c1966" />
+              <File OriginalName="CNC_LOOP.src" CurrentName="CNC_LOOP.src" Type="None" OriginalPath="KRC:\R1\Program\Milling\TestPiece\Loop\CNC_LOOP.src" OriginalChecksum="bf33e4ebc03a2fac6122d5eae4cd1cb0" CurrentChecksum="bf33e4ebc03a2fac6122d5eae4cd1cb0" />
             </Folder>
             <File OriginalName="CNCTEST.dat" CurrentName="CNCTEST.dat" Type="None" OriginalPath="KRC:\R1\Program\Milling\TestPiece\CNCTEST.dat" OriginalChecksum="0bbbdf21c1c84e87c2c9e9f929f59614" CurrentChecksum="0bbbdf21c1c84e87c2c9e9f929f59614" />
-            <File OriginalName="CNCTEST.src" CurrentName="CNCTEST.src" Type="None" OriginalPath="KRC:\R1\Program\Milling\TestPiece\CNCTEST.src" OriginalChecksum="3ff942712895a0a913245d42bff710b8" CurrentChecksum="3ff942712895a0a913245d42bff710b8" />
+            <File OriginalName="CNCTEST.src" CurrentName="CNCTEST.src" Type="None" OriginalPath="KRC:\R1\Program\Milling\TestPiece\CNCTEST.src" OriginalChecksum="075ddee304b7ddc0dc8e03a552ecbe80" CurrentChecksum="075ddee304b7ddc0dc8e03a552ecbe80" />
             <File OriginalName="TopSquare.dat" CurrentName="TopSquare.dat" Type="None" OriginalPath="KRC:\R1\Program\Milling\TestPiece\TopSquare.dat" OriginalChecksum="b7b3257deac0fda2692852d70cb3f4c0" CurrentChecksum="b7b3257deac0fda2692852d70cb3f4c0" />
             <File OriginalName="TopSquare.src" CurrentName="TopSquare.src" Type="None" OriginalPath="KRC:\R1\Program\Milling\TestPiece\TopSquare.src" OriginalChecksum="a5d0cf58c1523997e6302c9458cdc195" CurrentChecksum="a5d0cf58c1523997e6302c9458cdc195" />
           </Folder>
@@ -204,42 +195,10 @@
           <File OriginalName="Wood_Test_2.dat" CurrentName="Wood_Test_2.dat" Type="None" OriginalPath="KRC:\R1\Program\Milling\Wood_Test_2.dat" OriginalChecksum="dd87bf981ce7ed868003dbec1bcd6b9f" CurrentChecksum="dd87bf981ce7ed868003dbec1bcd6b9f" />
           <File OriginalName="Wood_Test_2.src" CurrentName="Wood_Test_2.src" Type="None" OriginalPath="KRC:\R1\Program\Milling\Wood_Test_2.src" OriginalChecksum="81a6963bd7ec697c78391acdbe06051a" CurrentChecksum="81a6963bd7ec697c78391acdbe06051a" />
         </Folder>
-        <Folder OriginalName="zts1222" CurrentName="zts1222" Type="None" OriginalPath="KRC:\R1\Program\zts1222">
-          <File OriginalName="milling.dat" CurrentName="milling.dat" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling.dat" OriginalChecksum="3a31bdd3657b819e5f9e0e6f42afa735" CurrentChecksum="3a31bdd3657b819e5f9e0e6f42afa735" />
-          <File OriginalName="milling.src" CurrentName="milling.src" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling.src" OriginalChecksum="df23fdef78ecf3abd86e06f789cd5d66" CurrentChecksum="df23fdef78ecf3abd86e06f789cd5d66" />
-          <File OriginalName="milling_1222_1.dat" CurrentName="milling_1222_1.dat" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_1222_1.dat" OriginalChecksum="a4315a02a6707b39d5a7e480e86c6086" CurrentChecksum="a4315a02a6707b39d5a7e480e86c6086" />
-          <File OriginalName="milling_1222_1.src" CurrentName="milling_1222_1.src" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_1222_1.src" OriginalChecksum="af2d99e15702414a91caac346d5fcb71" CurrentChecksum="af2d99e15702414a91caac346d5fcb71" />
-          <File OriginalName="milling_1222_2.dat" CurrentName="milling_1222_2.dat" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_1222_2.dat" OriginalChecksum="dbed0bcf6376e8fbb1420f646c9bde4a" CurrentChecksum="dbed0bcf6376e8fbb1420f646c9bde4a" />
-          <File OriginalName="milling_1222_2.src" CurrentName="milling_1222_2.src" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_1222_2.src" OriginalChecksum="a41d64eaea3eac518fc9929787e9d70f" CurrentChecksum="a41d64eaea3eac518fc9929787e9d70f" />
-          <File OriginalName="milling_1224_1.dat" CurrentName="milling_1224_1.dat" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_1224_1.dat" OriginalChecksum="c913efb3813c9a3047e3c711f1fb625d" CurrentChecksum="c913efb3813c9a3047e3c711f1fb625d" />
-          <File OriginalName="milling_1224_1.src" CurrentName="milling_1224_1.src" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_1224_1.src" OriginalChecksum="aa441c035419b8e0e8df85a32ffa4db4" CurrentChecksum="aa441c035419b8e0e8df85a32ffa4db4" />
-          <File OriginalName="milling_1224_3.dat" CurrentName="milling_1224_3.dat" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_1224_3.dat" OriginalChecksum="7cc7cb7342cdc4bf81bea836ca6e927b" CurrentChecksum="7cc7cb7342cdc4bf81bea836ca6e927b" />
-          <File OriginalName="milling_1224_3.src" CurrentName="milling_1224_3.src" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_1224_3.src" OriginalChecksum="e9d1c860448c91d8bb5b9b5ce8c7df3d" CurrentChecksum="e9d1c860448c91d8bb5b9b5ce8c7df3d" />
-          <File OriginalName="milling_1224_yuan.dat" CurrentName="milling_1224_yuan.dat" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_1224_yuan.dat" OriginalChecksum="975225ab3f0dbff6037b1c88f97f58dc" CurrentChecksum="975225ab3f0dbff6037b1c88f97f58dc" />
-          <File OriginalName="milling_1224_yuan.src" CurrentName="milling_1224_yuan.src" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_1224_yuan.src" OriginalChecksum="51f4bb400a6b9992e9620e155acca9f4" CurrentChecksum="51f4bb400a6b9992e9620e155acca9f4" />
-          <File OriginalName="milling_1224_yuan22.dat" CurrentName="milling_1224_yuan22.dat" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_1224_yuan22.dat" OriginalChecksum="96bf9041a5c14f8d9caccaf4f2d53d76" CurrentChecksum="96bf9041a5c14f8d9caccaf4f2d53d76" />
-          <File OriginalName="milling_1224_yuan22.src" CurrentName="milling_1224_yuan22.src" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_1224_yuan22.src" OriginalChecksum="02a11002ed566bab59539396624ea8f9" CurrentChecksum="02a11002ed566bab59539396624ea8f9" />
-          <File OriginalName="milling_1224_yuan24.dat" CurrentName="milling_1224_yuan24.dat" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_1224_yuan24.dat" OriginalChecksum="f7a9abe36dd3b3a4671002b5a72baee7" CurrentChecksum="f7a9abe36dd3b3a4671002b5a72baee7" />
-          <File OriginalName="milling_1224_yuan24.src" CurrentName="milling_1224_yuan24.src" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_1224_yuan24.src" OriginalChecksum="ce5af8a936a18a5c8a13a3dca26d74d1" CurrentChecksum="ce5af8a936a18a5c8a13a3dca26d74d1" />
-          <File OriginalName="milling_2.dat" CurrentName="milling_2.dat" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_2.dat" OriginalChecksum="4cc1601322145d81d7865351d6a64b42" CurrentChecksum="4cc1601322145d81d7865351d6a64b42" />
-          <File OriginalName="milling_2.src" CurrentName="milling_2.src" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_2.src" OriginalChecksum="477f8135600f0ad6b3759daaf18109cc" CurrentChecksum="477f8135600f0ad6b3759daaf18109cc" />
-          <File OriginalName="milling_3.dat" CurrentName="milling_3.dat" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_3.dat" OriginalChecksum="c049a2552a69697172358c3b5f8f2da5" CurrentChecksum="c049a2552a69697172358c3b5f8f2da5" />
-          <File OriginalName="milling_3.src" CurrentName="milling_3.src" Type="None" OriginalPath="KRC:\R1\Program\zts1222\milling_3.src" OriginalChecksum="3e04b391334068d1d1a51cced46532b2" CurrentChecksum="3e04b391334068d1d1a51cced46532b2" />
-          <File OriginalName="test1222.dat" CurrentName="test1222.dat" Type="None" OriginalPath="KRC:\R1\Program\zts1222\test1222.dat" OriginalChecksum="91354275b9bf66cf0eff16a8253426a1" CurrentChecksum="91354275b9bf66cf0eff16a8253426a1" />
-          <File OriginalName="test1222.src" CurrentName="test1222.src" Type="None" OriginalPath="KRC:\R1\Program\zts1222\test1222.src" OriginalChecksum="252292806ca6e86691ae75a76e9f3b17" CurrentChecksum="252292806ca6e86691ae75a76e9f3b17" />
-        </Folder>
-        <File OriginalName="circle1.dat" CurrentName="circle1.dat" Type="None" OriginalPath="KRC:\R1\Program\circle1.dat" OriginalChecksum="803f98acd96d108ba49e21e83db0106e" CurrentChecksum="803f98acd96d108ba49e21e83db0106e" />
-        <File OriginalName="circle1.src" CurrentName="circle1.src" Type="None" OriginalPath="KRC:\R1\Program\circle1.src" OriginalChecksum="3deadf19eb65602eac133740bff31cee" CurrentChecksum="3deadf19eb65602eac133740bff31cee" />
         <File OriginalName="CollDetect_UserAction.dat" CurrentName="CollDetect_UserAction.dat" Type="None" OriginalPath="KRC:\R1\Program\CollDetect_UserAction.dat" OriginalChecksum="525fb8ceb628df9818e433edf1e6f1bf" CurrentChecksum="525fb8ceb628df9818e433edf1e6f1bf" />
         <File OriginalName="CollDetect_UserAction.src" CurrentName="CollDetect_UserAction.src" Type="None" OriginalPath="KRC:\R1\Program\CollDetect_UserAction.src" OriginalChecksum="66e63c582463d895b3c02d3a038a6672" CurrentChecksum="66e63c582463d895b3c02d3a038a6672" />
-        <File OriginalName="hmi.dat" CurrentName="hmi.dat" Type="None" OriginalPath="KRC:\R1\Program\hmi.dat" OriginalChecksum="b93da2fc5184ad5c8068c265c929a4e6" CurrentChecksum="b93da2fc5184ad5c8068c265c929a4e6" />
-        <File OriginalName="hmi.src" CurrentName="hmi.src" Type="None" OriginalPath="KRC:\R1\Program\hmi.src" OriginalChecksum="0869bfd382bb0144cb9ed312cb9508f0" CurrentChecksum="0869bfd382bb0144cb9ed312cb9508f0" />
         <File OriginalName="masref_user.dat" CurrentName="masref_user.dat" Type="None" OriginalPath="KRC:\R1\Program\masref_user.dat" OriginalChecksum="f67ff606ea52204705eb1141cf7808a2" CurrentChecksum="f67ff606ea52204705eb1141cf7808a2" />
         <File OriginalName="masref_user.src" CurrentName="masref_user.src" Type="None" OriginalPath="KRC:\R1\Program\masref_user.src" OriginalChecksum="a78246b787ecdb0d82dc7e0181ae9159" CurrentChecksum="a78246b787ecdb0d82dc7e0181ae9159" />
-        <File OriginalName="millingcn.dat" CurrentName="millingcn.dat" Type="None" OriginalPath="KRC:\R1\Program\millingcn.dat" OriginalChecksum="830b8b05ed9e059ce159596597e66bae" CurrentChecksum="830b8b05ed9e059ce159596597e66bae" />
-        <File OriginalName="millingcn.src" CurrentName="millingcn.src" Type="None" OriginalPath="KRC:\R1\Program\millingcn.src" OriginalChecksum="3825deaed8b84747e8a5132725a7c016" CurrentChecksum="3825deaed8b84747e8a5132725a7c016" />
-        <File OriginalName="test.dat" CurrentName="test.dat" Type="None" OriginalPath="KRC:\R1\Program\test.dat" OriginalChecksum="a13fd7f19db8d4a38ad7fdbb677dc435" CurrentChecksum="a13fd7f19db8d4a38ad7fdbb677dc435" />
-        <File OriginalName="test.src" CurrentName="test.src" Type="None" OriginalPath="KRC:\R1\Program\test.src" OriginalChecksum="d3264d9e5715648e1d48e4e2934e8828" CurrentChecksum="d3264d9e5715648e1d48e4e2934e8828" />
       </Folder>
       <Folder OriginalName="System" CurrentName="System" Type="None" OriginalPath="KRC:\R1\System">
         <File OriginalName="$config.dat" CurrentName="$config.dat" Type="None" OriginalPath="KRC:\R1\System\$config.dat" OriginalChecksum="5048cba0af215aa1305f66b7255b84b8" CurrentChecksum="5048cba0af215aa1305f66b7255b84b8" />
@@ -269,7 +228,7 @@
         </Folder>
         <Folder OriginalName="CustomView" CurrentName="CustomView" Type="None" OriginalPath="KRC:\R1\TP\CustomView" />
         <Folder OriginalName="HmiEasy" CurrentName="HmiEasy" Type="None" OriginalPath="KRC:\R1\TP\HmiEasy">
-          <File OriginalName="HmiEasyLib.dat" CurrentName="HmiEasyLib.dat" Type="None" OriginalPath="KRC:\R1\TP\HmiEasy\HmiEasyLib.dat" OriginalChecksum="5b0e461e3856dc969faabde2b9e5f567" CurrentChecksum="5b0e461e3856dc969faabde2b9e5f567" />
+          <File OriginalName="HmiEasyLib.dat" CurrentName="HmiEasyLib.dat" Type="None" OriginalPath="KRC:\R1\TP\HmiEasy\HmiEasyLib.dat" OriginalChecksum="52268d896353f3919339cc809c2822e1" CurrentChecksum="52268d896353f3919339cc809c2822e1" />
           <File OriginalName="HmiEasyLib.src" CurrentName="HmiEasyLib.src" Type="None" OriginalPath="KRC:\R1\TP\HmiEasy\HmiEasyLib.src" OriginalChecksum="1825ec2d9749014ed07561b71bb78b83" CurrentChecksum="1825ec2d9749014ed07561b71bb78b83" />
           <File OriginalName="HmiEasyLibExamples.dat" CurrentName="HmiEasyLibExamples.dat" Type="None" OriginalPath="KRC:\R1\TP\HmiEasy\HmiEasyLibExamples.dat" OriginalChecksum="0dc937536a1d5d5cb780f599b7ce1e48" CurrentChecksum="0dc937536a1d5d5cb780f599b7ce1e48" />
           <File OriginalName="HmiEasyLibExamples.src" CurrentName="HmiEasyLibExamples.src" Type="None" OriginalPath="KRC:\R1\TP\HmiEasy\HmiEasyLibExamples.src" OriginalChecksum="498dd6d4f73e0280d7bf6b4dcd860317" CurrentChecksum="498dd6d4f73e0280d7bf6b4dcd860317" />
@@ -277,8 +236,8 @@
         <Folder OriginalName="Milling" CurrentName="Milling" Type="None" OriginalPath="KRC:\R1\TP\Milling">
           <File OriginalName="Program1.dat" CurrentName="Program1.dat" Type="None" OriginalPath="KRC:\R1\TP\Milling\Program1.dat" OriginalChecksum="f58f529ec19427fd5f082737e7839c7f" CurrentChecksum="f58f529ec19427fd5f082737e7839c7f" />
           <File OriginalName="Program1.src" CurrentName="Program1.src" Type="None" OriginalPath="KRC:\R1\TP\Milling\Program1.src" OriginalChecksum="70bf2ef72e82ebd71e6b3d57033b4d4f" CurrentChecksum="70bf2ef72e82ebd71e6b3d57033b4d4f" />
-          <File OriginalName="R2_Milling.dat" CurrentName="R2_Milling.dat" Type="None" OriginalPath="KRC:\R1\TP\Milling\R2_Milling.dat" OriginalChecksum="e4b7c7328e825aa72584d1df0370c09c" CurrentChecksum="e4b7c7328e825aa72584d1df0370c09c" />
-          <File OriginalName="R2_Milling.src" CurrentName="R2_Milling.src" Type="None" OriginalPath="KRC:\R1\TP\Milling\R2_Milling.src" OriginalChecksum="7c5e9e20d1ceb11e5d6a1d45f8262169" CurrentChecksum="7c5e9e20d1ceb11e5d6a1d45f8262169" />
+          <File OriginalName="R2_Milling.dat" CurrentName="R2_Milling.dat" Type="None" OriginalPath="KRC:\R1\TP\Milling\R2_Milling.dat" OriginalChecksum="e21c790f06acdb633777110c98791022" CurrentChecksum="e21c790f06acdb633777110c98791022" />
+          <File OriginalName="R2_Milling.src" CurrentName="R2_Milling.src" Type="None" OriginalPath="KRC:\R1\TP\Milling\R2_Milling.src" OriginalChecksum="5c64048df3ee8554523d888131e3ceb7" CurrentChecksum="5c64048df3ee8554523d888131e3ceb7" />
           <File OriginalName="R2_MillingInit.src" CurrentName="R2_MillingInit.src" Type="None" OriginalPath="KRC:\R1\TP\Milling\R2_MillingInit.src" OriginalChecksum="434fa1c47384eaf27874f4e2bd9be9c7" CurrentChecksum="434fa1c47384eaf27874f4e2bd9be9c7" />
         </Folder>
         <File OriginalName="p00.dat" CurrentName="p00.dat" Type="None" OriginalPath="KRC:\R1\TP\p00.dat" OriginalChecksum="976925778011f82c7cae80d6e287eeb1" CurrentChecksum="976925778011f82c7cae80d6e287eeb1" />
@@ -290,7 +249,7 @@
     <Folder OriginalName="STEU" CurrentName="STEU" Type="None" OriginalPath="KRC:\STEU">
       <Folder OriginalName="Mada" CurrentName="Mada" Type="None" OriginalPath="KRC:\STEU\Mada">
         <File OriginalName="$custom.dat" CurrentName="$custom.dat" Type="None" OriginalPath="KRC:\STEU\Mada\$custom.dat" OriginalChecksum="cba3b39306d70222a5b4c4ac9a85a653" CurrentChecksum="cba3b39306d70222a5b4c4ac9a85a653" />
-        <File OriginalName="$machine.dat" CurrentName="$machine.dat" Type="None" OriginalPath="KRC:\STEU\Mada\$machine.dat" OriginalChecksum="5aec06571317bb250fb557b9b4c1473c" CurrentChecksum="5aec06571317bb250fb557b9b4c1473c" />
+        <File OriginalName="$machine.dat" CurrentName="$machine.dat" Type="None" OriginalPath="KRC:\STEU\Mada\$machine.dat" OriginalChecksum="15805c459d36960829883651633db397" CurrentChecksum="15805c459d36960829883651633db397" />
         <File OriginalName="$option.dat" CurrentName="$option.dat" Type="None" OriginalPath="KRC:\STEU\Mada\$option.dat" OriginalChecksum="6af919ad81584a2bcbbe4946373b2604" CurrentChecksum="6af919ad81584a2bcbbe4946373b2604" />
       </Folder>
       <File OriginalName="$config.dat" CurrentName="$config.dat" Type="None" OriginalPath="KRC:\STEU\$config.dat" OriginalChecksum="bb819252e2bd4be741415f13f83eba3f" CurrentChecksum="bb819252e2bd4be741415f13f83eba3f" />

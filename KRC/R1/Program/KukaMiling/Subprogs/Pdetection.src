@@ -1,5 +1,5 @@
 &ACCESS RV1
-&REL 138
+&REL 409
 &PARAM DISKPATH = KRC:\R1\Program\KukaMiling\Subprogs
 DEF Pdetection (inSwitch1 :IN,inSwitch2 :IN,inSwitch3 :IN,inSwitch4 :IN)
    BOOL inSwitch1,inSwitch2,inSwitch3,inSwitch4

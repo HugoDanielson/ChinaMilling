@@ -1,5 +1,5 @@
-&ACCESS RV1
-&REL 4
+&ACCESS RV2
+&REL 6
 &PARAM DISKPATH = KRC:\R1\TP\Milling
 DEF R2_Milling ( )
    BOOL lbOK
@@ -63,12 +63,12 @@ DEF R2_Milling ( )
       ;* Speed                                                          *
       ;* SpindleWord (Acel,Decel,Wait)                                  *
       ;******************************************************************
-      IF $CYCFLAG[cycEmStop]  THEN
-         oFreqconverterCtlw = gsSpindleWord.WaitForCommand
-         oConverterSetSpeed = 0
-         gISetSpeed = 0
-         gbSpindleStart = FALSE
-      ELSE
+      ;IF $CYCFLAG[cycEmStop]  THEN
+         ;oFreqconverterCtlw = gsSpindleWord.WaitForCommand
+         ;oConverterSetSpeed = 0
+         ;gISetSpeed = 0
+         ;gbSpindleStart = FALSE
+      ;ELSE
          oSpindleOperMode   = gnSpindleOperatinMode
          ;******************************************************************
          ;* Spindle Operated from Program                                  *
@@ -115,7 +115,7 @@ DEF R2_Milling ( )
                oFreqconverterCtlw = gsSpindleWord.WaitForCommand
             ENDIF
          ENDIF
-      ENDIF
+      ;;ENDIF
    ;ENDFOLD SPINDLE CONTROL
    ; FOLD CLAMP TABLE
       IF( NOT gbRobControlActive)THEN

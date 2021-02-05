@@ -1,5 +1,5 @@
-&ACCESS RV1
-&REL 4
+&ACCESS RV2
+&REL 6
 &PARAM DISKPATH = KRC:\R1\TP\Milling
 DEFDAT  R2_MILLING PUBLIC
 
@@ -46,7 +46,7 @@ DECL GLOBAL INT gnSpindleOperatinMode=2
 GLOBAL STRUC sSpindleWord INT RunSpindle,StopDec1,QuickStop,WaitForCommand
 DECL GLOBAL sSpindleWord gsSpindleWord={RunSpindle 127,StopDec1 128,QuickStop 129,WaitForCommand 126}
 
-GLOBAL INT gISetSpeed=0
+GLOBAL INT gISetSpeed=-10450
 GLOBAL INT gIActSpeed=-8000
 GLOBAL INT giSpindlespeedchecksum=-800
 GLOBAL BOOL gbRobControlActive=FALSE
@@ -58,7 +58,7 @@ GLOBAL INT cycEmStop=30
 GLOBAL INT oMinSpindleRpm=0
 GLOBAL INT oMaxSpindleRpm=15000
 GLOBAL INT gnActSpindleSpeed=0
-GLOBAL INT gnSetSpindleSpeedHmi=8000
+GLOBAL INT gnSetSpindleSpeedHmi=0
 GLOBAL BOOL gbSpindleDirCcw=FALSE
 GLOBAL BOOL gbSpindleDirCw=FALSE
 GLOBAL BOOL gbClampHmiEnable=FALSE

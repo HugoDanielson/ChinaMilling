@@ -1,9 +1,11 @@
 &ACCESS RVO
+&REL 9
 DEF CNCTEST()
    INT lnActSt,lnUsedBase,lnUsedTool,lnBaseNr
    INT lnJobNr, lnCounter,lnCounter2,lnSegments
    INT counter
    REAL lrAmountCut, lrWorkPieceSize,lrRadius,lrDepthOfCut
+   Axis HomePosition
    FRAME lfZcut
    FRAME lfToolDiamShift
    FRAME lfStartMillingPos
@@ -13,14 +15,17 @@ DEF CNCTEST()
    FRAME lfCircAuxPoint1
    FRAME lfCircEndPoint1
    
+   HomePosition = lAstartPos3
    CONTINUE     
    ;IF ($T1 OR $T2)THEN
    GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
    INTERRUPT ON 3
    BAS (#INITMOV,0)
+   
    lnActSt = 1
    PTP $POS_ACT
-   PTP lAstartPos
+   $ADVANCE = 5
+   PTP HomePosition
    
    gbRobControlActive = FALSE
    
@@ -28,43 +33,55 @@ DEF CNCTEST()
    lnUsedBase = 11
    lnUsedTool = 11
    
-   gnLastToolNr = 6
-   lnBaseNr = 24
+   ;gnLastToolNr = 4 ;Sandvik
+   gnLastToolNr = 9 ;Woodchipper 
+   ;gnLastToolNr = 10 
+   ;gnLastToolNr = 7 ; Taper
+   ;gnLastToolNr = 5 ;20 mill
+   ;gnLastToolNr = 8 ;13dRILL 
+   ;gnLastToolNr = 9 ;16 Super long
+   
+   
+   lnBaseNr = 2
    gfMillingOffset = $NULLFRAME
    
    lfZcut = $NULLFRAME
    lfBaseShift = $NULLFRAME
-   lfZcut.Z = 0
-   ;lfBaseShift = {X 2,Y -1.5, Z 0,A 0,B 0,C 0}
-   lfBaseShift = {X 100,Y 0, Z 0,A 0,B 0,C 0}
-   ;lfBaseShift = {X 18,Y 16, Z -3,A 0,B 0,C 0}
-   ;lfBaseShift.x = lfBaseShift.x - grTool_Diameter[gnLastToolNr]/2
-   ;lfBaseShift.y = lfBaseShift.y - grTool_Diameter[gnLastToolNr]/2
-   
-   ;lfBaseShift = {X 50,Y 48.5,Z -3,A 0,B 0,C 0}   
-   lfBaseCycleZ = $NULLFRAME
-   lfBaseCycleZ.Z = 0
+
+  ; lfBaseShift = {X 0,Y 0, Z -5,A 0,B -90,C 0}
+     lfBaseShift = {X 0,Y 0, Z 0,A 0 ,B 0,C 0}
+ 
+
    
    ;*************************************************************
    ;*                SPINDLE START + CUT PARAMS                 *
    ;*************************************************************
-   ;grUsedRPM = GetMillingRPM(grTool_VC[gnLastToolNr], grTool_Diameter[gnLastToolNr])
-   ;grUsedMillingSpeed = GetMillingSpeed(grUsedRPM, grTool_ToothCount[gnLastToolNr], grTool_FeedPerTooth[gnLastToolNr])
-   grUsedMillingSpeed = GetMillingSpeed(6000, 1, 0.4)
+
+   ;grUsedRPM = GetMillingRPM(600, 8)
+   grUsedRPM = 15000
+   grUsedMillingSpeed = GetMillingSpeed(grUsedRPM, 3 , 0.3 )
    
    SpindleRun(TRUE,grUsedRPM,#CLOCKWISE)
    
-   lfBaseCycleZ = $NULLFRAME
-   lfBaseCycleZ.Z = -0.5 
-   BASE_DATA[lnUsedBase] = BASE_DATA[lnBaseNr] : lfBaseShift : lfBaseCycleZ
-   TOOL_DATA[lnUsedTool] = TOOL_DATA[gnLastToolNr] :{X 0,Y 0,Z 0,A 270,B 0,C 0}
+
+   BASE_DATA[lnUsedBase] = BASE_DATA[lnBaseNr] : lfBaseShift
    
-   grUsedMillingSpeed = grUsedMillingSpeed*2 
-   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
-   ;MoveSettings(lnUsedBase, lnUsedTool, 100, 10)
+
+   
+   TOOL_DATA[lnUsedTool] = TOOL_DATA[gnLastToolNr] :{X 0,Y 0,Z 0,A -90,B 0,C 0} 
+
+   ;grUsedMillingSpeed = grUsedMillingSpeed 
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 100)
+   
    
    ; Loop of CNC CODE
    
+
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 100)
+  
+   LIN gfCNCPoint1[1]  : {X 0,Y 0,Z 100,A 0,B 0,C 0}
+   HALT
+   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
    CNC_LOOP()
    
    ; Loop of CNC CODE
@@ -75,8 +92,9 @@ DEF CNCTEST()
    TRIGGER WHEN DISTANCE=1 DELAY=0 DO  SpindleRun(FALSE,0,#CLOCKWISE) PRIO=-1 
    MoveSettings(lnUsedBase, lnUsedTool, 100, 500)
    LIN_REL {Z 100} C_VEL #BASE
-   
+   Wait SEC 0
+   Halt
    BAS (#INITMOV,0)
-   PTP lAstartPos
+   PTP HomePosition
    
 END

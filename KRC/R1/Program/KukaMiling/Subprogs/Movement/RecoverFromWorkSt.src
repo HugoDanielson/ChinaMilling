@@ -1,4 +1,4 @@
-&ACCESS RVO
+&ACCESS RVO1
 &REL 13
 &PARAM EDITMASK = *
 DEFFCT BOOL RecoverFromWorkSt(lnActSt : IN,lnUsedBase :IN,lnUsedTool :IN)

@@ -25,7 +25,7 @@ DECL GLOBAL INT zActUsedPathTmp=1 ;; Only for temporary use in movement file!
 DECL GLOBAL BOOL lbMemStationEntered=FALSE ;; Status if robot has entered a station
 DECL GLOBAL INT lzMemEnteredTarget=-1 ;; Target number of station which has been entered
 
-DECL GLOBAL INT lzMemToolNrLast=11
+DECL GLOBAL INT lzMemToolNrLast=2
 
 
 DECL GLOBAL BOOL lbMemValid=TRUE ;; Status if memory data are valid

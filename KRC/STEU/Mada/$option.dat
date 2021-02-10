@@ -23,5 +23,5 @@ INT $SPL_PTP_PARA_OPT=2 ; Defaulteinstellung fuer PTP-Spline Parametrisierung
 BOOL $IMPROVEDMIXEDBLENDING=TRUE ; verbessertes gemischtes Ueberschleifen
 BOOL $IMPROVEDSPLINEGEOMETRY=TRUE ;verbesserte Spline Geometrie
 DECL STEP_ENUM $SPL_MIXEDBLENDING_OPT=#NONE ;Optimierungen des gemischten Ueberschleifens im Spline
-DECL INSTALLED_MOTION_MODES $INSTALLED_MOTION_MODES={PATH FALSE,DYNAMIC FALSE} ;Motion modes are subject to charges! Do not set manually to true.
+DECL INSTALLED_MOTION_MODES $INSTALLED_MOTION_MODES={PATH TRUE,DYNAMIC FALSE} ;Motion modes are subject to charges! Do not set manually to true.
 ENDDAT

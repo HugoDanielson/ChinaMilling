@@ -1,0 +1,99 @@
+&ACCESS RVO1
+&REL 12
+&PARAM DISKPATH = KRC:\R1\Program\KukaMiling\Dat\CNC
+DEF  XPert ( )
+
+
+   INT lnActSt,lnUsedBase,lnUsedTool,lnBaseNr
+   INT lnJobNr, lnCounter,lnCounter2,lnSegments
+   REAL lrAmountCut, lrWorkPieceSize,lrRadius,lrDepthOfCut
+   Axis HomePosition
+   FRAME lfZcut
+   
+   FRAME lfBaseShift
+   
+   HomePosition = lAstartPos3
+   CONTINUE     
+   ;IF ($T1 OR $T2)THEN
+   GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
+   INTERRUPT ON 3
+   BAS (#INITMOV,0)
+   
+   lnActSt = 1
+   PTP $POS_ACT
+   $ADVANCE = 5
+   PTP HomePosition
+   
+   gbRobControlActive = FALSE
+   
+   ; Used Base and tool
+   lnUsedBase = 11
+   lnUsedTool = 11
+   
+   gnLastToolNr = 4 ;Sandvik
+   ;gnLastToolNr = 9 ;HSS Drill
+   ;gnLastToolNr = 10 
+   ;gnLastToolNr = 7 ; Circular
+   ;gnLastToolNr = 5 ;20 mill
+   ;gnLastToolNr = 8 ;Garant
+   
+   ;gnLastToolNr = 9 ;16 Super long
+   
+   lnBaseNr = 9
+   gfMillingOffset = $NULLFRAME
+   
+   lfZcut = $NULLFRAME
+   lfBaseShift = $NULLFRAME
+   
+   ; lfBaseShift = {X 0,Y 0, Z -5,A 0,B -90,C 0}
+   lfBaseShift = {X 0,Y 0, Z 0,A 0 ,B 0,C 0}
+   
+   BASE_DATA[lnUsedBase] = BASE_DATA[lnBaseNr] : lfBaseShift  
+   TOOL_DATA[lnUsedTool] = TOOL_DATA[gnLastToolNr] :{X 0,Y 0,Z 0,A 0,B 0,C 0}  
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 100)
+   
+   ; Loop of CNC CODE
+   
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 100)
+   PTP gsCNC[1].fCNC: {X 0,Y 0,Z 100,A 0,B 0,C 0}  
+   HALT
+   
+   LOOP 
+      
+      FOR lnCounter = 1 TO 4
+         gnCounter = lnCounter      
+         
+       ;  TRIGGER WHEN DISTANCE = 0 DELAY = 0 DO ChangeSpeed(gsCNC[gnCounter].grFeedrate) PRIO = -1
+         TRIGGER WHEN DISTANCE = 1 DELAY = 0 DO $CYCFLAG[15]  = TRUE
+       ;  MoveSettings(lnUsedBase, lnUsedTool, 100, gsCNC[lncounter].grFeedrate)
+changespeed(gscnc[lncounter].grfeedrate)
+         TRIGGER WHEN DISTANCE = 0 DELAY = 0 DO $CYCFLAG[15]  = FALSE
+         LIN gsCNC[lnCounter].fCNC C_VEL
+         
+         
+         
+      ENDFOR
+   ENDLOOP
+   
+END
+
+DEF ChangeSpeed(lrFeedRate:IN)
+   REAL lrFeedRate
+   
+  ; MoveSettings(11, 11, 100, lrFeedRate)
+   
+   LDAT_ACT.VEL = lrFeedRate * (DEF_VEL_CP / (DEF_VEL_CP*1000)) 
+   ;
+   ;
+   IF (lrFeedRate < 1.0) THEN
+   PDAT_ACT.VEL = 1
+   ELSE
+   PDAT_ACT.VEL = lrFeedRate
+   ENDIF
+   
+   ;
+   BAS(#CP_DAT)
+   BAS(#PTP_DAT)
+   ;
+   
+END

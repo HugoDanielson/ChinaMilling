@@ -1,19 +1,10 @@
 &ACCESS RVO
-&REL 9
+&REL 14
 DEF CNCTEST()
-   INT lnActSt,lnUsedBase,lnUsedTool,lnBaseNr
-   INT lnJobNr, lnCounter,lnCounter2,lnSegments
-   INT counter
-   REAL lrAmountCut, lrWorkPieceSize,lrRadius,lrDepthOfCut
+   INT lnUsedBase,lnUsedTool,lnBaseNr
    Axis HomePosition
-   FRAME lfZcut
-   FRAME lfToolDiamShift
-   FRAME lfStartMillingPos
    FRAME lfBaseShift
-   FRAME lfBaseCycleZ
-   FRAME lfBaseCycleShift
-   FRAME lfCircAuxPoint1
-   FRAME lfCircEndPoint1
+
    
    HomePosition = lAstartPos3
    CONTINUE     
@@ -22,9 +13,11 @@ DEF CNCTEST()
    INTERRUPT ON 3
    BAS (#INITMOV,0)
    
-   lnActSt = 1
+  
    PTP $POS_ACT
    $ADVANCE = 5
+   ;$MOTION_MODE = #STANDARD
+   $MOTION_MODE = #PATH
    PTP HomePosition
    
    gbRobControlActive = FALSE
@@ -33,33 +26,32 @@ DEF CNCTEST()
    lnUsedBase = 11
    lnUsedTool = 11
    
-   ;gnLastToolNr = 4 ;Sandvik
-   gnLastToolNr = 9 ;Woodchipper 
+   gnLastToolNr = 4 ;Sandvik
+   ;gnLastToolNr = 9 ;HSS Drill
    ;gnLastToolNr = 10 
-   ;gnLastToolNr = 7 ; Taper
+   ;gnLastToolNr = 7 ; Circular
    ;gnLastToolNr = 5 ;20 mill
-   ;gnLastToolNr = 8 ;13dRILL 
+   ;gnLastToolNr = 8 ;Garant
+   
    ;gnLastToolNr = 9 ;16 Super long
    
    
-   lnBaseNr = 2
+   lnBaseNr = 9
+   ;lnBaseNr = 25
    gfMillingOffset = $NULLFRAME
-   
-   lfZcut = $NULLFRAME
+
    lfBaseShift = $NULLFRAME
-
-  ; lfBaseShift = {X 0,Y 0, Z -5,A 0,B -90,C 0}
-     lfBaseShift = {X 0,Y 0, Z 0,A 0 ,B 0,C 0}
- 
+   ;lfBaseShift = {X 0,Y 0, Z -6.0,A 0 ,B 0,C 0}
+   lfBaseShift = {X 0,Y 0, Z -26.36,A 0 ,B 0,C 0}
 
    
    ;*************************************************************
-   ;*                SPINDLE START + CUT PARAMS                 *
+   ;*                SPUNK START + CUM PARAMS                 *
    ;*************************************************************
 
-   ;grUsedRPM = GetMillingRPM(600, 8)
-   grUsedRPM = 15000
-   grUsedMillingSpeed = GetMillingSpeed(grUsedRPM, 3 , 0.3 )
+   grUsedRPM = GetMillingRPM(1050, 32)
+   ;grUsedRPM = 5000
+   ;grUsedMillingSpeed = GetMillingSpeed(grUsedRPM, 3 , 0.1)
    
    SpindleRun(TRUE,grUsedRPM,#CLOCKWISE)
    
@@ -68,7 +60,7 @@ DEF CNCTEST()
    
 
    
-   TOOL_DATA[lnUsedTool] = TOOL_DATA[gnLastToolNr] :{X 0,Y 0,Z 0,A -90,B 0,C 0} 
+   TOOL_DATA[lnUsedTool] = TOOL_DATA[gnLastToolNr] :{X 0,Y 0,Z 0,A 0,B 0,C 0} 
 
    ;grUsedMillingSpeed = grUsedMillingSpeed 
    MoveSettings(lnUsedBase, lnUsedTool, 100, 100)
@@ -78,10 +70,12 @@ DEF CNCTEST()
    
 
    MoveSettings(lnUsedBase, lnUsedTool, 100, 100)
+ 
   
-   LIN gfCNCPoint1[1]  : {X 0,Y 0,Z 100,A 0,B 0,C 0}
+   PTP gsCNC1[1].fCNC   : {X 0,Y 0,Z 400,A 0,B 0,C 0}
+   LIN gsCNC1[1].fCNC   : {X 0,Y 0,Z 10,A 0,B 0,C 0}
    HALT
-   MoveSettings(lnUsedBase, lnUsedTool, 100, grUsedMillingSpeed)
+   MoveSettings(lnUsedBase, lnUsedTool, 100, gsCNC1[1].grfeedrate)
    CNC_LOOP()
    
    ; Loop of CNC CODE

@@ -1,0 +1,12 @@
+&ACCESS RVO
+&REL 3
+&PARAM EDITMASK = *
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
+DEF toolsetup( )
+
+   BAS (#INITMOV,0)
+ptp $pos_act
+
+   MoveSettings(9, 10, 100, 100)
+lin {x 160 ,y 160,z 10, a 0, b 0,c 0}
+END

@@ -1,0 +1,29 @@
+&ACCESS RVP
+&REL 1
+DEF  OscilationTest ( )
+
+
+BAS (#INITMOV,0)
+PTP $POS_ACT
+MoveSettings(25, 2, 100, 100)
+LIN {x 0 ,y 0,z 10, a 0, b 0,c 0}
+HALT
+MoveSettings(25, 2, 100, 10)
+LIN {x 0 ,y 0,z 1, a 0, b 0,c 0}
+
+MoveSettings(25, 2, 100, 10)
+LIN {x 150 ,y 0,z 1, a 0, b 0,c 0} C_VEL
+
+MoveSettings(25, 2, 100, 10)
+LIN {x 150 ,y 150,z 1, a 0, b 0,c 0} C_VEL
+
+MoveSettings(25, 2, 100, 10)
+LIN {x 0 ,y 150,z 1, a 0, b 0,c 0} C_VEL
+
+MoveSettings(25, 2, 100, 10)
+LIN {x 0 ,y 0,z 1, a 0, b 0,c 0} C_VEL
+
+MoveSettings(25, 2, 100, 10)
+LIN {x 0 ,y 0,z 10, a 0, b 0,c 0} C_VEL
+
+END

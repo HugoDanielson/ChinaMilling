@@ -1,21 +1,9 @@
 DEF CNC_LOOP() 
 INT counter 
 
-$MOTION_MODE = #STANDARD
-
-FOR counter = 1 TO 1468
-ChangeSpeed(gsCNC1[counter].grfeedrate)
+FOR counter = 1 TO 790 
+ChangeSpeed(gsCNC1[counter].grfeedrate*1.2)
 LIN gsCNC1[counter].fCNC C_VEL 
-ENDFOR 
-
-HALT
-
-$MOTION_MODE = #PATH
-
-FOR counter = 1 TO 1468 
-gsCNC2[counter].fCNC.Z = gsCNC2[counter].fCNC.Z-1
-ChangeSpeed(gsCNC2[counter].grfeedrate)
-LIN gsCNC2[counter].fCNC C_VEL 
 ENDFOR 
 
 END 

@@ -17,6 +17,7 @@ DEF CNCTEST()
    PTP $POS_ACT
    $ADVANCE = 5
    ;$MOTION_MODE = #STANDARD
+   
    $MOTION_MODE = #PATH
    PTP HomePosition
    
@@ -42,14 +43,14 @@ DEF CNCTEST()
 
    lfBaseShift = $NULLFRAME
    ;lfBaseShift = {X 0,Y 0, Z -6.0,A 0 ,B 0,C 0}
-   lfBaseShift = {X 0,Y 0, Z -26.36,A 0 ,B 0,C 0}
+   lfBaseShift = {X 0,Y 0, Z -25.5,A 0 ,B 0,C 0}
 
    
    ;*************************************************************
    ;*                SPUNK START + CUM PARAMS                 *
    ;*************************************************************
 
-   grUsedRPM = GetMillingRPM(1050, 32)
+   grUsedRPM = GetMillingRPM(1450, 32)
    ;grUsedRPM = 5000
    ;grUsedMillingSpeed = GetMillingSpeed(grUsedRPM, 3 , 0.1)
    
@@ -84,7 +85,7 @@ DEF CNCTEST()
    
    LIN_REL {Z 100} C_VEL #BASE
    TRIGGER WHEN DISTANCE=1 DELAY=0 DO  SpindleRun(FALSE,0,#CLOCKWISE) PRIO=-1 
-   MoveSettings(lnUsedBase, lnUsedTool, 100, 500)
+   MoveSettings(lnUsedBase, lnUsedTool, 100, 300)
    LIN_REL {Z 100} C_VEL #BASE
    Wait SEC 0
    Halt
